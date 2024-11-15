@@ -1,10 +1,10 @@
 import { errorHandler } from "./errorMiddleware.js";
-import { loggerMiddleware } from "./loggerMiddleware.js";
+import { loggerMiddleware } from "./utils/logger.js";
 import express from "express";
 import cors from "cors";
 import cacheControl from "express-cache-controller";
 import bodyParser from "body-parser";
-import path from "path";
+import commentRoutes from "./routes/comments.route.js";
 
 const app = express();
 
@@ -51,5 +51,7 @@ app
   });
 
 app.use(errorHandler());
+
+app.use("/api/comment", commentRoutes);
 
 export default app;
