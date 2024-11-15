@@ -1,11 +1,7 @@
 import dotenv from "dotenv";
 import app from "./app.js";
-import { connectWeb3Storage, uploadTestImage } from "./connectWeb3Storage.js";
 
 dotenv.config({ path: ".env" });
-
-connectWeb3Storage();
-uploadTestImage();
 
 async function main() {
   let serverInstance = app;
