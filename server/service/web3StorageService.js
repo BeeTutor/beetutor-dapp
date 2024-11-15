@@ -8,6 +8,7 @@ import { fileURLToPath } from "url";
 import fs from "fs";
 import path from "path";
 import { logger } from "../utils/logger.js";
+import { File } from "buffer";
 
 dotenv.config({ path: ".env" });
 

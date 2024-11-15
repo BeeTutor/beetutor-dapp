@@ -5,6 +5,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
+    "start:dev": "nodemon main.js",
     "start": "node main.js"
   },
   "author": "",
@@ -19,6 +20,7 @@
     "winston-daily-rotate-file": "^5.0.0"
   },
   "devDependencies": {
+    "nodemon": "^3.1.7",
     "webpack": "^5.96.1",
     "webpack-cli": "^5.1.4"
   }
