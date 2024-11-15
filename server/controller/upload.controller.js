@@ -1,17 +1,21 @@
 import { logger } from "../utils/logger.js";
-import { web3StorageService } from "../service/web3StorageService.js";
+import { web3StorageService } from "../service/web3Storage.service.js";
+import { commentRepo } from "../repository/comments.repo.js";
 
 class CommentController {
   addUserComment = async (req, res) => {
     try {
-      const { oldCid, to, from, comment, oldFileName } = req.body;
+      const { to, from, comment } = req.body;
 
+      const oldComment = commentRepo.getCommentsByToAddress(to);
       const newData = { from, to, comment };
       const { cid, fileName, url } = await web3StorageService.uploadUserComment(
         newData,
-        oldCid,
-        oldFileName
+        oldComment.oldCid["/"],
+        oldComment.oldFileName
       );
+
+      commentRepo.updateCommentsByToAddress({ to, cid, fileName });
 
       res.status(201).json({
         success: true,

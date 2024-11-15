@@ -8,6 +8,7 @@ import { fileURLToPath } from "url";
 import fs from "fs";
 import path from "path";
 import { logger } from "../utils/logger.js";
+import { File } from "buffer";
 
 dotenv.config({ path: ".env" });
 
@@ -37,7 +38,7 @@ class Web3StorageService {
   async uploadUserComment(newData, oldCid = null, oldFileName = null) {
     let comments = [];
     const fileName = `user-${newData.to}-${new Date().getMilliseconds()}`;
-    if (oldCid?.length > 0) {
+    if (oldCid) {
       const url = `https://${oldCid}.ipfs.w3s.link/${oldFileName}`;
       try {
         const response = await fetch(url);
@@ -60,6 +61,7 @@ class Web3StorageService {
     console.log("::: Comment uploaded with CID :::", cid);
 
     if (oldCid) {
+      // TODO: 都會噴錯刪不掉
       this.client
         .remove(`${oldCid}`, {
           shards: true,
@@ -68,7 +70,11 @@ class Web3StorageService {
           console.warn("::: Fail to delete old comment :::");
         });
     }
-    return { cid, fileName, url: `https://${cid}.ipfs.w3s.link/${fileName}` };
+    return {
+      cid: cid,
+      fileName,
+      url: `https://${cid}.ipfs.w3s.link/${fileName}`,
+    };
   }
 
   async uploadFile(fileName, fileContent) {
@@ -107,7 +113,7 @@ class Web3StorageService {
       });
     }
 
-    console.log("✅ JSON Array uploaded with CID:", cid);
+    console.log("JSON Array uploaded with CID:", cid);
     return { fileName, cid };
   }
 }

@@ -1,8 +1,7 @@
 import express from "express";
-import { commentController } from "../controller/uploadController.js";
+import { commentController } from "../controller/upload.controller.js";
 const router = express.Router();
 
-// 註冊新用戶
 router.post("/", commentController.addUserComment);
 
 export default router;

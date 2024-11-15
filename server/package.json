@@ -5,20 +5,24 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
+    "start:dev": "nodemon main.js",
     "start": "node main.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@web3-storage/w3up-client": "^16.4.1",
+    "@worldcoin/idkit": "^1.3.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
+    "ethers": "^6.13.4",
     "express": "^4.21.1",
     "express-cache-controller": "^1.1.0",
     "winston": "^3.16.0",
     "winston-daily-rotate-file": "^5.0.0"
   },
   "devDependencies": {
+    "nodemon": "^3.1.7",
     "webpack": "^5.96.1",
     "webpack-cli": "^5.1.4"
   }
