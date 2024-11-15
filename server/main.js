@@ -2,12 +2,19 @@ import { configMap } from "./config.js";
 import { errorHandler } from "./errorMiddleware.js";
 import express from "express";
 import commentRoutes from "./routes/comments.route.js";
+import tokenRoutes from "./routes/token.route.js";
 import bodyParser from "body-parser";
+import cors from "cors";
 
 async function main() {
   const app = express();
 
   app.disable("x-powered-by");
+  app.use(
+    cors({
+      origin: "*", // TODO: remove
+    })
+  );
   app
     .use((req, res, next) => {
       res.set("X-Content-Type-Options", "nosniff");
@@ -30,6 +37,7 @@ async function main() {
   app.use(errorHandler());
 
   app.use("/api/comment", commentRoutes);
+  app.use("/api/token", tokenRoutes);
 
   app.listen(configMap.server.port, () => {
     console.info(`=== Server running on port ${configMap.server.port} ===`);

@@ -9,4 +9,10 @@ export const configMap = {
     key: process.env.KEY || "",
     proof: process.env.PROOF || "",
   },
+  wordCoin: {
+    appId: process.env.APP_ID,
+    actionId: {
+      airDrop: process.env.ACTION_ID,
+    },
+  },
 };
