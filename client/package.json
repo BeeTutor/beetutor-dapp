@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "chakra": "chakra typegen theme.ts",
-    "export": "next export"
+    "docker:build": "docker build -t nextjs-app .",
+    "docker:run": "docker run -p 3000:3000 nextjs-app"
   },
   "dependencies": {
     "@chakra-ui/react": "^3.1.0",
