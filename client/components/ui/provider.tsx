@@ -31,41 +31,6 @@ export function Provider(props: ThemeProviderProps) {
     nftContractService,
   } = useStore();
 
-  function generateConsistentUrl(address: string): string {
-    const lastUrl = localStorage.getItem(address);
-    if (lastUrl) {
-      return lastUrl;
-    }
-    const baseUrl = "https://noun-api.com/beta/pfp";
-    if (!address?.length || typeof address != "string") {
-      return baseUrl;
-    }
-
-    // 使用簡單的 hash function 將字串轉為數字
-    function hashString(str: string): number {
-      let hash = 0;
-      for (let i = 0; i < str.length; i++) {
-        const char = str.charCodeAt(i);
-        hash = (hash << 5) - hash + char;
-        hash |= 0; // 將數字轉為 32 位整數
-      }
-      return Math.abs(hash);
-    }
-
-    const hash = hashString(address);
-
-    // 利用 hash 值確保相同的輸入生成一致的 query 參數
-    const head = (hash % 3233) + 1; // 假設範圍為 1-300
-    const glasses = (Math.floor(hash / 10) % 20) + 1; // 假設範圍為 1-50
-    const background = (Math.floor(hash / 100) % 1) + 1; // 假設範圍為 1-10
-    const body = (Math.floor(hash / 1000) % 29) + 1; // 假設範圍為 1-100
-    const accessory = (Math.floor(hash / 136) % 200) + 1; // 假設範圍為 1-200
-
-    const url = `${baseUrl}?head=${head}&glasses=${glasses}&background=${background}&body=${body}&accessory=${accessory}`;
-    localStorage.setItem(address, url);
-    return url;
-  }
-
   useEffect(() => {
     setCourseReviews(reviewData);
     setCourseBids(bidValueData);
@@ -74,7 +39,6 @@ export function Provider(props: ThemeProviderProps) {
       try {
         const response = await fetch("/config.json");
         const config = await response.json();
-        console.log(":))) ", config);
         setBatchId(config.batch_id);
         setCourseId(config.course_id);
       } catch (error) {
@@ -96,7 +60,7 @@ export function Provider(props: ThemeProviderProps) {
             );
 
             const address = await RPC.getAccounts(provider);
-            setUserAvatar(generateConsistentUrl(address));
+            setUserAvatar(`https://noun-api.com/beta/pfp?name=${address}`);
             setUserAddress(address);
             setContractService(newContractService);
             setProvider(provider);
@@ -107,7 +71,7 @@ export function Provider(props: ThemeProviderProps) {
             };
           }
         } else {
-          setUserAvatar(generateConsistentUrl(userAddress));
+          setUserAvatar(`https://noun-api.com/beta/pfp?name=${userAddress}`);
         }
         return () => {
           contractService.contract?.removeAllListeners("BidPlaced");

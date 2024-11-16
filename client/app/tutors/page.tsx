@@ -46,14 +46,14 @@ export default function Tutors() {
                       <Image
                         fill
                         objectFit="cover"
-                        src={x.avatar}
+                        src={`https://noun-api.com/beta/pfp?name=${x.name}`}
                         alt={x.name}
                       />
                     </Box>
                     <Card.Title fontSize="2xl">{x.name}</Card.Title>
                   </Flex>
                   <Box>
-                    <Box>Offered: 4 lessons</Box>
+                    <Box>Offered: {x.offered} lessons</Box>
                   </Box>
                   <Flex flexWrap="wrap" gap="2">
                     {x.tags.map((x, i) => (

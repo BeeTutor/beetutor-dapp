@@ -112,6 +112,7 @@ export const CHAIN_CONFIG = {
 
 class Web3AuthService {
   private web3auth: Web3Auth;
+  public initialized = false;
 
   constructor() {
     // IMP START - SDK Initialization
@@ -154,6 +155,7 @@ class Web3AuthService {
       }
     }
     await this.web3auth.initModal();
+    this.initialized = true;
     return this.web3auth.provider;
   }
 

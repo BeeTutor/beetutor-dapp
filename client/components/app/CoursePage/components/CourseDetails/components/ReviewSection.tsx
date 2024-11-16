@@ -1,11 +1,12 @@
 import { Course, IReviewsData } from "@/app/mock-data";
 import { Stars } from "@/components/custom/Stars";
 import { Button } from "@/components/ui/button";
-import { useVisibility } from "@/utils/useVisibility";
-import { Box, Heading, Flex, FlexProps, ButtonProps } from "@chakra-ui/react";
-import { useState } from "react";
-import { LuChevronLeft, LuChevronRight, LuUser } from "react-icons/lu";
 import { useStore } from "@/store";
+import { useVisibility } from "@/utils/useVisibility";
+import { Box, ButtonProps, Flex, FlexProps, Heading } from "@chakra-ui/react";
+import Image from "next/image";
+import { useState } from "react";
+import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 
 interface Props {
   course: Course;
@@ -104,8 +105,14 @@ export const ReviewSection: React.FC<Props> = ({ course }) => {
                         bg="blue.100"
                         alignItems="center"
                         justifyContent="center"
+                        overflow="hidden"
                       >
-                        <LuUser size="1.25rem" />
+                        <Image
+                          width={100}
+                          height={100}
+                          src={`https://noun-api.com/beta/pfp?name=${x.name}`}
+                          alt={x.name}
+                        />
                       </Flex>
                       <Box>
                         <Flex mb="1" gap="4">

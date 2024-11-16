@@ -23,6 +23,7 @@ import Image from "next/image";
 import Link, { LinkProps } from "next/link";
 import { PropsWithChildren, useEffect, useState } from "react";
 import { LuMenu, LuX } from "react-icons/lu";
+import { ToastSwal } from "../components/ui/toaster";
 
 import {
   SelectContent,
@@ -90,10 +91,17 @@ export const NavItems: React.FC = () => {
   };
 
   const login = async () => {
-    const web3authProvider = await web3AuthService.login();
-    setProvider(web3authProvider);
-    setLoggedIn(web3AuthService.connected);
-    getAccounts();
+    if (web3AuthService.initialized) {
+      const web3authProvider = await web3AuthService.login();
+      setProvider(web3authProvider);
+      setLoggedIn(web3AuthService.connected);
+      getAccounts();
+    } else {
+      ToastSwal.fire({
+        icon: "info",
+        title: `Please wait for wallet initialization... Check your network connection...`,
+      });
+    }
   };
 
   const logout = async () => {

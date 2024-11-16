@@ -82,7 +82,7 @@ export const CourseBidding: React.FC<Props> = ({ course, ...gridProps }) => {
             <Link href="/chat">Start chatting</Link>
           </Button>
           <Button variant="outline" onClick={() => setIsReviewDialogOpen(true)}>
-            Leave a message
+            Review the course
           </Button>
           <ReviewDialog
             open={isReviewDialogOpen}

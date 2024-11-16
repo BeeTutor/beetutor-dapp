@@ -68,6 +68,7 @@ export const ReviewDialog: React.FC<Omit<DialogRootProps, "children">> = (
                   date: new Date().toDateString(),
                   from: userAddress,
                   to: "0xMyCourse",
+                  avatar: `https://noun-api.com/beta/pfp?head=${1}&glasses=${1}&background=${2}&body=${2}&accessory=${1}`,
                 };
                 setCourseReviews([newReview, ...courseReviews]);
                 if (typeof userAddress === "string") {
