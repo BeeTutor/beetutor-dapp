@@ -35,7 +35,7 @@ import {
 import { web3AuthService } from "@/services/web3AuthService";
 import { useStore } from "@/store";
 import { usePathname } from "next/navigation";
-import RPC from "../services/ethersRPC";
+import * as RPC from "../services/ethersRPC";
 
 export const NavItems: React.FC = () => {
   const pathname = usePathname();

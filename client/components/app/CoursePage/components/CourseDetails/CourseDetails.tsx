@@ -3,7 +3,7 @@
 import { Course } from "@/app/mock-data";
 import { Bids } from "@/services/contractService";
 import { useStore } from "@/store";
-import { Box, Grid, Heading } from "@chakra-ui/react";
+import { Box, Center, Grid, Heading } from "@chakra-ui/react";
 import "chart.js/auto";
 import Chart from "chart.js/auto";
 import { formatEther } from "ethers";
@@ -35,6 +35,8 @@ export const CourseDetails: React.FC<Props> = ({ course }) => {
   const [chartContainer, setChartContainer] = useState<HTMLDivElement | null>(
     null
   );
+
+  // const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!chart || !chartContainer) return;
@@ -87,10 +89,10 @@ export const CourseDetails: React.FC<Props> = ({ course }) => {
       });
     };
 
-    if (contractService) {
+    if (contractService && loggedIn) {
       generateLineChartData();
     }
-  }, [contractService, provider, loggedIn, courseBids, batchId]);
+  }, [contractService, provider, loggedIn, courseBids, batchId, courseId]);
 
   return (
     <Grid gap="1rem">
@@ -103,13 +105,19 @@ export const CourseDetails: React.FC<Props> = ({ course }) => {
           w="full"
           aspectRatio={`${chartAspectRatio} / 1`}
         >
-          <Box position="absolute" inset="0">
-            <Line
-              ref={setChart}
-              data={actionBids}
-              options={{ responsive: false, aspectRatio: chartAspectRatio }}
-            />
-          </Box>
+          {loggedIn && courseBids ? (
+            <Box position="absolute" inset="0">
+              <Line
+                ref={setChart}
+                data={actionBids}
+                options={{ responsive: false, aspectRatio: chartAspectRatio }}
+              />
+            </Box>
+          ) : (
+            <Center h="full">
+              Please log in to view course details and bids.
+            </Center>
+          )}
         </Box>
       </Box>
       <ReviewSection course={course} />

@@ -217,6 +217,7 @@ const baseTutors = [
         price: 200,
         duration: 0.5,
         participantCount: 20,
+        chatId: '7c203104fae077d1a131d6c59c572989b98ae880cad9a8af68568db59aeff3f6',
       },
       {
         id: 26,
@@ -293,6 +294,7 @@ export type Course = {
   price: number;
   rating: number;
   tutor: Tutor;
+  chatId?: string;
 };
 
 export const courseData: Course[] = tutors.flatMap((tutor) => tutor.courses);

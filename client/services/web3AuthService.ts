@@ -11,8 +11,8 @@ export const CHAIN_CONFIG = {
   LINEA_SEPOLIA: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0xe705",
-    // rpcTarget: "https://rpc.sepolia.linea.build",
-    rpcTarget: `https://linea-sepolia.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_API_KEY}`,
+    rpcTarget: "https://rpc.sepolia.linea.build",
+    // rpcTarget: `https://linea-sepolia.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_API_KEY}`,
     displayName: "Linea Sepolia Testnet",
     blockExplorerUrl: "https://sepolia.lineascan.build",
     ticker: "ETH",

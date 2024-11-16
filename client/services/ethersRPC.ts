@@ -2,7 +2,7 @@
 import type { IProvider } from "@web3auth/base";
 import { ethers } from "ethers";
 
-const getChainId = async (provider: IProvider): Promise<any> => {
+export const getChainId = async (provider: IProvider): Promise<any> => {
   try {
     const ethersProvider = new ethers.BrowserProvider(provider);
     // Get the connected Chain's ID
@@ -13,7 +13,7 @@ const getChainId = async (provider: IProvider): Promise<any> => {
   }
 };
 
-const getSigner = async (provider: IProvider): Promise<any> => {
+export const getSigner = async (provider: IProvider): Promise<any> => {
   try {
     const ethersProvider = new ethers.BrowserProvider(provider);
     return await ethersProvider.getSigner();
@@ -22,7 +22,7 @@ const getSigner = async (provider: IProvider): Promise<any> => {
   }
 };
 
-const getAccounts = async (provider: IProvider): Promise<any> => {
+export const getAccounts = async (provider: IProvider): Promise<any> => {
   try {
     const ethersProvider = new ethers.BrowserProvider(provider);
     const signer = await ethersProvider.getSigner();
@@ -36,7 +36,7 @@ const getAccounts = async (provider: IProvider): Promise<any> => {
   }
 };
 
-const getBalance = async (provider: IProvider): Promise<string> => {
+export const getBalance = async (provider: IProvider): Promise<string> => {
   try {
     const ethersProvider = new ethers.BrowserProvider(provider);
     const signer = await ethersProvider.getSigner();
@@ -55,7 +55,7 @@ const getBalance = async (provider: IProvider): Promise<string> => {
   }
 };
 
-const sendTransaction = async (provider: IProvider): Promise<any> => {
+export const sendTransaction = async (provider: IProvider): Promise<any> => {
   try {
     const ethersProvider = new ethers.BrowserProvider(provider);
     const signer = await ethersProvider.getSigner();
@@ -82,7 +82,7 @@ const sendTransaction = async (provider: IProvider): Promise<any> => {
   }
 };
 
-const signMessage = async (provider: IProvider): Promise<any> => {
+export const signMessage = async (provider: IProvider): Promise<any> => {
   try {
     // For ethers v5
     // const ethersProvider = new ethers.providers.Web3Provider(provider);
@@ -100,13 +100,4 @@ const signMessage = async (provider: IProvider): Promise<any> => {
   } catch (error) {
     return error as string;
   }
-};
-
-export default {
-  getChainId,
-  getSigner,
-  getAccounts,
-  getBalance,
-  sendTransaction,
-  signMessage,
 };
