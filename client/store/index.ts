@@ -8,7 +8,7 @@ interface DappState {
   contractService: any;
   setContractService: (contractService: any) => void;
 
-  nowChain: "LINEA_SEPOLIA",
+  nowChain: any;
   setNowChain: (nowChain: any) => void;
 
   loggedIn: any;
@@ -22,7 +22,7 @@ interface DappState {
 
   nftContractService: any;
   setNftContractService: (nftContractService: any) => void;
-  
+
   courseBids: any;
   setCourseBids: (courseBids: any) => void;
 
@@ -34,18 +34,21 @@ interface DappState {
 
   batchId: any;
   setBatchId: (batchId: any) => void;
+
+  sessionStatus: any;
+  setSessionStatus: (sessionStatus: any) => void;
 }
 
 export const useStore = create<DappState>((set) => ({
   provider: null,
   setProvider: (provider) => set({ provider }),
 
-  nowChain: "HARDHAT_LOCAL",
+  nowChain: "LINEA_SEPOLIA",
   setNowChain: (nowChain) => set({ nowChain }),
 
   contractService: null,
   setContractService: (contractService) => set({ contractService }),
-  
+
   nftContractService: null,
   setNftContractService: (nftContractService) => set({ nftContractService }),
 
@@ -69,4 +72,11 @@ export const useStore = create<DappState>((set) => ({
 
   batchId: 0,
   setBatchId: (batchId) => set({ batchId }),
+
+  sessionStatus: {
+    0: "ended",
+    1: "open",
+    2: "won",
+  },
+  setSessionStatus: (sessionStatus) => set({ sessionStatus }),
 }));

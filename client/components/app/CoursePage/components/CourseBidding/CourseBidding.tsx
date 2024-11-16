@@ -20,14 +20,23 @@ import {
 } from "@chakra-ui/react";
 import { ethers } from "ethers";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ReviewDialog } from "./components/ReviewDialog";
 
 interface Props extends GridProps {
   course: Course;
 }
 
-export const CourseBidding: React.FC<Props> = ({ course, ...gridProps }) => {
+const SESSIONS = createListCollection({
+  items: [
+    { id: 0, time: "2024/11/4 10:00 pm" },
+    { id: 1, time: "2024/11/14 1:00 pm" },
+    { id: 2, time: "2024/11/20 7:00 am" },
+  ] as const,
+  itemToValue: (item) => String(item.id),
+});
+
+export const CourseBidding: React.FC<Props> = ({ ...gridProps }) => {
   const {
     contractService,
     setCourseBids,
@@ -35,12 +44,19 @@ export const CourseBidding: React.FC<Props> = ({ course, ...gridProps }) => {
     courseId,
     batchId,
     setBatchId,
+    sessionStatus,
   } = useStore();
 
   const [bidValue, setBidValue] = useState("");
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false);
 
-  const sessionStatus = SESSION_STATUS[batchId];
+  const [nowSessionStatus, setNowSessionStatus] = useState(
+    sessionStatus[batchId]
+  );
+
+  useEffect(() => {
+    setNowSessionStatus(sessionStatus[batchId]);
+  }, [sessionStatus]);
 
   return (
     <Grid bg="yellow.100" p="2rem" gap="1rem" {...gridProps}>
@@ -74,9 +90,9 @@ export const CourseBidding: React.FC<Props> = ({ course, ...gridProps }) => {
           ))}
         </SelectContent>
       </SelectRoot>
-      {sessionStatus === "ended" ? (
+      {sessionStatus[batchId] === "ended" ? (
         "Bidding has ended"
-      ) : sessionStatus === "won" ? (
+      ) : sessionStatus[batchId] === "won" ? (
         <>
           <Button asChild>
             <Link href="/chat">Start chatting</Link>
@@ -94,14 +110,14 @@ export const CourseBidding: React.FC<Props> = ({ course, ...gridProps }) => {
           Place your bid.
           <InputGroup startElement="$">
             <Input
-              disabled={sessionStatus !== "open"}
+              disabled={nowSessionStatus !== "open"}
               type="number"
               value={bidValue}
               onChange={(e) => setBidValue(e.target.value)}
             />
           </InputGroup>
           <Button
-            disabled={sessionStatus !== "open"}
+            disabled={nowSessionStatus !== "open"}
             onClick={async () => {
               const amountInWei = ethers.parseUnits(bidValue, "ether");
               console.log("Place Bid:", amountInWei);
@@ -138,23 +154,4 @@ export const CourseBidding: React.FC<Props> = ({ course, ...gridProps }) => {
       )}
     </Grid>
   );
-};
-
-const SESSIONS = createListCollection({
-  items: [
-    { id: 0, time: "2024/11/4 10:00 pm" },
-    { id: 1, time: "2024/11/14 1:00 pm" },
-    { id: 2, time: "2024/11/20 7:00 am" },
-  ] as const,
-  itemToValue: (item) => String(item.id),
-});
-
-type BiddingStatus = "ended" | "open" | "won";
-
-const SESSION_STATUS: Record<string, BiddingStatus | undefined> = {
-  0: "ended",
-  1: "open",
-  2: "won",
-} satisfies {
-  [key in (typeof SESSIONS)["items"][number]["id"]]: BiddingStatus;
 };
