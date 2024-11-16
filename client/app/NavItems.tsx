@@ -13,24 +13,22 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Box, Flex, IconButton } from "@chakra-ui/react";
-import Image from "next/image";
-import Link, { LinkProps } from "next/link";
-import { PropsWithChildren, useEffect, useState } from "react";
-import { LuMenu, LuX } from "react-icons/lu";
-
 import {
   IDKitWidget,
   ISuccessResult,
   VerificationLevel,
 } from "@worldcoin/idkit";
-
-import { IProvider } from "@web3auth/base";
+import Image from "next/image";
+import Link, { LinkProps } from "next/link";
+import { PropsWithChildren, useEffect, useState } from "react";
+import { LuMenu, LuX } from "react-icons/lu";
 
 import { web3AuthService } from "@/services/web3AuthService";
+import { useStore } from "@/store";
 import RPC from "../services/ethersRPC";
 
 export const NavItems: React.FC = () => {
-  const [provider, setProvider] = useState<IProvider | null>(null);
+  const { provider, setProvider } = useStore();
   const [loggedIn, setLoggedIn] = useState(false);
   const [showGetAirdrop, setShowGetAirdrop] = useState(true);
   const [showLoginCard, setShowLoginCard] = useState(false);
@@ -150,6 +148,11 @@ export const NavItems: React.FC = () => {
         <div>
           <button onClick={sendTransaction} className="card">
             Send Transaction
+          </button>
+        </div>
+        <div>
+          <button onClick={sendTransaction} className="card">
+            {/* Bid with input */}
           </button>
         </div>
       </div>
