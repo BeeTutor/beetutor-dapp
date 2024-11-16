@@ -9,7 +9,8 @@
     "lint": "next lint",
     "chakra": "chakra typegen theme.ts",
     "docker:build": "docker build -t nextjs-app .",
-    "docker:run": "docker run -p 3000:3000 nextjs-app"
+    "docker:run": "docker run -p 3000:3000 nextjs-app",
+    "i": "npm i --legacy-peer-deps"
   },
   "dependencies": {
     "@chakra-ui/react": "^3.1.0",
