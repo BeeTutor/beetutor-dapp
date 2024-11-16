@@ -35,9 +35,12 @@ import {
 } from "@/components/ui/select";
 import { web3AuthService } from "@/services/web3AuthService";
 import { useStore } from "@/store";
+import { usePathname } from "next/navigation";
 import RPC from "../services/ethersRPC";
 
 export const NavItems: React.FC = () => {
+  const pathname = usePathname();
+
   const { provider, setProvider, loggedIn, setLoggedIn } = useStore();
   const { contractService } = useStore();
 
@@ -254,7 +257,17 @@ export const NavItems: React.FC = () => {
           paddingRight={loggedIn ? "5rem" : "1rem"}
         >
           {ITEMS.map((x, i) => (
-            <Box key={i} borderBottom="2px solid" borderColor="primary.800">
+            <Box
+              key={i}
+              asChild
+              borderBottom="2px solid"
+              borderColor={
+                pathname.startsWith(x.href.toString())
+                  ? "primary.500"
+                  : "primary.800"
+              }
+              _hover={{ borderColor: "primary.500" }}
+            >
               <Link {...x} />
             </Box>
           ))}
