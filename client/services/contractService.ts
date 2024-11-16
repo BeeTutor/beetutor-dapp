@@ -1,7 +1,14 @@
 import { IProvider } from "@web3auth/base";
-import { Contract, ethers } from "ethers";
+import { Contract, ethers, formatEther } from "ethers";
+import Swal from "sweetalert2";
 import { toaster } from "../components/ui/toaster";
 import actionContractABI from "../contracts/CourseAuction.json";
+
+export interface Bids {
+  bidder: string;
+  bidTime: number;
+  amount: number;
+}
 
 export class ContractService {
   contractAddress: string = "";
@@ -9,54 +16,176 @@ export class ContractService {
   provider: IProvider;
   ethersProvider: IProvider | null = null;
   signer: ethers.JsonRpcSigner | null = null;
+  isInitialized = false;
+  chainsConfig: {
+    contract_address: {
+      [chainId: string]: string;
+    };
+    default_chain: string;
+  } = { contract_address: {}, default_chain: "LINEA_SEPOLIA" };
+  setSessionStatus: (sessionStatus: any) => void = function () {};
 
-  constructor(provider: IProvider) {
-    this.contractAddress = process.env.NEXT_PUBLIC_BID_ADDRESS || "";
+  constructor(
+    provider: IProvider,
+    nowChain: string,
+    setSessionStatus: (sessionStatus: any) => void = function () {}
+  ) {
     this.contract = null;
     this.provider = provider;
-    this.initializeContract(actionContractABI["abi"]);
+    this.initializeContract(nowChain);
+    this.setSessionStatus = setSessionStatus;
   }
 
-  private async initializeContract(abi: any) {
-    if (this.provider) {
+  async initializeContract(nowChain: string) {
+    try {
+      this.isInitialized = false;
+      const response = await fetch("/config.json");
+      this.chainsConfig = await response.json();
+      this.contractAddress =
+        this.chainsConfig.contract_address[
+          nowChain || this.chainsConfig.default_chain
+        ] || "";
       const ethersProvider = new ethers.BrowserProvider(this.provider);
       this.signer = await ethersProvider.getSigner();
+
+      console.log("signer connect success", this.signer);
       this.contract = new ethers.Contract(
         this.contractAddress,
-        abi,
+        actionContractABI["abi"],
         this.signer
       );
+
+      // this.contract.on("*", (event) => {
+      //   console.log("💖 Event detected:", event.fragment);
+      //   // Swal.fire({
+      //   //   title: "Good job?????",
+      //   //   text: "You clicked the button!",
+      //   //   icon: "success"
+      //   // });
+      // });
+      this.contract.on(
+        "BidPlaced",
+        (
+          courseId: number,
+          batchId: number,
+          bidder: string,
+          bidTime: number,
+          amount: number
+        ) => {
+          console.log("courseId:", courseId);
+          console.log("batchId:", batchId);
+          console.log("bidder:", bidder);
+          console.log("bidTime:", bidTime);
+          console.log("amount:");
+
+          if (bidder !== this.signer?.address) {
+            Swal.fire({
+              title: `Congrats!`,
+              confirmButtonText: "OK",
+              padding: "3em",
+              color: "#716add",
+              text: `New bidder bided with ${formatEther(amount)} HNK!`,
+              imageUrl: "https://media.giphy.com/media/SsTcO55LJDBsI/giphy.gif",
+              imageWidth: 350,
+              imageAlt: "Custom image",
+              backdrop: `
+                rgba(0,0,123,0.4)
+                url("/nyan-cat.gif")
+                left top
+                no-repeat
+              `,
+            });
+          }
+        }
+      );
+
+      this.contract.on(
+        "AuctionFinalized",
+        (courseId: number, batchId: number) => {
+          console.log("courseId:", courseId);
+          console.log("batchId:", batchId);
+          this.setSessionStatus({
+            0: "ended",
+            1: "won",
+            2: "open",
+          });
+          Swal.fire({
+            title: `You won the bid!`,
+            confirmButtonText: "OK",
+            padding: "3em",
+            color: "#716add",
+            text: `Now you can join the exclusive group chat.`,
+            imageUrl:
+              "https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExaHR5aW50NzRwbWphNWNvNThqZWFhY2c0am42d28xa3Z2YTl3cG1tMCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/lnyPptAfGwHeTdoQDk/giphy-downsized-large.gif",
+            imageWidth: 350,
+            imageAlt: "Custom image",
+            backdrop: `
+                rgba(0,0,123,0.4)
+                url("/nyan-cat.gif")
+                left top
+                no-repeat
+              `,
+          });
+        }
+      );
+
+      console.log("Contract connect success", this.contract);
+      this.isInitialized = true;
+      toaster.success({
+        title: "Contract initialized",
+      });
+    } catch (error) {
+      toaster.error({
+        title: "Contract not initialized",
+      });
+      console.error("Failed to fetch chains config:", error);
     }
   }
 
-  async placeBid(courseId: number, batchId: number, amount: number) {
+  async placeBid(courseId: number, batchId: number, amountInWei: number) {
     try {
       if (!this.contract) {
         throw new Error("Contract not initialized");
       }
-      const amountInWei = ethers.parseEther(amount.toString());
-      const tx = await this.contract.placeBid(courseId, batchId, {
-        value: amountInWei,
-      });
+      const tx = await this.contract.placeBid(courseId, batchId, amountInWei);
       console.debug("placeBid:", tx);
       await tx.wait();
-      toaster.success({
-        title: "Successfully Bided",
+      Swal.fire({
+        title: `You have place the bid!`,
+        confirmButtonText: "OK",
+        padding: "3em",
+        color: "#716add",
+        text: `Now now patiently wait for the auction to close!`,
+        imageUrl: "https://media.giphy.com/media/r95kAgBEzeapljl1ft/giphy.gif",
+        imageWidth: 350,
+        imageAlt: "Custom image",
+        backdrop: `
+          rgba(0,0,123,0.4)
+          url("/nyan-cat.gif")
+          left top
+          no-repeat
+        `,
       });
       return tx;
-    } catch (error) {
+    } catch (error: unknown) {
       console.error("placeBid transaction ", error);
-      if (error?.message?.includes("Contract not initialized")) {
-        toaster.error({
-          title: "Contract not initialized",
-          description: error.data?.message || error.message || "Unknown Error",
-        });
-      }
-      if (error?.message?.includes("Auction ended")) {
-        toaster.error({
-          title: "Auction ended",
-          description: error.data?.message || error.message || "Unknown Error",
-        });
+
+      if (error instanceof Error) {
+        if (error?.message?.includes("Contract not initialized")) {
+          toaster.error({
+            title: "Contract not initialized",
+
+            description: error.message || "Unknown Error",
+          });
+        }
+
+        if (error?.message?.includes("Auction ended")) {
+          toaster.error({
+            title: "Auction ended",
+
+            description: error.message || "Unknown Error",
+          });
+        }
       }
       throw error;
     }
@@ -68,17 +197,23 @@ export class ContractService {
         throw new Error("Contract not initialized");
       }
 
-      const bids = (await this.contract.getBids(courseId, batchId)).map((b) => {
+      const bids = await this.contract.getBids(courseId, batchId);
+
+      return bids.map((b: [string, number, number]) => {
         return {
-          address: b[0],
-          amount: Number(b[1]),
+          bidder: b[0],
+          bidTime: Number(b[1]),
+          amount: b[2],
         };
       });
-      console.log("getActionsBids value:", bids);
-      return bids;
     } catch (error) {
-      console.error("getActionsBids failed:", error);
-      throw error;
+      if (error instanceof Error) {
+        toaster.error({
+          title: "Get actions bids failed",
+          description: error.message || "Unknown Error",
+        });
+        console.error("getActionsBids failed:", error);
+      }
     }
   }
 
@@ -107,6 +242,13 @@ export class ContractService {
     } catch (error) {
       console.error("getCourseCertificateAddress failed:", error);
       throw error;
+    }
+  }
+
+  removeEventListeners() {
+    if (this.contract) {
+      this.contract.removeAllListeners();
+      console.log("All contract event listeners have been removed.");
     }
   }
 }

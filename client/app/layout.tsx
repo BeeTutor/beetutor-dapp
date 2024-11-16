@@ -4,6 +4,7 @@ import logo from "@/assets/logo.png";
 import { Box, Flex } from "@chakra-ui/react";
 import { NavItems } from "./NavItems";
 import { Provider } from "@/components/ui/provider";
+import { Toaster } from "@/components/ui/toaster";
 
 export default function RootLayout({
   children,
@@ -14,6 +15,7 @@ export default function RootLayout({
     <html suppressHydrationWarning>
       <body>
         <Provider>
+          <Toaster />
           <Box>
             <Flex p="4" alignItems="center">
               <Link href="/">

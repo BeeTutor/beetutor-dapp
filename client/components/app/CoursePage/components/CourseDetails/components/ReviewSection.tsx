@@ -1,20 +1,22 @@
-import { Course, reviewData } from "@/app/mock-data";
+import { Course, IReviewsData } from "@/app/mock-data";
 import { Stars } from "@/components/custom/Stars";
 import { Button } from "@/components/ui/button";
+import { useStore } from "@/store";
 import { useVisibility } from "@/utils/useVisibility";
-import { Box, Heading, Flex, FlexProps, ButtonProps } from "@chakra-ui/react";
+import { Box, ButtonProps, Flex, FlexProps, Heading } from "@chakra-ui/react";
+import Image from "next/image";
 import { useState } from "react";
-import { LuChevronLeft, LuChevronRight, LuUser } from "react-icons/lu";
+import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 
 interface Props {
   course: Course;
 }
 
 export const ReviewSection: React.FC<Props> = ({ course }) => {
+  const { courseReviews } = useStore();
   const [reviewReel, setReviewReel] = useState<HTMLElement | null>(null);
   const [isHeadVisible, headRef] = useVisibility();
   const [isTailVisible, tailRef] = useVisibility();
-
   return (
     <Box
       css={{ "--bg-color": "colors.blue.50" }}
@@ -79,12 +81,19 @@ export const ReviewSection: React.FC<Props> = ({ course }) => {
             alignItems="center"
           >
             <Box ref={headRef} w="2rem" mr="-2rem" h="40px" zIndex={1} />
-            {reviewData.map((x, i) => {
+            {courseReviews?.map((x: IReviewsData, i: number) => {
               return (
-                <Box key={i} px="2rem" mr="-3.5rem" scrollSnapAlign="start">
+                <Box
+                  key={i}
+                  px="2rem"
+                  mr="-3.5rem"
+                  scrollSnapAlign="start"
+                  alignSelf="stretch"
+                >
                   <Box
                     w="17.5rem"
                     maxW="full"
+                    h="full"
                     bg="gray.50"
                     borderRadius={8}
                     p="4"
@@ -96,19 +105,24 @@ export const ReviewSection: React.FC<Props> = ({ course }) => {
                         bg="blue.100"
                         alignItems="center"
                         justifyContent="center"
+                        overflow="hidden"
                       >
-                        <LuUser size="1.25rem" />
+                        <Image
+                          width={100}
+                          height={100}
+                          src={`https://noun-api.com/beta/pfp?name=${x.name}`}
+                          alt={x.name}
+                        />
                       </Flex>
                       <Box>
-                        <Flex mb="1" gap="4">{x.name}
+                        <Flex mb="1" gap="4">
+                          {x.name}
                           <Box color="gray.500">{x.date}</Box>
                         </Flex>
                         <Stars count={x.rating} />
                       </Box>
                     </Flex>
-                    <Box px="3">
-                      {x.comment}
-                    </Box>
+                    <Box px="3">{x.comment}</Box>
                   </Box>
                 </Box>
               );

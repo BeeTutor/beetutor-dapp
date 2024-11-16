@@ -12,8 +12,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Toaster } from "@/components/ui/toaster";
-import { Box, Flex, IconButton } from "@chakra-ui/react";
+import { Box, Flex, IconButton, createListCollection } from "@chakra-ui/react";
 import {
   IDKitWidget,
   ISuccessResult,
@@ -23,49 +22,85 @@ import Image from "next/image";
 import Link, { LinkProps } from "next/link";
 import { PropsWithChildren, useEffect, useState } from "react";
 import { LuMenu, LuX } from "react-icons/lu";
+import { ToastSwal } from "../components/ui/toaster";
 
-import { ContractService } from "@/services/contractService";
+import {
+  SelectContent,
+  SelectItem,
+  SelectLabel,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
+} from "@/components/ui/select";
 import { web3AuthService } from "@/services/web3AuthService";
 import { useStore } from "@/store";
+import { usePathname } from "next/navigation";
 import RPC from "../services/ethersRPC";
 
 export const NavItems: React.FC = () => {
-  const { provider, setProvider } = useStore();
-  const { contractService, setContractService } = useStore();
-  const [loggedIn, setLoggedIn] = useState(false);
+  const pathname = usePathname();
+
+  const {
+    provider,
+    setProvider,
+    loggedIn,
+    setLoggedIn,
+    nowChain,
+    setNowChain,
+    userAvatar,
+    setUserAddress,
+  } = useStore();
+  const { contractService, userAddress } = useStore();
+
   const [showGetAirdrop, setShowGetAirdrop] = useState(true);
   const [showLoginCard, setShowLoginCard] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const CHAINS = createListCollection({
+    items: [
+      { key: "ETH_SEPOLIA", name: "Sepolia" },
+      { key: "HARDHAT_LOCAL", name: "Hardhat" },
+      { key: "LINEA_SEPOLIA", name: "Linea Sepolia" },
+      { key: "EVM_ON_FLOW_TESTNET", name: "Evm on flow testnet" },
+      { key: "SCROLL_SEPOLIA", name: "Scroll sepolia" },
+      { key: "MANTLE_SEPOLIA", name: "Mantle sepolia" },
+      { key: "ZIRCUIT_TESTNET", name: "Zircuit testnet" },
+      { key: "BASE_SEPOLIA", name: "base Sepolia" },
+      { key: "ROOTSTOCK_TESTNET", name: "Rootstock testnet" },
+      { key: "MORPH_HOLESKY", name: "Morph holesky" },
+    ] as const,
+    itemToValue: (item) => String(item.key),
+  });
   useEffect(() => {
     const getShowGetAirdrop = localStorage.getItem("showGetAirdrop");
     if (getShowGetAirdrop) {
       setShowGetAirdrop(false);
     }
-    const init = async () => {
-      try {
-        const provider = await web3AuthService.init();
-        if (provider) {
-          setContractService(new ContractService(provider));
-          setProvider(provider);
-          setLoggedIn(web3AuthService.connected);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
+  }, [provider, contractService]);
 
-    init();
-  }, []);
-
-  const login = async () => {
-    const web3authProvider = await web3AuthService.login();
-    setProvider(web3authProvider);
-    setLoggedIn(web3AuthService.connected);
-  };
+  useEffect(() => {
+    if (nowChain?.length > 1) {
+      switchChain(nowChain);
+    }
+  }, [nowChain]);
 
   const getUserInfo = async () => {
     const user = await web3AuthService.getUserInfo();
     uiConsole(user);
+  };
+
+  const login = async () => {
+    if (web3AuthService.initialized) {
+      const web3authProvider = await web3AuthService.login();
+      setProvider(web3authProvider);
+      setLoggedIn(web3AuthService.connected);
+      getAccounts();
+    } else {
+      ToastSwal.fire({
+        icon: "info",
+        title: `Please wait for wallet initialization... Check your network connection...`,
+      });
+    }
   };
 
   const logout = async () => {
@@ -84,6 +119,7 @@ export const NavItems: React.FC = () => {
       return;
     }
     const address = await RPC.getAccounts(provider);
+    setUserAddress(userAddress);
     uiConsole(address);
     return address;
   };
@@ -117,7 +153,7 @@ export const NavItems: React.FC = () => {
   };
   // IMP END - Blockchain Calls
 
-  function uiConsole(...args: any[]): void {
+  function uiConsole(...args: unknown[]): void {
     console.log("uiConsole", args);
     const el = document.querySelector("#console>p");
     if (el) {
@@ -126,12 +162,10 @@ export const NavItems: React.FC = () => {
     }
   }
 
-  async function getActionsBids() {
-    await contractService.getActionsBids(1, 1);
-    // await contractService.getCourseCertificateAddress();
+  async function switchChain(chainMapKey: string) {
+    await web3AuthService.switchChain(chainMapKey);
   }
 
-  // TODO: May be use
   const loggedInView = (
     <>
       <div className="flex-container">
@@ -158,12 +192,6 @@ export const NavItems: React.FC = () => {
         <div>
           <button onClick={sendTransaction} className="card">
             Send Transaction
-          </button>
-        </div>
-        <div>
-          <button onClick={getActionsBids} className="card">
-            {/* Bid with input */}
-            Get actions bids
           </button>
         </div>
       </div>
@@ -257,7 +285,17 @@ export const NavItems: React.FC = () => {
           paddingRight={loggedIn ? "5rem" : "1rem"}
         >
           {ITEMS.map((x, i) => (
-            <Box key={i} borderBottom="2px solid" borderColor="primary.800">
+            <Box
+              key={i}
+              asChild
+              borderBottom="2px solid"
+              borderColor={
+                pathname.startsWith(x.href.toString())
+                  ? "primary.500"
+                  : "primary.800"
+              }
+              _hover={{ borderColor: "primary.500" }}
+            >
               <Link {...x} />
             </Box>
           ))}
@@ -293,6 +331,7 @@ export const NavItems: React.FC = () => {
                   borderRadius="50%"
                   overflow="hidden"
                   position="absolute"
+                  cursor="pointer"
                   borderBottom="2px solid"
                   top="1.8rem"
                   right="1.8rem"
@@ -300,25 +339,39 @@ export const NavItems: React.FC = () => {
                     setShowLoginCard(!showLoginCard);
                   }}
                 >
-                  <Image
-                    fill
-                    objectFit="cover"
-                    src={"https://noun-api.com/beta/pfp"}
-                    alt={"avatar"}
-                  />
+                  <Image fill objectFit="cover" src={userAvatar} alt="avatar" />
                 </Box>
               </DialogTrigger>
               <DialogContent bg="gray.50">
                 <DialogHeader>
-                  <DialogTitle>Dialog Title</DialogTitle>
-                  {loggedInView}
+                  <DialogTitle>Switch Chain</DialogTitle>
+                  {false && loggedInView}
                 </DialogHeader>
                 <DialogBody>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
-                  </p>
+                  <SelectRoot
+                    variant="outline"
+                    collection={CHAINS}
+                    size="sm"
+                    multiple={false}
+                    value={[nowChain]}
+                    onValueChange={(e) => setNowChain(e.value[0])}
+                  >
+                    <SelectLabel>Chains</SelectLabel>
+                    <SelectTrigger>
+                      <SelectValueText placeholder="Select chain">
+                        {([item]) => {
+                          return `${item.name}`;
+                        }}
+                      </SelectValueText>
+                    </SelectTrigger>
+                    <SelectContent portalled={false}>
+                      {CHAINS.items.map((chain) => (
+                        <SelectItem item={chain} key={chain.name}>
+                          <Box>{chain.name}</Box>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </SelectRoot>
                 </DialogBody>
                 <DialogFooter>
                   <DialogActionTrigger asChild>
@@ -334,7 +387,6 @@ export const NavItems: React.FC = () => {
           )}
         </Flex>
       </Box>
-      <Toaster />
     </>
   );
 };

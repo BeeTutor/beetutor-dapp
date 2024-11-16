@@ -9,6 +9,8 @@ import {
   SelectTrigger,
   SelectValueText,
 } from "@/components/ui/select";
+import { toaster } from "@/components/ui/toaster";
+import { useStore } from "@/store";
 import {
   Box,
   createListCollection,
@@ -16,21 +18,45 @@ import {
   GridProps,
   Input,
 } from "@chakra-ui/react";
+import { ethers } from "ethers";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ReviewDialog } from "./components/ReviewDialog";
 
 interface Props extends GridProps {
   course: Course;
 }
 
-export const CourseBidding: React.FC<Props> = ({ course, ...gridProps }) => {
-  const [value, setValue] = useState("");
+const SESSIONS = createListCollection({
+  items: [
+    { id: 0, time: "2024/11/4 10:00 pm" },
+    { id: 1, time: "2024/11/14 1:00 pm" },
+    { id: 2, time: "2024/11/20 7:00 am" },
+  ] as const,
+  itemToValue: (item) => String(item.id),
+});
 
+export const CourseBidding: React.FC<Props> = ({ ...gridProps }) => {
+  const {
+    contractService,
+    setCourseBids,
+    courseBids,
+    courseId,
+    batchId,
+    setBatchId,
+    sessionStatus,
+  } = useStore();
+
+  const [bidValue, setBidValue] = useState("");
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false);
 
-  const [session, setSession] = useState("");
-  const sessionStatus = SESSION_STATUS[session];
+  const [nowSessionStatus, setNowSessionStatus] = useState(
+    sessionStatus[batchId]
+  );
+
+  useEffect(() => {
+    setNowSessionStatus(sessionStatus[batchId]);
+  }, [sessionStatus]);
 
   return (
     <Grid bg="yellow.100" p="2rem" gap="1rem" {...gridProps}>
@@ -39,14 +65,15 @@ export const CourseBidding: React.FC<Props> = ({ course, ...gridProps }) => {
         collection={SESSIONS}
         size="sm"
         multiple={false}
-        value={[session]}
-        onValueChange={(e) => setSession(e.value[0])}
+        onValueChange={(e) => setBatchId(e.value[0])}
+        value={[batchId]}
+        defaultValue={[batchId]}
       >
         <SelectLabel>Session</SelectLabel>
         <SelectTrigger>
-          <SelectValueText placeholder="Select session">
+          <SelectValueText placeholder="Session 0">
             {([item]: (typeof SESSIONS)["items"]) => {
-              return `Session ${item.id}`;
+              return `Session ${item?.id}`;
             }}
           </SelectValueText>
         </SelectTrigger>
@@ -63,15 +90,15 @@ export const CourseBidding: React.FC<Props> = ({ course, ...gridProps }) => {
           ))}
         </SelectContent>
       </SelectRoot>
-      {sessionStatus === "ended" ? (
+      {sessionStatus[batchId] === "ended" ? (
         "Bidding has ended"
-      ) : sessionStatus === "won" ? (
+      ) : sessionStatus[batchId] === "won" ? (
         <>
           <Button asChild>
             <Link href="/chat">Start chatting</Link>
           </Button>
           <Button variant="outline" onClick={() => setIsReviewDialogOpen(true)}>
-            Leave a message
+            Review the course
           </Button>
           <ReviewDialog
             open={isReviewDialogOpen}
@@ -80,38 +107,51 @@ export const CourseBidding: React.FC<Props> = ({ course, ...gridProps }) => {
         </>
       ) : (
         <>
-          Lorem ipsum is placeholder text commonly used in the graphic, print,
-          and publishing industries for previewing layouts and visual mockups.
+          Place your bid.
           <InputGroup startElement="$">
             <Input
-              disabled={sessionStatus !== "open"}
+              disabled={nowSessionStatus !== "open"}
               type="number"
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
+              value={bidValue}
+              onChange={(e) => setBidValue(e.target.value)}
             />
           </InputGroup>
-          <Button disabled={sessionStatus !== "open"}>Bid now</Button>
+          <Button
+            disabled={nowSessionStatus !== "open"}
+            onClick={async () => {
+              const amountInWei = ethers.parseUnits(bidValue, "ether");
+              console.log("Place Bid:", amountInWei);
+              if (contractService) {
+                try {
+                  await contractService.placeBid(
+                    courseId,
+                    batchId,
+                    amountInWei
+                  );
+                } catch (error) {
+                  if (error instanceof Error) {
+                    console.error("Failed to place bid:", error);
+                    toaster.error({
+                      title: "Failed to place bid",
+                      description: error.message,
+                    });
+                  }
+                }
+              }
+              setCourseBids([
+                {
+                  bidder: "0x123456789abcdef",
+                  amount: amountInWei,
+                  bidTime: new Date().getTime(),
+                },
+                ...courseBids,
+              ]);
+            }}
+          >
+            Bid now
+          </Button>
         </>
       )}
     </Grid>
   );
-};
-
-const SESSIONS = createListCollection({
-  items: [
-    { id: 1, time: "2024/11/4 10:00 pm" },
-    { id: 3, time: "2024/11/14 1:00 pm" },
-    { id: 6, time: "2024/11/20 7:00 am" },
-  ] as const,
-  itemToValue: (item) => String(item.id),
-});
-
-type BiddingStatus = "ended" | "open" | "won";
-
-const SESSION_STATUS: Record<string, BiddingStatus | undefined> = {
-  1: "ended",
-  3: "open",
-  6: "won",
-} satisfies {
-  [key in (typeof SESSIONS)["items"][number]["id"]]: BiddingStatus;
 };

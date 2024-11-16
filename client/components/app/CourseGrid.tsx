@@ -32,7 +32,7 @@ export const CourseGrid: React.FC<Props> = ({ courses }) => {
                   <Image
                     fill
                     objectFit="cover"
-                    src={x.tutor.avatar}
+                    src={`https://noun-api.com/beta/pfp?name=${x.tutor.name}`}
                     alt={x.tutor.name}
                   />
                 </Box>

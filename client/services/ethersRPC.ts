@@ -11,7 +11,16 @@ const getChainId = async (provider: IProvider): Promise<any> => {
   } catch (error) {
     return error;
   }
-}
+};
+
+const getSigner = async (provider: IProvider): Promise<any> => {
+  try {
+    const ethersProvider = new ethers.BrowserProvider(provider);
+    return await ethersProvider.getSigner();
+  } catch (error) {
+    return error;
+  }
+};
 
 const getAccounts = async (provider: IProvider): Promise<any> => {
   try {
@@ -25,7 +34,7 @@ const getAccounts = async (provider: IProvider): Promise<any> => {
   } catch (error) {
     return error;
   }
-}
+};
 
 const getBalance = async (provider: IProvider): Promise<string> => {
   try {
@@ -44,7 +53,7 @@ const getBalance = async (provider: IProvider): Promise<string> => {
   } catch (error) {
     return error as string;
   }
-}
+};
 
 const sendTransaction = async (provider: IProvider): Promise<any> => {
   try {
@@ -54,7 +63,7 @@ const sendTransaction = async (provider: IProvider): Promise<any> => {
     const destination = "0x40e1c367Eca34250cAF1bc8330E9EddfD403fC56";
 
     const amount = ethers.parseEther("0.001");
-    const fees = await ethersProvider.getFeeData()
+    const fees = await ethersProvider.getFeeData();
 
     // Submit transaction to the blockchain
     const tx = await signer.sendTransaction({
@@ -71,7 +80,7 @@ const sendTransaction = async (provider: IProvider): Promise<any> => {
   } catch (error) {
     return error as string;
   }
-}
+};
 
 const signMessage = async (provider: IProvider): Promise<any> => {
   try {
@@ -91,6 +100,13 @@ const signMessage = async (provider: IProvider): Promise<any> => {
   } catch (error) {
     return error as string;
   }
-}
+};
 
-export default { getChainId, getAccounts, getBalance, sendTransaction, signMessage };
+export default {
+  getChainId,
+  getSigner,
+  getAccounts,
+  getBalance,
+  sendTransaction,
+  signMessage,
+};

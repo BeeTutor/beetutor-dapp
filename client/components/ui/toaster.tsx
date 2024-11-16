@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   Toaster as ChakraToaster,
@@ -7,12 +7,25 @@ import {
   Stack,
   Toast,
   createToaster,
-} from "@chakra-ui/react"
+} from "@chakra-ui/react";
+import Swal from "sweetalert2";
+
+export const ToastSwal = Swal.mixin({
+  toast: true,
+  position: "bottom-end",
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.addEventListener("mouseenter", Swal.stopTimer);
+    toast.addEventListener("mouseleave", Swal.resumeTimer);
+  },
+});
 
 export const toaster = createToaster({
   placement: "bottom-end",
   pauseOnPageIdle: true,
-})
+});
 
 export const Toaster = () => {
   return (
@@ -39,5 +52,5 @@ export const Toaster = () => {
         )}
       </ChakraToaster>
     </Portal>
-  )
-}
+  );
+};

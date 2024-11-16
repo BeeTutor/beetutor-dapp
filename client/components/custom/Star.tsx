@@ -1,5 +1,4 @@
 import { Box } from "@chakra-ui/react";
-import { ReactNode } from "react";
 import { FaStar } from "react-icons/fa6";
 import { IconBaseProps } from "react-icons/lib";
 

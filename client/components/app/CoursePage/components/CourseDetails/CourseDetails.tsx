@@ -1,70 +1,120 @@
+"use client";
+
 import { Course } from "@/app/mock-data";
-import { Grid, Box, Heading } from "@chakra-ui/react";
-import { ReviewSection } from "./components/ReviewSection";
+import { Bids } from "@/services/contractService";
+import { useStore } from "@/store";
+import { Box, Grid, Heading } from "@chakra-ui/react";
 import "chart.js/auto";
+import Chart from "chart.js/auto";
+import { formatEther } from "ethers";
+import moment from "moment";
+import { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
+import { ReviewSection } from "./components/ReviewSection";
+
 interface Props {
   course: Course;
 }
 
 export const CourseDetails: React.FC<Props> = ({ course }) => {
-  const generateLineChartData = () => {
-    const selectedBatch = [
-      {
-        date: new Date(),
-        address: "0xfwefhwoefhwo21DERT3q4t34t232",
-        price: 30,
-      },
-      {
-        date: new Date(),
-        address: "0xfwefhwoefhwo21DERT3q4t34t232",
-        price: 100,
-      },
-      {
-        date: new Date(),
-        address: "0xfwefhwoefhwo21DERT3q4t34t232",
-        price: 50,
-      },
-      {
-        date: new Date(),
-        address: "0xfwefhwoefhwo21DERT3q4t34t232",
-        price: 30,
-      },
-      {
-        date: new Date(),
-        address: "0xfwefhwoefhwo21DERT3q4t34t232",
-        price: 100,
-      },
-    ];
+  const {
+    provider,
+    contractService,
+    loggedIn,
+    courseBids,
+    courseId,
+    batchId,
+    sessionStatus,
+  } = useStore();
+  const [actionBids, setActionBids] = useState({
+    labels: [],
+    datasets: [],
+  });
 
-    const labels = selectedBatch.map((_, index) => `bid ${index + 1}`);
-    // X 軸顯示每次投標
-    const data = selectedBatch.map((e) => e.price);
-    // Y 軸顯示每次投標的價格
+  const [chart, setChart] = useState<Chart | null>();
+  const [chartContainer, setChartContainer] = useState<HTMLDivElement | null>(
+    null
+  );
 
-    return {
-      labels,
-      datasets: [
-        {
-          label: "bid price",
-          data,
-          fill: false,
-          borderColor: "rgb(75, 192, 192)",
-          tension: 0.1, // 曲線的平滑度
-        },
-      ],
+  useEffect(() => {
+    if (!chart || !chartContainer) return;
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      const { width } = entries[0].contentRect;
+      chart.resize(width, width / chartAspectRatio);
+    });
+
+    resizeObserver.observe(chartContainer);
+
+    return () => resizeObserver.disconnect();
+  }, [chart, chartContainer, sessionStatus]);
+
+  useEffect(() => {
+    async function getActionsBids() {
+      return await contractService.getActionsBids(courseId, batchId);
+    }
+
+    const generateLineChartData = async () => {
+      let bids = await getActionsBids();
+
+      if (!bids) {
+        bids = courseBids;
+      }
+      bids = bids.sort((a: Bids, b: Bids) => a.bidTime - b.bidTime);
+
+      console.log("Action Bids:", bids);
+
+      setActionBids({
+        labels: bids.map((e: Bids) =>
+          String(
+            moment(
+              new Date(Number(e.bidTime) * 1000),
+              "DD MM YYYY hh:mm:ss"
+            ).format()
+          )
+            .replace(/([+-]\d{2}:\d{2})$/, "")
+            .replace("T", " ")
+        ),
+        datasets: [
+          {
+            label: "Bid Price",
+            data: bids.map((e: Bids) => formatEther(e.amount)),
+            fill: false,
+            borderColor: "rgb(75, 192, 192)",
+            tension: 0.1,
+          } as never,
+        ],
+      });
     };
-  };
+
+    if (contractService) {
+      generateLineChartData();
+    }
+  }, [contractService, provider, loggedIn, courseBids, batchId]);
 
   return (
     <Grid gap="1rem">
-      <Box bg="blue.50" borderRadius="0.5rem" p="2rem">
+      <Box ref={setChartContainer} bg="blue.50" borderRadius="0.5rem" p="2rem">
         <Heading fontSize="xl" mb="1rem">
           Session Bids Info
         </Heading>
-        <Line data={generateLineChartData()} height={80} />
+        <Box
+          position="relative"
+          w="full"
+          aspectRatio={`${chartAspectRatio} / 1`}
+        >
+          <Box position="absolute" inset="0">
+            <Line
+              ref={setChart}
+              data={actionBids}
+              options={{ responsive: false, aspectRatio: chartAspectRatio }}
+            />
+          </Box>
+        </Box>
       </Box>
       <ReviewSection course={course} />
     </Grid>
   );
 };
+
+const chartAspectRatio = 3;

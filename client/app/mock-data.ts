@@ -10,6 +10,7 @@ export type Tutor = {
   offered: number;
   courses: Course[];
 };
+
 const baseTutors = [
   {
     id: 1,
@@ -293,6 +294,7 @@ export type Course = {
   rating: number;
   tutor: Tutor;
 };
+
 export const courseData: Course[] = tutors.flatMap((tutor) => tutor.courses);
 
 export interface IReviewsData {
