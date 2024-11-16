@@ -9,24 +9,24 @@ export class ContractService {
   provider: IProvider;
   ethersProvider: IProvider | null = null;
   signer: ethers.JsonRpcSigner | null = null;
+  isInitialized = false;
 
   constructor(provider: IProvider) {
     this.contractAddress = process.env.NEXT_PUBLIC_BID_ADDRESS || "";
     this.contract = null;
     this.provider = provider;
-    this.initializeContract(actionContractABI["abi"]);
+    this.initializeContract();
   }
 
-  private async initializeContract(abi: any) {
-    if (this.provider) {
-      const ethersProvider = new ethers.BrowserProvider(this.provider);
-      this.signer = await ethersProvider.getSigner();
-      this.contract = new ethers.Contract(
-        this.contractAddress,
-        abi,
-        this.signer
-      );
-    }
+  async initializeContract() {
+    const ethersProvider = new ethers.BrowserProvider(this.provider);
+    this.signer = await ethersProvider.getSigner();
+    this.contract = new ethers.Contract(
+      this.contractAddress,
+      actionContractABI["abi"],
+      this.signer
+    );
+    this.isInitialized = true;
   }
 
   async placeBid(courseId: number, batchId: number, amount: number) {
@@ -68,14 +68,13 @@ export class ContractService {
         throw new Error("Contract not initialized");
       }
 
-      const bids = (await this.contract.getBids(courseId, batchId)).map((b) => {
+      const bids = await this.contract.getBids(courseId, batchId);
+      return bids.map((b) => {
         return {
           address: b[0],
-          amount: Number(b[1]),
+          price: b[1],
         };
       });
-      console.log("getActionsBids value:", bids);
-      return bids;
     } catch (error) {
       console.error("getActionsBids failed:", error);
       throw error;
