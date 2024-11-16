@@ -51,8 +51,15 @@ export const NavItems: React.FC = () => {
   const CHAINS = createListCollection({
     items: [
       { key: "ETH_SEPOLIA", name: "Sepolia" },
-      { key: "POLYGON_MUMBAI", name: "Polygon" },
       { key: "HARDHAT_LOCAL", name: "Hardhat" },
+      { key: "LINEA_SEPOLIA", name: "Linea Sepolia" },
+      { key: "EVM_ON_FLOW_TESTNET", name: "Evm on flow testnet" },
+      { key: "SCROLL_SEPOLIA", name: "Scroll sepolia" },
+      { key: "MANTLE_SEPOLIA", name: "Mantle sepolia" },
+      { key: "ZIRCUIT_TESTNET", name: "Zircuit testnet" },
+      { key: "BASE_SEPOLIA", name: "base Sepolia" },
+      { key: "ROOTSTOCK_TESTNET", name: "Rootstock testnet" },
+      { key: "MORPH_HOLESKY", name: "Morph holesky" },
     ] as const,
     itemToValue: (item) => String(item.key),
   });

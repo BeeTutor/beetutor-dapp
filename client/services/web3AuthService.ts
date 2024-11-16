@@ -8,6 +8,86 @@ const clientId =
   "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
 
 export const CHAIN_CONFIG = {
+  LINEA_SEPOLIA: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0xe705",
+    rpcTarget: "https://rpc.sepolia.linea.build",
+    displayName: "Linea Sepolia Testnet",
+    blockExplorerUrl: "https://sepolia.lineascan.build",
+    ticker: "ETH",
+    tickerName: "Ethereum",
+    logo: "https://images.seeklogo.com/logo-png/52/1/linea-logo-png_seeklogo-527155.png",
+  },
+  EVM_ON_FLOW_TESTNET: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x221",
+    rpcTarget: "https://testnet.evm.nodes.onflow.org",
+    displayName: "EVM on Flow Testnet",
+    blockExplorerUrl: "https://evm-testnet.flowscan.io",
+    ticker: "FLOW",
+    tickerName: "Flow",
+    logo: "https://cryptologos.cc/logos/flow-flow-logo.png",
+  },
+  SCROLL_SEPOLIA: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x8274F",
+    rpcTarget: "https://rpc.ankr.com/scroll_sepolia_testnet",
+    displayName: "Scroll Sepolia Testnet",
+    blockExplorerUrl: "https://sepolia.scrollscan.com",
+    ticker: "ETH",
+    tickerName: "Ethereum",
+    logo: "https://icons.llamao.fi/icons/chains/rsz_scroll.jpg",
+  },
+  MANTLE_SEPOLIA: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x138B",
+    rpcTarget: "https://rpc.ankr.com/mantle_sepolia",
+    displayName: "Mantle Sepolia Testnet",
+    blockExplorerUrl: "https://sepolia.mantlescan.xyz",
+    ticker: "MNT",
+    tickerName: "Mantle",
+    logo: "https://cryptologos.cc/logos/mantle-mnt-logo.png",
+  },
+  ZIRCUIT_TESTNET: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0xBF03",
+    rpcTarget: "https://zircuit1-testnet.p2pify.com/",
+    displayName: "Zircuit Testnet",
+    blockExplorerUrl: "https://explorer.testnet.zircuit.com/",
+    ticker: "ETH",
+    tickerName: "Ethereum",
+    logo: "https://icons.llamao.fi/icons/chains/rsz_zircuit.jpg",
+  },
+  BASE_SEPOLIA: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x14A34",
+    rpcTarget: "https://rpc.ankr.com/base_sepolia",
+    displayName: "Base Sepolia Testnet",
+    blockExplorerUrl: "https://sepolia.basescan.org",
+    ticker: "ETH",
+    tickerName: "Ethereum",
+    logo: "https://icons.llamao.fi/icons/chains/rsz_base.jpg",
+  },
+  ROOTSTOCK_TESTNET: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x1F",
+    rpcTarget: "https://public-node.testnet.rsk.co",
+    displayName: "Rootstock Testnet",
+    blockExplorerUrl: "https://rootstock-testnet.blockscout.com/",
+    ticker: "TRBTC",
+    tickerName: "Testnet Rootstock BTC",
+    logo: "https://icons.llamao.fi/icons/chains/rsz_rootstock.jpg",
+  },
+  MORPH_HOLESKY: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0xAFA",
+    rpcTarget: "https://rpc-quicknode-holesky.morphl2.io",
+    displayName: "Morph Holesky Testnet",
+    blockExplorerUrl: "https://explorer-holesky.morphl2.io/",
+    ticker: "ETH",
+    tickerName: "Ethereum",
+    logo: "https://icons.llamao.fi/icons/chains/rsz_morph.jpg",
+  },
   ETH_SEPOLIA: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0xaa36a7",
@@ -17,16 +97,6 @@ export const CHAIN_CONFIG = {
     ticker: "ETH",
     tickerName: "Ethereum",
     logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
-  },
-  POLYGON_MUMBAI: {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x13881",
-    rpcTarget: "https://rpc-mumbai.maticvigil.com",
-    displayName: "Polygon Mumbai Testnet",
-    blockExplorerUrl: "https://mumbai.polygonscan.com",
-    ticker: "MATIC",
-    tickerName: "Polygon",
-    logo: "https://cryptologos.cc/logos/polygon-matic-logo.png",
   },
   HARDHAT_LOCAL: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -46,7 +116,7 @@ class Web3AuthService {
   constructor() {
     // IMP START - SDK Initialization
     const privateKeyProvider = new EthereumPrivateKeyProvider({
-      config: { chainConfig: CHAIN_CONFIG.HARDHAT_LOCAL },
+      config: { chainConfig: CHAIN_CONFIG.ETH_SEPOLIA },
     });
 
     const web3AuthOptions: Web3AuthOptions = {
@@ -71,6 +141,7 @@ class Web3AuthService {
   }
 
   async switchChain(configKey: string) {
+    console.log("?????", configKey);
     const privateKeyProvider = new EthereumPrivateKeyProvider({
       config: {
         chainConfig: CHAIN_CONFIG[configKey as keyof typeof CHAIN_CONFIG],
