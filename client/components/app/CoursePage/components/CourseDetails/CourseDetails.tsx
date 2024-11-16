@@ -37,7 +37,7 @@ export const CourseDetails: React.FC<Props> = ({ course }) => {
 
     resizeObserver.observe(chartContainer);
 
-    return resizeObserver.disconnect;
+    return () => resizeObserver.disconnect();
   }, [chart, chartContainer]);
 
   useEffect(() => {
