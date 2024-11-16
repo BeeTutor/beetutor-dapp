@@ -1,14 +1,15 @@
 "use client";
 
-import { ChakraProvider } from "@chakra-ui/react";
-import { ColorModeProvider, type ColorModeProviderProps } from "./color-mode";
-import { system } from "@/theme";
-import { useEffect } from "react";
-import { web3AuthService } from "@/services/web3AuthService";
 import { ContractService } from "@/services/contractService";
+import { web3AuthService } from "@/services/web3AuthService";
 import { useStore } from "@/store";
+import { system } from "@/theme";
+import { ChakraProvider } from "@chakra-ui/react";
+import { ThemeProviderProps } from "next-themes";
+import { useEffect } from "react";
+import { ColorModeProvider } from "./color-mode";
 
-export function Provider(props: ColorModeProviderProps) {
+export function Provider(props: ThemeProviderProps) {
   const { provider, setProvider, setLoggedIn, loggedIn } = useStore();
   const { contractService, setContractService } = useStore();
 

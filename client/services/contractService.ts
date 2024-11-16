@@ -3,6 +3,12 @@ import { Contract, ethers } from "ethers";
 import { toaster } from "../components/ui/toaster";
 import actionContractABI from "../contracts/CourseAuction.json";
 
+export interface Bids {
+  price: number;
+  address: string;
+  bidTime: number;
+}
+
 export class ContractService {
   contractAddress: string = "";
   contract: Contract | null = null;
@@ -44,19 +50,24 @@ export class ContractService {
         title: "Successfully Bided",
       });
       return tx;
-    } catch (error) {
+    } catch (error: unknown) {
       console.error("placeBid transaction ", error);
-      if (error?.message?.includes("Contract not initialized")) {
-        toaster.error({
-          title: "Contract not initialized",
-          description: error.data?.message || error.message || "Unknown Error",
-        });
-      }
-      if (error?.message?.includes("Auction ended")) {
-        toaster.error({
-          title: "Auction ended",
-          description: error.data?.message || error.message || "Unknown Error",
-        });
+      if (error instanceof Error) {
+        if (error?.message?.includes("Contract not initialized")) {
+          toaster.error({
+            title: "Contract not initialized",
+
+            description: error.message || "Unknown Error",
+          });
+        }
+
+        if (error?.message?.includes("Auction ended")) {
+          toaster.error({
+            title: "Auction ended",
+
+            description: error.message || "Unknown Error",
+          });
+        }
       }
       throw error;
     }
@@ -69,7 +80,7 @@ export class ContractService {
       }
 
       const bids = await this.contract.getBids(courseId, batchId);
-      return bids.map((b) => {
+      return bids.map((b: [string, number]) => {
         return {
           address: b[0],
           price: b[1],
