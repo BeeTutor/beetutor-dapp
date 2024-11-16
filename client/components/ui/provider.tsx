@@ -1,17 +1,24 @@
 "use client";
 
-import { ContractService } from "@/services/contractService";
-import { web3AuthService } from "@/services/web3AuthService";
-import { useStore } from "@/store";
-import { system } from "@/theme";
 import { ChakraProvider } from "@chakra-ui/react";
-import { ThemeProviderProps } from "next-themes";
-import { useEffect } from "react";
 import { ColorModeProvider } from "./color-mode";
+import { system } from "@/theme";
+import { useEffect } from "react";
+import { web3AuthService } from "@/services/web3AuthService";
+import { ContractService } from "@/services/contractService";
+import { useStore } from "@/store";
+import { ThemeProviderProps } from "next-themes";
 
 export function Provider(props: ThemeProviderProps) {
-  const { provider, setProvider, setLoggedIn, loggedIn } = useStore();
-  const { contractService, setContractService } = useStore();
+  const {
+    provider,
+    setProvider,
+    setLoggedIn,
+    loggedIn,
+    nowChain,
+    contractService,
+    setContractService,
+  } = useStore();
 
   useEffect(() => {
     const init = async () => {
@@ -19,7 +26,10 @@ export function Provider(props: ThemeProviderProps) {
         if (!web3AuthService.connected) {
           const provider = await web3AuthService.init();
           if (provider) {
-            const newContractService = await new ContractService(provider);
+            const newContractService = await new ContractService(
+              provider,
+              nowChain
+            );
             setContractService(newContractService);
             setProvider(provider);
             setLoggedIn(web3AuthService.connected);
@@ -31,7 +41,7 @@ export function Provider(props: ThemeProviderProps) {
     };
 
     init();
-  }, [provider, contractService, loggedIn]);
+  }, [provider, contractService, loggedIn, nowChain]);
   return (
     <ChakraProvider value={system}>
       <ColorModeProvider forcedTheme="light" {...props} />
