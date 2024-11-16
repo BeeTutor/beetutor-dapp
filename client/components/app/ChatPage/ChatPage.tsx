@@ -118,7 +118,8 @@ export const ChatPage = ({
 
   const initializeUser = useCallback(async () => {
     if (provider) {
-      const signer = await RPC.getSigner(provider);
+      // const signer = await RPC.getSigner(provider);
+      const signer = await provider.getSigner();
       console.log("✨::::signer", signer);
       const user = await PushAPI.initialize(signer, {
         env: CONSTANTS.ENV.STAGING,

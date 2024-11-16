@@ -22,7 +22,7 @@ export class ContractService {
       [chainId: string]: string;
     };
     default_chain: string;
-  } = { contract_address: {}, default_chain: "LINEA_SEPOLIA" };
+  } = { contract_address: {}, default_chain: "BASE_SEPOLIA" };
   setSessionStatus: (sessionStatus: any) => void = function () {};
 
   constructor(
@@ -96,6 +96,14 @@ export class ContractService {
               `,
             });
           }
+
+          setTimeout(() => {
+            this.setSessionStatus({
+              0: "ended",
+              1: "won",
+              2: "open",
+            });
+          }, 7000); // 7秒後發出
         }
       );
 
@@ -105,7 +113,7 @@ export class ContractService {
           console.log("courseId:", courseId);
           console.log("batchId:", batchId);
           this.setSessionStatus({
-            0: "ended",
+            0: "won",
             1: "won",
             2: "open",
           });

@@ -43,7 +43,7 @@ export const useStore = create<DappState>((set) => ({
   provider: null,
   setProvider: (provider) => set({ provider }),
 
-  nowChain: "LINEA_SEPOLIA",
+  nowChain: "BASE_SEPOLIA",
   setNowChain: (nowChain) => set({ nowChain }),
 
   contractService: null,
@@ -74,9 +74,9 @@ export const useStore = create<DappState>((set) => ({
   setBatchId: (batchId) => set({ batchId }),
 
   sessionStatus: {
-    0: "ended",
+    0: "won",
     1: "open",
-    2: "won",
+    2: "open",
   },
   setSessionStatus: (sessionStatus) => set({ sessionStatus }),
 }));
