@@ -11,11 +11,16 @@ import {
 import { Rating } from "@/components/ui/rating";
 import { DialogRootProps, Textarea } from "@chakra-ui/react";
 import { useState } from "react";
+import { toaster, Toaster } from "@/components/ui/toaster";
+import { useStore } from "@/store";
 
 export const ReviewDialog: React.FC<Omit<DialogRootProps, "children">> = (
   props
 ) => {
+  const { userInfo, courseReviews, setCourseReviews } = useStore();
   const [isSaving, setIsSaving] = useState(false);
+  const [textValue, setTextValue] = useState("");
+  const [rateValue, setRateValue] = useState(0);
 
   return (
     <DialogRoot {...props}>
@@ -28,9 +33,18 @@ export const ReviewDialog: React.FC<Omit<DialogRootProps, "children">> = (
             gap="0.5rem"
             label="How would you rate the course?"
             colorPalette="yellow"
+            value={rateValue}
+            onChange={(e) =>
+              setRateValue(Number((e.target as HTMLInputElement).value))
+            }
           />
-          <Textarea mt="0.75rem" />
+          <Textarea
+            mt="0.75rem"
+            value={textValue}
+            onChange={(e) => setTextValue(e.target.value)}
+          />
         </DialogBody>
+        v
         <DialogFooter>
           <Button
             variant="outline"
@@ -45,7 +59,46 @@ export const ReviewDialog: React.FC<Omit<DialogRootProps, "children">> = (
             loading={isSaving}
             onClick={async () => {
               setIsSaving(true);
-              await new Promise((res) => setTimeout(res, 500));
+              try {
+                const newReview = {
+                  id: 7,
+                  name: "New bee",
+                  comment: textValue,
+                  rating: rateValue,
+                  date: new Date().toDateString(),
+                  from: userInfo,
+                  to: "0xMyCourse",
+                };
+                setCourseReviews([newReview, ...courseReviews]);
+                if (typeof userInfo === "string") {
+                  const res = await fetch(
+                    `${process.env.NEXT_PUBLIC_API_URL}/api/comment`,
+                    {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify(newReview),
+                    }
+                  );
+                  if (!res.ok) {
+                    const body = await res.json();
+                    console.error("Leave review error res body:", body);
+                  }
+                }
+              } catch (error) {
+                if (error instanceof Error) {
+                  console.error("Leave review error", error);
+                  // toaster.error({
+                  //   title: "Contract not initialized",
+                  //   description: error.message || "Unknown Error",
+                  // });
+                }
+              }
+              toaster.success({
+                title: "Successfully leaved reviews",
+              });
+
               setIsSaving(false);
               props.onOpenChange?.({ open: false });
             }}
@@ -55,6 +108,7 @@ export const ReviewDialog: React.FC<Omit<DialogRootProps, "children">> = (
         </DialogFooter>
         <DialogCloseTrigger />
       </DialogContent>
+      <Toaster />
     </DialogRoot>
   );
 };

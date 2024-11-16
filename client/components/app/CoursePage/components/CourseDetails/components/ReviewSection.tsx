@@ -1,20 +1,21 @@
-import { Course, reviewData } from "@/app/mock-data";
+import { Course, IReviewsData } from "@/app/mock-data";
 import { Stars } from "@/components/custom/Stars";
 import { Button } from "@/components/ui/button";
 import { useVisibility } from "@/utils/useVisibility";
 import { Box, Heading, Flex, FlexProps, ButtonProps } from "@chakra-ui/react";
 import { useState } from "react";
 import { LuChevronLeft, LuChevronRight, LuUser } from "react-icons/lu";
+import { useStore } from "@/store";
 
 interface Props {
   course: Course;
 }
 
 export const ReviewSection: React.FC<Props> = ({ course }) => {
+  const { courseReviews } = useStore();
   const [reviewReel, setReviewReel] = useState<HTMLElement | null>(null);
   const [isHeadVisible, headRef] = useVisibility();
   const [isTailVisible, tailRef] = useVisibility();
-
   return (
     <Box
       css={{ "--bg-color": "colors.blue.50" }}
@@ -79,7 +80,7 @@ export const ReviewSection: React.FC<Props> = ({ course }) => {
             alignItems="center"
           >
             <Box ref={headRef} w="2rem" mr="-2rem" h="40px" zIndex={1} />
-            {reviewData.map((x, i) => {
+            {courseReviews.map((x: IReviewsData, i: number) => {
               return (
                 <Box
                   key={i}

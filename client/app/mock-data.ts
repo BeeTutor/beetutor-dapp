@@ -139,13 +139,24 @@ export type Course = {
 };
 export const courseData: Course[] = tutors.flatMap((tutor) => tutor.courses);
 
-export const reviewData = [
+
+export interface IReviewsData{
+  id: number;
+  name: string;
+  comment: string;
+  date: string;
+  from: string;
+  rating: number;
+}
+
+export const reviewData: IReviewsData[] = [
   {
     id: 1,
     name: "John Doe",
     comment: "In-depth and well-structured!",
     rating: 5,
     date: "2024-9-12",
+    from: "0x492fRQHEfwefwe324hg34herhglerg",
   },
   {
     id: 2,
@@ -153,6 +164,7 @@ export const reviewData = [
     comment: "Great for learning advanced topics!",
     rating: 4,
     date: "2024-9-15",
+    from: "0x492fRQHEfwefwe324hg34herhglerg",
   },
   {
     id: 3,
@@ -160,6 +172,7 @@ export const reviewData = [
     comment: "The examples made it easy to understand!",
     rating: 3.5,
     date: "2024-10-2",
+    from: "0x492fRQHEfwefwe324hg34herhglerg",
   },
   {
     id: 4,
@@ -167,6 +180,7 @@ export const reviewData = [
     comment: "Very practical course!",
     rating: 5,
     date: "2024-10-5",
+    from: "0x492fRQHEfwefwe324hg34herhglerg",
   },
   {
     id: 5,
@@ -174,6 +188,7 @@ export const reviewData = [
     comment: "Perfect for beginners.",
     rating: 5,
     date: "2024-11-1",
+    from: "0x492fRQHEfwefwe324hg34herhglerg",
   },
   {
     id: 6,
@@ -181,5 +196,6 @@ export const reviewData = [
     comment: "Very practical and easy to follow!",
     rating: 3,
     date: "2024-11-1",
+    from: "0x492fRQHEfwefwe324hg34herhglerg",
   },
 ]

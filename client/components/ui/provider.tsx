@@ -8,6 +8,8 @@ import { web3AuthService } from "@/services/web3AuthService";
 import { ContractService } from "@/services/contractService";
 import { useStore } from "@/store";
 import { ThemeProviderProps } from "next-themes";
+import { reviewData } from "@/app/mock-data";
+import RPC from "../../services/ethersRPC";
 
 export function Provider(props: ThemeProviderProps) {
   const {
@@ -18,9 +20,13 @@ export function Provider(props: ThemeProviderProps) {
     nowChain,
     contractService,
     setContractService,
+    setUserInfo,
+    setCourseReviews,
   } = useStore();
 
   useEffect(() => {
+    setCourseReviews(reviewData);
+
     const init = async () => {
       try {
         if (!web3AuthService.connected) {
@@ -30,6 +36,8 @@ export function Provider(props: ThemeProviderProps) {
               provider,
               nowChain
             );
+            const address = await RPC.getAccounts(provider);
+            setUserInfo(address);
             setContractService(newContractService);
             setProvider(provider);
             setLoggedIn(web3AuthService.connected);
