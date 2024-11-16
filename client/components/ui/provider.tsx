@@ -75,7 +75,6 @@ export function Provider(props: ThemeProviderProps) {
         } else {
           setUserAvatar(`https://noun-api.com/beta/pfp?name=${userAddress}`);
         }
-        // 清除监听器的函数
         return () => {
           contractService.contract?.removeAllListeners("BidPlaced");
           nftContractService.contract?.removeAllListeners("NFTUpgraded");
