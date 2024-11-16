@@ -88,7 +88,7 @@ export function Provider(props: ThemeProviderProps) {
     };
 
     init();
-  }, [provider, contractService, loggedIn, nowChain]);
+  }, [provider, loggedIn, nowChain]);
 
   return (
     <ChakraProvider value={system}>

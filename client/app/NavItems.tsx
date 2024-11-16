@@ -166,6 +166,10 @@ export const NavItems: React.FC = () => {
     await web3AuthService.switchChain(chainMapKey);
   }
 
+  async function endAction() {
+    await contractService.endAction(0, 0);
+  }
+
   const loggedInView = (
     <>
       <div className="flex-container">
@@ -192,6 +196,11 @@ export const NavItems: React.FC = () => {
         <div>
           <button onClick={sendTransaction} className="card">
             Send Transaction
+          </button>
+        </div>
+        <div>
+          <button onClick={endAction} className="card">
+            End Action
           </button>
         </div>
       </div>
@@ -345,7 +354,7 @@ export const NavItems: React.FC = () => {
               <DialogContent bg="gray.50">
                 <DialogHeader>
                   <DialogTitle>Switch Chain</DialogTitle>
-                  {false && loggedInView}
+                  {loggedInView}
                 </DialogHeader>
                 <DialogBody>
                   <SelectRoot

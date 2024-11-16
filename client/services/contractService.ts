@@ -191,6 +191,39 @@ export class ContractService {
     }
   }
 
+  async endAction(courseId: number, batchId: number) {
+    try {
+      if (!this.contract) {
+        throw new Error("Contract not initialized");
+      }
+      const tx = await this.contract.finalizeAuction(courseId, batchId);
+      console.debug("endAction:", tx);
+      await tx.wait();
+      return tx;
+    } catch (error: unknown) {
+      console.error("endAction transaction ", error);
+
+      if (error instanceof Error) {
+        if (error?.message?.includes("Contract not initialized")) {
+          toaster.error({
+            title: "Contract not initialized",
+
+            description: error.message || "Unknown Error",
+          });
+        }
+
+        if (error?.message?.includes("Auction ended")) {
+          toaster.error({
+            title: "Auction ended",
+
+            description: error.message || "Unknown Error",
+          });
+        }
+      }
+      throw error;
+    }
+  }
+
   async getActionsBids(courseId: number, batchId: number) {
     try {
       if (!this.contract) {

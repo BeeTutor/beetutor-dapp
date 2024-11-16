@@ -146,12 +146,13 @@ class Web3AuthService {
   }
 
   async init() {
+    this.web3auth.logout();
     const adapters = await getDefaultExternalAdapters({
       options: this.web3auth.options,
     });
     for (const adapter of adapters) {
       try {
-        this.web3auth.configureAdapter(adapter);
+          this.web3auth.configureAdapter(adapter);
       } catch (e) {
         console.error("Failed to configure adapter", adapter.name, e);
       }
