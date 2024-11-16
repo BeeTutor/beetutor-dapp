@@ -13,141 +13,109 @@ export type Tutor = {
 const baseTutors = [
   {
     id: 1,
-    name: "LazyAbby",
-    address: "0x445fRQHEfwefwe324hg34herhglerg",
+    name: "ArjunSharma",
+    address: "0x3fB5C0dC4Bf928fF7EfD1fDbC7E7A0Ae2D3B1Ab2",
     about:
-      "🙋🏻‍♀️ | 設計菜鳥幫手 ·懶惰的完美主義者 · 貓派 · 奶茶控| 💭Canva很好用,但到底多好用? 👉🏻跟著Abby用Canva 沒有設計背景也能輕鬆製美圖🌝 📩",
+      "Vithal is an experienced leader in tech education 🎓, with over 30 years in the IT industry and a background in computer science. He’s passionate about mentoring startups and innovators 🚀, having supported 100+ entrepreneurs and helped establish successful incubation centers. In past roles, Vithal led partner innovation initiatives, guiding teams to create next-gen solutions for industries like banking and healthcare 💼💊. He has also worked in consulting and software development, where he was recognized for his innovation and excellence ✨. Outside of work, Vithal is happily married with two wonderful kids.",
     avatar: "/assets/avatar/1.svg",
     rating: 3,
-    tags: ["設計", "微積分", "幾何", "瑜珈"],
+    tags: ["TechMentor", "InnovationLeader", "StartupSupport"],
     attended: 2,
-    offered: 4,
+    offered: 6,
     courses: [
       {
         id: 11,
-        name: "用免費軟體 Canva 打造你的品牌識別！",
-        image: "/assets/courses/1.avif",
-        description: `｜4小時Canva設計課｜
-
-                    👉🏻 用免費軟體 Canva 打造品牌識別，搞定社群貼文！
-
-                    ✦ 過往課程學員評價 ✦
-
-                    追蹤Abby Instagram不錯過更多教學貼文！
-
-                    👉🏻 https://www.instagram.com/lazyabby.tw/`,
-        rating: 2.7,
+        name: "Blockchain Framework & Platforms",
+        image: "/assets/courses/1.webp",
+        description: `Learn essential principles of blockchain platforms as well as their growth, progress, and important use cases. Dive deep into fundamental parts of developing apps on commonly used platforms including Ethereum, Hyperledger, and Quorum.`,
+        rating: 4.8,
         price: 100,
+        duration: 20,
+        participantCount: 1,
       },
       {
         id: 12,
-        name: "用免費軟體 Canva 搞定你的社群貼文！",
-        image: "/assets/courses/2.avif",
-        description: `Canva 是一款免費且電腦網頁和手機App 可同步使用的線上工具，並且可以套用多種模版迅速做出設計成品，快來跟著 Abby 學習如何使用 Canva 吧！`,
-        rating: 3.8,
+        name: "Smart Contract and Solana dApps Development with Rust",
+        image: "/assets/courses/2.webp",
+        description: `Master blockchain principles and smart contract development using Rust on Solana. Designed for those with programming experience, this course unlocks new career opportunities in Smart Contract and dApp Development.`,
+        rating: 4.5,
         price: 200,
+        duration:15,
+        participantCount: 1,
       },
       {
         id: 13,
-        name: "用 Canva 高效製作質感簡報！",
-        image: "/assets/courses/4.avif",
-        description: `✨ Canva 內建範本的客製化教學 ✨
-
-                    ✦ 配色概念與使用
-
-                    ✦ 字型應用與字體效果
-
-                    ✦ Canva 素材庫使用技巧
-
-                    ✦ 圖片處理與美化
-
-                    ✦ 履歷及簡報版面配置
-
-                    ✦ 簡報動畫應用
-
-                    ✦ 簡報圖表製作
-
-                    ✦ Canva 簡報互動功能`,
+        name: "E-Payment",
+        image: "/assets/courses/3.webp",
+        description: `✨ Master the technologies behind e-payment systems and learn about their security mechanisms.`,
         rating: 4.2,
         price: 300,
+        duration: 2,
+        participantCount: 1,
       },
       {
         id: 14,
-        name: "用免費軟體 Canva 打造你的品牌識別！",
-        image: "/assets/courses/1.avif",
-        description: `｜4小時Canva設計課｜
-
-                    👉🏻 用免費軟體 Canva 打造品牌識別，搞定社群貼文！
-
-                    ✦ 過往課程學員評價 ✦
-
-                    追蹤Abby Instagram不錯過更多教學貼文！
-
-                    👉🏻 https://www.instagram.com/lazyabby.tw/`,
-        rating: 3.7,
+        name: "Dive Into the World of Blockchain: Principles, Mechanics, and Tokens",
+        image: "/assets/courses/4.webp",
+        description: `Blockchain is a transformative digital value management tool that operates without the need for a trusted intermediary, such as a custodian, to authorize asset usage and transfers. It enables seamless peer-to-peer value transfers, facilitates borderless transactions, and automates processes, effectively becoming the internet of value. This segment will explain how blockchain operates and draw a contrast with the traditional world of finance.`,
+        rating: 4,
         price: 400,
+        duration: 5,
+        participantCount: 1,
       },
       {
         id: 15,
-        name: "用免費軟體 Canva 搞定你的社群貼文！",
-        image: "/assets/courses/2.avif",
-        description: `Canva 是一款免費且電腦網頁和手機App 可同步使用的線上工具，並且可以套用多種模版迅速做出設計成品，快來跟著 Abby 學習如何使用 Canva 吧！`,
-        rating: 3.8,
+        name: "Blockchain Implementation and Regulation: Challenges, Opportunities and Future Implications",
+        image: "/assets/courses/5.webp",
+        description: `This course will begin by building on your understanding of the blockchain regulatory framework. It will walk you through the steps to successfully implement a blockchain solution and develop an understanding of the challenges and opportunities facing the future of blockchain. You’ll also learn about how blockchain's architecture entails elements such as networks, ledgers, and software, and gain an understanding of blockchain's business models and its implications for economic and financial development. Additionally, you’ll explore some of the challenges that affect blockchain technology, discover how the Lightning Network can counter some of these challenges, and consider the possibilities of a blockchain-enabled community.`,
+        rating: 4.5,
         price: 500,
+        duration: 7.5,
+        participantCount: 1,
       },
       {
         id: 16,
-        name: "用 Canva 高效製作質感簡報！",
-        image: "/assets/courses/4.avif",
-        description: `✨ Canva 內建範本的客製化教學 ✨
-
-                    ✦ 配色概念與使用
-
-                    ✦ 字型應用與字體效果
-
-                    ✦ Canva 素材庫使用技巧
-
-                    ✦ 圖片處理與美化
-
-                    ✦ 履歷及簡報版面配置
-
-                    ✦ 簡報動畫應用
-
-                    ✦ 簡報圖表製作
-
-                    ✦ Canva 簡報互動功能`,
+        name: "Introduction to Hyperledger Self-Sovereign Identity Blockchain Solutions",
+        image: "/assets/courses/6.webp",
+        description: `To the surprise of absolutely no one, trust is broken on the Internet. Wherever you go online, the advice is the same--make sure you understand what's behind each button before you click it. In this course, we'll dive into four Hyperledger open source identity-based projects--Indy, Aries, AnonCreds, and Ursa--looking at the tools, libraries, and reusable components they provide for creating and using independent digital identities rooted on blockchains or other distributed ledgers. We will explore the possibilities they offer for building applications on a solid digital foundation of trust and examine how these technologies can make the Internet safe. It's quite a challenge! The course is addressed to a wide-ranging audience, walking the line between business and technology.`,
         rating: 4.9,
         price: 600,
+        duration: 10,
+        participantCount: 1,
       },
     ],
   },
   {
     id: 2,
-    name: "插畫觀測室",
+    name: "EmmaSullivan",
     address: "0x446fRQHEfwefwe324hg34herhglerg",
     about:
-      "是一個介紹插畫大小事的影片頻道，由兩位插畫家Barry 與Feeling 所組成。",
+      "Emma Sullivan is a technical writer with more than 14 years experience, working for both hardware and software companies writing user guides, technical references, help text, and so on. She has been helping document the BC Government initiatives (VON, Greenlight, OrgBook BC and IIWBook) and became hooked on self-sovereign identity at IIW28.",
     avatar: "/assets/avatar/2.svg",
     rating: 4,
-    tags: ["插畫", "代數", "微積分", "幾何", "瑜珈"],
+    tags: ["TechWriterExpert", "SelfSovereignIdentity"],
     attended: 3,
-    offered: 5,
+    offered: 2,
     courses: [
       {
         id: 17,
-        name: "插畫家生存之道：六大收入來源大公開，6 種插畫收益法不藏私大解析！",
-        image: "/assets/courses/3.avif",
-        description: `能夠永續創作是每位插畫家的夢想，但如何靠創作維生是一個非常現實的難題！或許你正在躍欲試，思考著該不該靠插畫維生？又或許你已經營創作一陣子，卻遲遲找不到方向？插畫觀測室整理出六大面向，六種插畫收入來源，並且各自分析該如何入門，以及分享各自的經驗與心法，期待能夠讓你找到自己的目標，陪伴你插畫路上走得堅定不迷惘！`,
-        rating: 1.7,
+        name: "Introduction to Hyperledger Self-Sovereign Identity Blockchain Solutions",
+        image: "/assets/courses/7.webp",
+        description: `To the surprise of absolutely no one, trust is broken on the Internet. Wherever you go online, the advice is the same--make sure you understand what's behind each button before you click it. In this course, we'll dive into four Hyperledger open source identity-based projects--Indy, Aries, AnonCreds, and Ursa--looking at the tools, libraries, and reusable components they provide for creating and using independent digital identities rooted on blockchains or other distributed ledgers. We will explore the possibilities they offer for building applications on a solid digital foundation of trust and examine how these technologies can make the Internet safe. It's quite a challenge! The course is addressed to a wide-ranging audience, walking the line between business and technology.`,
+        rating: 5,
         price: 700,
+        duration: 4,
+        participantCount: 1,
       },
       {
         id: 18,
-        name: "開始接案的第一步，插畫觀測室 Ｘ 曲奇放克 帶你認識業界眉眉角角！",
-        image: "/assets/courses/5.avif",
-        description: `插畫觀測室這次將 feat.同為插畫 Youtuber，也同為 Hahow 老師的「曲奇放克」！ 一起和學員分享該如何開始接案，以及接案時會遇到的和業主溝通、進行報價、簽合約..等等的眉眉角角，最後會抽籤進行業主出題小遊戲，專業度與娛樂兼具的直播，不要錯過啦！`,
+        name: "Introduction to Self-Sovereign Identity",
+        image: "/assets/courses/8.webp",
+        description: `Imagine moving to a new country and having to register to use any type of service: voting, getting a driver’s license, electricity service, and new bank details. At the moment, to open a new account you need to register with each new service provider and prove your identity, and each time, to access, you need to prove your identity by entering your password and credentials. A decentralized identity would radically simplify such a process. It should satisfy certain principles to ensure that it does not have the same problems and limitations as the previous models.`,
         rating: 4.8,
         price: 800,
+        duration: 20,
+        participantCount: 1,
       },
     ],
   },
@@ -159,6 +127,8 @@ export const tutors: Tutor[] = baseTutors.map((tutor) => ({
 }));
 
 export type Course = {
+  participantCount: number;
+  duration: number;
   id: number;
   name: string;
   image: string;
@@ -168,3 +138,48 @@ export type Course = {
   tutor: Tutor;
 };
 export const courseData: Course[] = tutors.flatMap((tutor) => tutor.courses);
+
+export const reviewData = [
+  {
+    id: 1,
+    name: "John Doe",
+    comment: "In-depth and well-structured!",
+    rating: 5,
+    date: "2024-9-12",
+  },
+  {
+    id: 2,
+    name: "Jane Smith",
+    comment: "Great for learning advanced topics!",
+    rating: 4,
+    date: "2024-9-15",
+  },
+  {
+    id: 3,
+    name: "Tim Adams",
+    comment: "The examples made it easy to understand!",
+    rating: 3.5,
+    date: "2024-10-2",
+  },
+  {
+    id: 4,
+    name: "Linda Zhu",
+    comment: "Very practical course!",
+    rating: 5,
+    date: "2024-10-5",
+  },
+  {
+    id: 5,
+    name: "Sarah Lee",
+    comment: "Perfect for beginners.",
+    rating: 5,
+    date: "2024-11-1",
+  },
+  {
+    id: 6,
+    name: "Alex Johnson",
+    comment: "Very practical and easy to follow!",
+    rating: 3,
+    date: "2024-11-1",
+  },
+]
