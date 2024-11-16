@@ -112,14 +112,14 @@ export const CourseBidding: React.FC<Props> = ({ ...gridProps }) => {
           Place your bid.
           <InputGroup startElement="$">
             <Input
-              // disabled={nowSessionStatus !== "open"}
+              disabled={!nowSessionStatus}
               type="number"
               value={bidValue}
               onChange={(e) => setBidValue(e.target.value)}
             />
           </InputGroup>
           <Button
-            // disabled={nowSessionStatus !== "open"}
+            disabled={!nowSessionStatus}
             onClick={async () => {
               const amountInWei = ethers.parseUnits(bidValue, "ether");
               console.log("Place Bid:", amountInWei);
