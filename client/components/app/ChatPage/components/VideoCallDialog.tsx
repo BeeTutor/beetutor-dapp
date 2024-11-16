@@ -1,3 +1,4 @@
+import logo from "@/assets/logo.png";
 import {
   DialogActionTrigger,
   DialogBody,
@@ -8,87 +9,142 @@ import {
   DialogRoot,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { DialogRootProps, IconButton } from "@chakra-ui/react";
+import {
+  Box,
+  DialogRootProps,
+  Flex,
+  Grid,
+  GridItem,
+  IconButton,
+} from "@chakra-ui/react";
 import { VideoCallData, VideoCallStatus } from "@pushprotocol/restapi";
 import { VideoV2 } from "@pushprotocol/restapi/src/lib/video/VideoV2";
+import Image from "next/image";
 import { Dispatch, SetStateAction } from "react";
 import { AiFillAudio, AiOutlineAudioMuted } from "react-icons/ai";
 import { IoVideocam, IoVideocamOff } from "react-icons/io5";
-import { VscDebugDisconnect } from "react-icons/vsc";
+import { PiPhoneDisconnectFill } from "react-icons/pi";
 import { VideoPlayer } from "../components/VideoPlayer";
+
+interface VideoSettings {
+  video: boolean;
+  audio: boolean;
+}
 
 interface VideoCallDialogProps extends Omit<DialogRootProps, "children"> {
   videoUser: VideoV2;
   data: VideoCallData;
-  video: boolean;
-  setVideo: Dispatch<SetStateAction<boolean>>;
-  audio: boolean;
-  setAudio: Dispatch<SetStateAction<boolean>>;
+  videoSettings: VideoSettings;
+  setVideoSettings: Dispatch<SetStateAction<VideoSettings>>;
 }
 
 const VideoCallDialog: React.FC<VideoCallDialogProps> = ({
   videoUser,
   data,
-  video,
-  setVideo,
-  audio,
-  setAudio,
+  videoSettings,
+  setVideoSettings,
   ...props
 }) => {
-  const handleToggleVideo = async () => {
+  const toggleSetting = async (key: keyof VideoSettings) => {
     if (videoUser) {
-      const newVideoState = !video;
-      await videoUser.config({ video: newVideoState });
-      setVideo(newVideoState);
+      const updatedValue = !videoSettings[key];
+      await videoUser.config({ [key]: updatedValue });
+      setVideoSettings((prev) => ({ ...prev, [key]: updatedValue }));
     }
   };
 
-  const handleToggleAudio = async () => {
-    if (videoUser) {
-      const newAudioState = !audio;
-      await videoUser.config({ audio: newAudioState });
-      setAudio(newAudioState);
-    }
-  };
-
-  const handleDisconnect = async () => {
+  const disconnectCall = async () => {
     if (videoUser) {
       await videoUser.disconnect();
     }
   };
 
+  // const getStatusMessage = (status: VideoCallStatus, address: string) => {
+  //   switch (status) {
+  //     case VideoCallStatus.INITIALIZED:
+  //     case VideoCallStatus.RETRY_INITIALIZED:
+  //       return `Waiting for ${address} to answer...`;
+  //     case VideoCallStatus.CONNECTED:
+  //       return "Call accepted!";
+  //     case VideoCallStatus.DISCONNECTED:
+  //       return "Call ended successfully";
+  //     default:
+  //       return "An error occurred";
+  //   }
+  // };
+
   return (
     <DialogRoot size="full" {...props}>
       <DialogContent bg="gray.50">
         <DialogHeader>
-          <DialogTitle>Video Call</DialogTitle>
+          <DialogTitle>
+            <Flex alignItems="center" gap={2}>
+              <Box w="4rem">
+                <Image src={logo} alt="Logo" />
+              </Box>
+              <Box
+                fontSize="1.5rem"
+                fontWeight="extrabold"
+                fontFamily="Comic Sans MS, sans-serif"
+              >
+                BeeTutor
+              </Box>
+              &nbsp;-&nbsp;Video Call
+            </Flex>
+          </DialogTitle>
         </DialogHeader>
-        <DialogBody pb="1rem">
-          <VideoPlayer stream={data.local.stream} isMuted={true} />
-          <p>
+
+        <DialogBody pb="4">
+          <Grid templateColumns="repeat(2, 1fr)" gap="3">
+            <GridItem>
+              <VideoPlayer
+                stream={data.local.stream}
+                isMuted={!videoSettings.video}
+              />
+              <Box mt="4" textAlign="center" fontSize="sm">
+                {data.local.address}
+              </Box>
+            </GridItem>
+
             {data.incoming.map((call, index) => (
-              <p key={index}>
-                {call.status} -{" "}
-                {call.status === VideoCallStatus.INITIALIZED
-                  ? `正在等待 ${call.address} 接聽中...`
-                  : "窩不知道"}
-              </p>
+              <GridItem key={index}>
+                <VideoPlayer
+                  stream={call.stream}
+                  isMuted={call.status !== VideoCallStatus.CONNECTED}
+                />
+                <Box mt="4" textAlign="center" fontSize="sm">
+                  {call.address}
+                </Box>
+              </GridItem>
             ))}
-          </p>
+          </Grid>
         </DialogBody>
-        <DialogFooter>
-          <IconButton onClick={handleToggleVideo} rounded="full">
-            {video ? <IoVideocam /> : <IoVideocamOff />}
+
+        <DialogFooter justifyContent="center" gap="4">
+          <IconButton
+            onClick={() => toggleSetting("video")}
+            aria-label="Toggle Video"
+          >
+            {videoSettings.video ? <IoVideocam /> : <IoVideocamOff />}
           </IconButton>
-          <IconButton onClick={handleToggleAudio} rounded="full">
-            {audio ? <AiFillAudio /> : <AiOutlineAudioMuted />}
+          <IconButton
+            onClick={() => toggleSetting("audio")}
+            aria-label="Toggle Audio"
+          >
+            {videoSettings.audio ? <AiFillAudio /> : <AiOutlineAudioMuted />}
           </IconButton>
           <DialogActionTrigger asChild>
-            <IconButton onClick={handleDisconnect} rounded="full">
-              <VscDebugDisconnect />
+            <IconButton
+              onClick={disconnectCall}
+              aria-label="Disconnect"
+              bg="red.500"
+              color="white"
+            >
+              <PiPhoneDisconnectFill />
             </IconButton>
           </DialogActionTrigger>
         </DialogFooter>
+
         <DialogCloseTrigger />
       </DialogContent>
     </DialogRoot>
