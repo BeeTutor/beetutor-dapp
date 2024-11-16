@@ -138,6 +138,7 @@ export type Course = {
   rating: number;
   tutor: Tutor;
 };
+
 export const courseData: Course[] = tutors.flatMap((tutor) => tutor.courses);
 
 export interface IReviewsData{
@@ -202,32 +203,32 @@ export const reviewData: IReviewsData[] = [
 
 export const bidValueData = [
   {
-    bidder: "User1",
+    bidder: "0x492fRQHEfwefwe324hg34herhglerg",
     bidTime: 1630906400000, // 2021-08-20T00:00:00.000Z
     amount: "10000000000000000000", // 1000 eth
   },
   {
-    bidder: "User1",
+    bidder: "0x492fRQHEfwefwe324hg34herhglerg",
     bidTime: 1630906400000, // 2021-08-20T00:00:00.000Z
     amount: "9000000000000000000", // 1000 eth
   },
   {
-    bidder: "User1",
+    bidder: "0x492fRQHEfwefwe324hg34herhglerg",
     bidTime: 1630906400000, // 2021-08-20T00:00:00.000Z
     amount: "7000000000000000000", // 1000 eth
   },
   {
-    bidder: "User1",
+    bidder: "0x492fRQHEfwefwe324hg34herhglerg",
     bidTime: 1630906400000, // 2021-08-20T00:00:00.000Z
     amount: "9000000000000000000", // 1000 eth
   },
   {
-    bidder: "User1",
+    bidder: "0x492fRQHEfwefwe324hg34herhglerg",
     bidTime: 1630906400000, // 2021-08-20T00:00:00.000Z
     amount: "6000000000000000000", // 1000 eth
   },
   {
-    bidder: "User1",
+    bidder: "0x492fRQHEfwefwe324hg34herhglerg",
     bidTime: 1630906400000, // 2021-08-20T00:00:00.000Z
     amount: "9000000000000000000", // 1000 eth
   },

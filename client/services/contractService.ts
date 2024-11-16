@@ -4,9 +4,9 @@ import { IProvider } from "@web3auth/base";
 import { toaster } from "../components/ui/toaster";
 
 export interface Bids{
-  price: number
-  address: string
+  bidder: string
   bidTime: number
+  amount: number
 }
 
 export class ContractService {
@@ -32,6 +32,7 @@ export class ContractService {
 
   async initializeContract(nowChain: string) {
     try {
+      this.isInitialized= false
       const response = await fetch('/config.json');
       this.chainsConfig = await response.json();
       this.contractAddress = this.chainsConfig.contract_address[nowChain || this.chainsConfig.default_chain] || ''
@@ -45,20 +46,23 @@ export class ContractService {
       );
       console.log('Contract connect success', this.contract);
       this.isInitialized= true
+      toaster.success({
+        title: "Contract initialized",
+      });
     } catch (error) {
+      toaster.error({
+        title: "Contract not initialized",
+      });
       console.error("Failed to fetch chains config:", error);
     }
   }
 
-  async placeBid(courseId: number, batchId: number, amount: number) {
+  async placeBid(courseId: number, batchId: number, amountInWei: number) {
     try {
       if (!this.contract) {
         throw new Error("Contract not initialized");
       }
-      const amountInWei = ethers.parseEther(amount.toString());
-      const tx = await this.contract.placeBid(courseId, batchId, {
-        value: amountInWei,
-      });
+      const tx = await this.contract.placeBid(courseId, batchId, amountInWei);
       console.debug("placeBid:", tx);
       await tx.wait();
       toaster.success({
@@ -96,15 +100,16 @@ export class ContractService {
       }
 
       const bids = (await this.contract.getBids(courseId, batchId))
-      return bids.map((b: [string, number]) => {
+      return bids.map((b: [string, number, number]) => {
         return {
-          address: b[0],
-          price: b[1],
+          bidder: b[0],
+          bidTime: b[1],
+          amount: b[2],
         };
       });
     } catch (error) {
       console.error("getActionsBids failed:", error);
-      throw error;
+      // throw error;
     }
   }
 

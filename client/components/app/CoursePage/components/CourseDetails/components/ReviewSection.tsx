@@ -80,7 +80,7 @@ export const ReviewSection: React.FC<Props> = ({ course }) => {
             alignItems="center"
           >
             <Box ref={headRef} w="2rem" mr="-2rem" h="40px" zIndex={1} />
-            {courseReviews.map((x: IReviewsData, i: number) => {
+            {courseReviews?.map((x: IReviewsData, i: number) => {
               return (
                 <Box
                   key={i}

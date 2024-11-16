@@ -19,14 +19,18 @@ import {
 import { useState } from "react";
 import Link from "next/link";
 import { ReviewDialog } from "./components/ReviewDialog";
+import { useStore } from "@/store";
+import { ethers } from "ethers";
+import { toaster } from "@/components/ui/toaster";
 
 interface Props extends GridProps {
   course: Course;
 }
 
 export const CourseBidding: React.FC<Props> = ({ course, ...gridProps }) => {
+  const { contractService, setCourseBids, courseBids } = useStore();
   console.log("course: ", course);
-  const [value, setValue] = useState("");
+  const [bidValue, setBidValue] = useState("");
 
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false);
 
@@ -87,11 +91,40 @@ export const CourseBidding: React.FC<Props> = ({ course, ...gridProps }) => {
             <Input
               disabled={sessionStatus !== "open"}
               type="number"
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
+              value={bidValue}
+              onChange={(e) => setBidValue(e.target.value)}
             />
           </InputGroup>
-          <Button disabled={sessionStatus !== "open"}>Bid now</Button>
+          <Button
+            disabled={sessionStatus !== "open"}
+            onClick={async () => {
+              const amountInWei = ethers.parseUnits(bidValue, "wei");
+              console.log("Place Bid:", amountInWei);
+              if (contractService?.isInitialized) {
+                try {
+                  await contractService.placeBid(0, 1, amountInWei);
+                } catch (error) {
+                  if (error instanceof Error) {
+                    console.error("Failed to place bid:", error);
+                    toaster.error({
+                      title: "Failed to place bid",
+                      description: error.message,
+                    });
+                  }
+                }
+              }
+              setCourseBids([
+                {
+                  bidder: "0x123456789abcdef",
+                  amount: amountInWei,
+                  bidTime: new Date().getTime(),
+                },
+                ...courseBids,
+              ]);
+            }}
+          >
+            Bid now
+          </Button>
         </>
       )}
     </Grid>

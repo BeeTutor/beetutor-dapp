@@ -19,6 +19,9 @@ interface DappState {
 
   courseReviews: any;
   setCourseReviews: (courseReviews: any) => void;
+  
+  courseBids: any;
+  setCourseBids: (courseBids: any) => void;
 }
 
 export const useStore = create<DappState>((set) => ({
@@ -39,4 +42,7 @@ export const useStore = create<DappState>((set) => ({
 
   courseReviews: null,
   setCourseReviews: (courseReviews) => set({ courseReviews }),
+
+  courseBids: null,
+  setCourseBids: (courseBids) => set({ courseBids }),
 }));

@@ -115,8 +115,21 @@ class Web3AuthService {
 
   constructor() {
     // IMP START - SDK Initialization
+    let lastChain;
+    if (typeof window !== "undefined") {
+      lastChain = localStorage.getItem("nowChain");
+    }
+    console.log(
+      "lastChain:",
+      lastChain,
+      CHAIN_CONFIG[lastChain as keyof typeof CHAIN_CONFIG]
+    );
     const privateKeyProvider = new EthereumPrivateKeyProvider({
-      config: { chainConfig: CHAIN_CONFIG.ETH_SEPOLIA },
+      config: {
+        chainConfig:
+          CHAIN_CONFIG[lastChain as keyof typeof CHAIN_CONFIG] ||
+          CHAIN_CONFIG.HARDHAT_LOCAL,
+      },
     });
 
     const web3AuthOptions: Web3AuthOptions = {
@@ -145,6 +158,9 @@ class Web3AuthService {
   }
 
   async switchChain(configKey: string) {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("nowChain", configKey);
+    }
     console.log(
       "Switch chain:",
       CHAIN_CONFIG[configKey as keyof typeof CHAIN_CONFIG]

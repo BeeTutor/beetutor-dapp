@@ -8,7 +8,7 @@ import { web3AuthService } from "@/services/web3AuthService";
 import { ContractService } from "@/services/contractService";
 import { useStore } from "@/store";
 import { ThemeProviderProps } from "next-themes";
-import { reviewData } from "@/app/mock-data";
+import { reviewData, bidValueData } from "@/app/mock-data";
 import RPC from "../../services/ethersRPC";
 
 export function Provider(props: ThemeProviderProps) {
@@ -22,10 +22,12 @@ export function Provider(props: ThemeProviderProps) {
     setContractService,
     setUserInfo,
     setCourseReviews,
+    setCourseBids,
   } = useStore();
 
   useEffect(() => {
     setCourseReviews(reviewData);
+    setCourseBids(bidValueData);
 
     const init = async () => {
       try {

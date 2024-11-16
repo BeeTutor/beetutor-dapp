@@ -1,5 +1,5 @@
 {
-  "default_chain": "ETH_SEPOLIA",
+  "default_chain": "HARDHAT_LOCAL",
   "contract_address": {
     "LINEA_SEPOLIA": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
     "EVM_ON_FLOW_TESTNET": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
