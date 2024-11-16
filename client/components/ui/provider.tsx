@@ -11,7 +11,7 @@ import { ThemeProviderProps } from "next-themes";
 import { useEffect } from "react";
 import * as RPC from "../../services/ethersRPC";
 import { ColorModeProvider } from "./color-mode";
-
+import { ethers } from "ethers";
 export function Provider(props: ThemeProviderProps) {
   const {
     provider,
@@ -50,17 +50,17 @@ export function Provider(props: ThemeProviderProps) {
       try {
         if (!web3AuthService.connected) {
           const provider = await web3AuthService.init();
-          // const { ethereum } = window as never;
-          // const provider = new ethers.BrowserProvider(ethereum);
+          const { ethereum } = window as never;
+          const providerBrows = new ethers.BrowserProvider(ethereum);
 
           if (provider) {
             const newContractService = await new ContractService(
-              provider,
+              providerBrows || provider,
               nowChain,
               setSessionStatus
             );
             const newNftContractService = await new NftContractService(
-              provider,
+              providerBrows || provider,
               nowChain
             );
 
