@@ -3,6 +3,7 @@ import {
   defaultConfig,
   defineConfig,
   defineRecipe,
+  defineSlotRecipe,
 } from "@chakra-ui/react";
 
 const config = defineConfig({
@@ -21,7 +22,7 @@ const config = defineConfig({
           value: "black",
         },
         bg: {
-          value: "colors.gray.200",
+          value: "colors.gray.100",
         },
         border: {
           emphasized: { value: "colors.primary.500" },
@@ -47,12 +48,42 @@ const config = defineConfig({
           },
         },
         defaultVariants: {
-          visual: "solid",
           colorPalette: "primary",
         },
       }),
       input: defineRecipe({
-        base: { _focus: { outlineWidth: 0 } },
+        variants: {
+          visual: {
+            outline: {
+              borderWidth: "1px",
+              borderColor: "gray.300",
+              bg: "gray.50",
+            },
+          },
+        },
+        defaultVariants: {
+          visual: "outline",
+        },
+      }),
+    },
+    slotRecipes: {
+      select: defineSlotRecipe({
+        slots: ["trigger", "content", "item"],
+        variants: {
+          variant: {
+            outline: {
+              trigger: {
+                bg: "gray.50",
+              },
+              content: {
+                bg: "gray.50",
+              },
+              item: {
+                bg: { _hover: "gray.100" },
+              },
+            },
+          },
+        },
       }),
     },
   },

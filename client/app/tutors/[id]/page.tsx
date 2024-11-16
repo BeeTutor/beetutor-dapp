@@ -1,18 +1,18 @@
-import { courseData, userData } from "@/app/mock-data";
-import { CourseGrid } from "@/components/app/CourseGrid";
-import { Box, Card, Flex, Grid, Separator, Tabs } from "@chakra-ui/react";
 import Image from "next/image";
+import { courseData, tutors } from "@/app/mock-data";
+import { Box, Card, Flex, Grid, Separator, Tabs } from "@chakra-ui/react";
+import { CourseGrid } from "@/components/app/CourseGrid";
 
 interface Props {
   params: { id: string };
 }
 
 export default async function Page({ params: { id } }: Props) {
-  const tutor = userData.find((x) => x.id === Number(id));
+  const tutor = tutors.find((x) => x.id === Number(id));
   if (!tutor) return null;
 
   return (
-    <Grid templateColumns="18rem 1fr" alignItems="flex-start" gap="6">
+    <Grid templateColumns={{ md: "18rem 1fr" }} alignItems="flex-start" gap="6">
       <Card.Root bg="gray.50">
         <Box p="2.5rem" background="blue.50">
           <Box
@@ -20,6 +20,8 @@ export default async function Page({ params: { id } }: Props) {
             borderRadius="50%"
             overflow="hidden"
             position="relative"
+            maxW="15rem"
+            mx="auto"
           >
             <Image fill objectFit="cover" src={tutor.avatar} alt={tutor.name} />
           </Box>
@@ -55,16 +57,12 @@ export default async function Page({ params: { id } }: Props) {
         <Box px="1rem">
           <Separator />
         </Box>
-        <Box px="2.5rem" py="1rem">
+        <Box px="2.5rem" pt="1rem" pb="2rem">
           <Box fontWeight="bold">About me</Box>
-          {tutor.info}
-          <Box fontWeight="bold" mt="1rem">
-            About me
-          </Box>
-          {tutor.info}
+          {tutor.about}
         </Box>
       </Card.Root>
-      <Card.Root bg="gray.50" p="2rem">
+      <Card.Root bg="gray.50" p={{ base: "0.5rem", sm: "1.5rem" }}>
         <Tabs.Root
           defaultValue="course"
           variant="plain"
@@ -77,9 +75,11 @@ export default async function Page({ params: { id } }: Props) {
             <Tabs.Indicator rounded="l2" />
           </Tabs.List>
           <Tabs.Content value="course">
-            <CourseGrid courses={courseData} />
+            <CourseGrid courses={tutor.courses} />
           </Tabs.Content>
-          <Tabs.Content value="blog">Coming soon</Tabs.Content>
+          <Tabs.Content value="blog" minH="20rem" px="2rem">
+            Coming soon
+          </Tabs.Content>
         </Tabs.Root>
       </Card.Root>
     </Grid>
