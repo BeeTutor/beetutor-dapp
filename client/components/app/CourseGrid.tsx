@@ -1,11 +1,11 @@
 "use client";
 
-import { Course } from "@/app/mock-data";
-import { Badge, Box, Card, Flex, Grid } from "@chakra-ui/react";
 import Image from "next/image";
-import Link from "next/link";
+import { Course } from "@/app/mock-data";
+import { Grid, Card, Flex, Box, Badge } from "@chakra-ui/react";
 import { LuClock, LuUsers } from "react-icons/lu";
 import { Star } from "../custom/Star";
+import Link from "next/link";
 
 interface Props {
   courses: Course[];
@@ -39,7 +39,7 @@ export const CourseGrid: React.FC<Props> = ({ courses }) => {
               </Box>
               <Card.Body p="1rem">
                 <Flex pr="4rem" flexWrap="wrap" gap={1}>
-                  {["Blockchain", "Crypto", "ChatGPT"].map((x, i) => (
+                  {["Blockchain", "Crypto", "TechMentor"].map((x, i) => (
                     <Badge key={i} colorPalette="green" px="3" py="1">
                       #{x}
                     </Badge>
@@ -64,15 +64,15 @@ export const CourseGrid: React.FC<Props> = ({ courses }) => {
                   <Flex alignItems="center" gap={1} color="yellow.500">
                     <Star />
                     {x.rating}
-                    <Box color="var(--text-color)">(412)</Box>
+                    <Box color="var(--text-color)">(6)</Box>
                   </Flex>
                   <Flex gap="1" alignItems="center">
                     <LuClock size={12} color="var(--text-color)" />
-                    11.9 hours
+                    {x.duration} hours
                   </Flex>
                   <Flex gap="1" alignItems="center">
                     <LuUsers size={12} />
-                    12,432
+                    {x.participantCount}
                   </Flex>
                 </Flex>
               </Card.Body>

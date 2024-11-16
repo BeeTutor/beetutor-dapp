@@ -23,7 +23,6 @@ export default function Tutors() {
                 <Card.Title fontSize="2xl">{x.name}</Card.Title>
               </Flex>
               <Box>
-                <Box>Attended: 3 lessons</Box>
                 <Box>Offered: 4 lessons</Box>
               </Box>
               <Flex flexWrap="wrap" gap="2">

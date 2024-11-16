@@ -1,8 +1,8 @@
-import { Course } from "@/app/mock-data";
+import { Course, reviewData } from "@/app/mock-data";
 import { Stars } from "@/components/custom/Stars";
 import { Button } from "@/components/ui/button";
 import { useVisibility } from "@/utils/useVisibility";
-import { Box, ButtonProps, Flex, FlexProps, Heading } from "@chakra-ui/react";
+import { Box, Heading, Flex, FlexProps, ButtonProps } from "@chakra-ui/react";
 import { useState } from "react";
 import { LuChevronLeft, LuChevronRight, LuUser } from "react-icons/lu";
 
@@ -29,7 +29,7 @@ export const ReviewSection: React.FC<Props> = ({ course }) => {
           </Flex>
           <Stars count={course.rating} />
           <Box color="gray.500" fontSize="xs" mt="2px" ml="1">
-            197 reviews
+            6 reviews
           </Box>
         </Flex>
       </Heading>
@@ -79,8 +79,7 @@ export const ReviewSection: React.FC<Props> = ({ course }) => {
             alignItems="center"
           >
             <Box ref={headRef} w="2rem" mr="-2rem" h="40px" zIndex={1} />
-            {new Array(8).fill(0).map((x, i, array) => {
-              const isLast = i === array.length - 1;
+            {reviewData.map((x, i) => {
               return (
                 <Box key={i} px="2rem" mr="-3.5rem" scrollSnapAlign="start">
                   <Box
@@ -101,19 +100,14 @@ export const ReviewSection: React.FC<Props> = ({ course }) => {
                         <LuUser size="1.25rem" />
                       </Flex>
                       <Box>
-                        <Flex mb="1" gap="4">
-                          tsulluman {i + 1}
-                          <Box color="gray.500">2023-10-16</Box>
+                        <Flex mb="1" gap="4">{x.name}
+                          <Box color="gray.500">{x.date}</Box>
                         </Flex>
-                        <Stars count={5} />
+                        <Stars count={x.rating} />
                       </Box>
                     </Flex>
                     <Box px="3">
-                      Lorem ipsum is placeholder text commonly used in the
-                      graphic, print, and publishing industries for previewing
-                      layouts and visual mockups. Lorem ipsum is placeholder
-                      text commonly used in the graphic, print, and publishing
-                      industries for previewing
+                      {x.comment}
                     </Box>
                   </Box>
                 </Box>
