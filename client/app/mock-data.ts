@@ -217,6 +217,7 @@ const baseTutors = [
         price: 200,
         duration: 0.5,
         participantCount: 20,
+        tags: ["ThaiBeverages", "MilkTea", "ThaiCuisine"],
         chatId: '7c203104fae077d1a131d6c59c572989b98ae880cad9a8af68568db59aeff3f6',
       },
       {
@@ -228,6 +229,7 @@ const baseTutors = [
         price: 200,
         duration: 1.5,
         participantCount: 20,
+        tags: ["ThaiCurry", "GreenCurry", "ThaiCuisine"],
       },
       {
         id: 27,
@@ -238,6 +240,7 @@ const baseTutors = [
         price: 200,
         duration: 1.5,
         participantCount: 15,
+        tags: ["ThaiCooking", "BasilPork", "QuickMeals"],
       },
       {
         id: 28,
@@ -248,6 +251,7 @@ const baseTutors = [
         price: 200,
         duration: 1,
         participantCount: 10,
+        tags: ["ThaiSalad", "PapayaSalad", "ThaiCuisine"],
       },
     ],
   },
@@ -357,6 +361,7 @@ export const tutors: Tutor[] = baseTutors.map((tutor) => ({
 }));
 
 export type Course = {
+  tags?: string[];
   participantCount: number;
   duration: number;
   id: number;
