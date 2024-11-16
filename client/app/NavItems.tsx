@@ -47,7 +47,7 @@ export const NavItems: React.FC = () => {
   const [showGetAirdrop, setShowGetAirdrop] = useState(true);
   const [showLoginCard, setShowLoginCard] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [chain, setChain] = useState(null);
+  const [chain, setChain] = useState("");
   const CHAINS = createListCollection({
     items: [
       { key: "ETH_SEPOLIA", name: "Sepolia" },
@@ -62,7 +62,7 @@ export const NavItems: React.FC = () => {
       setShowGetAirdrop(false);
     }
 
-    if (chain) {
+    if (chain?.length > 1) {
       switchChain(chain);
     }
   }, [provider, contractService, chain]);
@@ -323,7 +323,7 @@ export const NavItems: React.FC = () => {
               <DialogContent bg="gray.50">
                 <DialogHeader>
                   <DialogTitle>Switch Chain</DialogTitle>
-                  {/* {loggedInView} */}
+                  {false && loggedInView}
                 </DialogHeader>
                 <DialogBody>
                   <SelectRoot
