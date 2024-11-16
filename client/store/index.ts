@@ -8,6 +8,9 @@ interface DappState {
   contractService: any;
   setContractService: (contractService: any) => void;
 
+  nowChain: any;
+  setNowChain: (nowChain: any) => void;
+
   loggedIn: any;
   setLoggedIn: (loggedIn: any) => void;
 }
@@ -15,6 +18,9 @@ interface DappState {
 export const useStore = create<DappState>((set) => ({
   provider: null,
   setProvider: (provider) => set({ provider }),
+
+  nowChain: "ETH_SEPOLIA",
+  setNowChain: (nowChain) => set({ nowChain }),
 
   contractService: null,
   setContractService: (contractService) => set({ contractService }),

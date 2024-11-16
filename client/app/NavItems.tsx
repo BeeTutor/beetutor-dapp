@@ -12,18 +12,21 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Box, Flex, IconButton, createListCollection } from "@chakra-ui/react";
 import Image from "next/image";
+import { Box, IconButton, Flex, createListCollection } from "@chakra-ui/react";
 import Link, { LinkProps } from "next/link";
-import { PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren, useState, useEffect } from "react";
 import { LuMenu, LuX } from "react-icons/lu";
-
 import {
   IDKitWidget,
-  ISuccessResult,
   VerificationLevel,
+  ISuccessResult,
 } from "@worldcoin/idkit";
+import { Toaster } from "@/components/ui/toaster";
 
+import RPC from "../services/ethersRPC";
+import { web3AuthService } from "@/services/web3AuthService";
+import { useStore } from "@/store";
 import {
   SelectContent,
   SelectItem,
@@ -32,21 +35,25 @@ import {
   SelectTrigger,
   SelectValueText,
 } from "@/components/ui/select";
-import { web3AuthService } from "@/services/web3AuthService";
-import { useStore } from "@/store";
 import { usePathname } from "next/navigation";
-import RPC from "../services/ethersRPC";
 
 export const NavItems: React.FC = () => {
   const pathname = usePathname();
 
-  const { provider, setProvider, loggedIn, setLoggedIn } = useStore();
+  const {
+    provider,
+    setProvider,
+    loggedIn,
+    setLoggedIn,
+    nowChain,
+    setNowChain,
+  } = useStore();
   const { contractService } = useStore();
 
   const [showGetAirdrop, setShowGetAirdrop] = useState(true);
   const [showLoginCard, setShowLoginCard] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [chain, setChain] = useState("");
+
   const CHAINS = createListCollection({
     items: [
       { key: "ETH_SEPOLIA", name: "Sepolia" },
@@ -67,11 +74,13 @@ export const NavItems: React.FC = () => {
     if (getShowGetAirdrop) {
       setShowGetAirdrop(false);
     }
+  }, [provider, contractService]);
 
-    if (chain?.length > 1) {
-      switchChain(chain);
+  useEffect(() => {
+    if (nowChain?.length > 1) {
+      switchChain(nowChain);
     }
-  }, [provider, contractService, chain]);
+  }, [nowChain]);
 
   const login = async () => {
     const web3authProvider = await web3AuthService.login();
@@ -337,8 +346,8 @@ export const NavItems: React.FC = () => {
                     collection={CHAINS}
                     size="sm"
                     multiple={false}
-                    value={[chain]}
-                    onValueChange={(e) => setChain(e.value[0])}
+                    value={[nowChain]}
+                    onValueChange={(e) => setNowChain(e.value[0])}
                   >
                     <SelectLabel>Chains</SelectLabel>
                     <SelectTrigger>
@@ -349,9 +358,9 @@ export const NavItems: React.FC = () => {
                       </SelectValueText>
                     </SelectTrigger>
                     <SelectContent portalled={false}>
-                      {CHAINS.items.map((session) => (
-                        <SelectItem item={session} key={session.name}>
-                          <Box>{session.name}</Box>
+                      {CHAINS.items.map((chain) => (
+                        <SelectItem item={chain} key={chain.name}>
+                          <Box>{chain.name}</Box>
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -371,6 +380,7 @@ export const NavItems: React.FC = () => {
           )}
         </Flex>
       </Box>
+      <Toaster />
     </>
   );
 };
@@ -382,3 +392,4 @@ const ITEMS: PropsWithChildren<LinkProps>[] = [
   { href: "/tutors", children: "Tutors" },
   { href: "/chat", children: "Chat" },
 ];
+git 
