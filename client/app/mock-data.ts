@@ -10,6 +10,7 @@ export type Tutor = {
   offered: number;
   courses: Course[];
 };
+
 const baseTutors = [
   {
     id: 1,
@@ -139,7 +140,6 @@ export type Course = {
 };
 export const courseData: Course[] = tutors.flatMap((tutor) => tutor.courses);
 
-
 export interface IReviewsData{
   id: number;
   name: string;
@@ -197,5 +197,38 @@ export const reviewData: IReviewsData[] = [
     rating: 3,
     date: "2024-11-1",
     from: "0x492fRQHEfwefwe324hg34herhglerg",
+  },
+]
+
+export const bidValueData = [
+  {
+    bidder: "User1",
+    bidTime: 1630906400000, // 2021-08-20T00:00:00.000Z
+    amount: "10000000000000000000", // 1000 eth
+  },
+  {
+    bidder: "User1",
+    bidTime: 1630906400000, // 2021-08-20T00:00:00.000Z
+    amount: "9000000000000000000", // 1000 eth
+  },
+  {
+    bidder: "User1",
+    bidTime: 1630906400000, // 2021-08-20T00:00:00.000Z
+    amount: "7000000000000000000", // 1000 eth
+  },
+  {
+    bidder: "User1",
+    bidTime: 1630906400000, // 2021-08-20T00:00:00.000Z
+    amount: "9000000000000000000", // 1000 eth
+  },
+  {
+    bidder: "User1",
+    bidTime: 1630906400000, // 2021-08-20T00:00:00.000Z
+    amount: "6000000000000000000", // 1000 eth
+  },
+  {
+    bidder: "User1",
+    bidTime: 1630906400000, // 2021-08-20T00:00:00.000Z
+    amount: "9000000000000000000", // 1000 eth
   },
 ]
