@@ -1,9 +1,9 @@
-import Link from "next/link";
-import Image from "next/image";
 import logo from "@/assets/logo.png";
-import { Box, Flex } from "@chakra-ui/react";
-import { NavItems } from "./NavItems";
 import { Provider } from "@/components/ui/provider";
+import { Box, Flex } from "@chakra-ui/react";
+import Image from "next/image";
+import Link from "next/link";
+import { NavItems } from "./NavItems";
 
 export default function RootLayout({
   children,

@@ -14,25 +14,25 @@ import {
 } from "@/components/ui/dialog";
 import { Toaster } from "@/components/ui/toaster";
 import { Box, Flex, IconButton } from "@chakra-ui/react";
-import {
-  IDKitWidget,
-  ISuccessResult,
-  VerificationLevel,
-} from "@worldcoin/idkit";
 import Image from "next/image";
 import Link, { LinkProps } from "next/link";
 import { PropsWithChildren, useEffect, useState } from "react";
 import { LuMenu, LuX } from "react-icons/lu";
 
-import { ContractService } from "@/services/contractService";
+import {
+  IDKitWidget,
+  ISuccessResult,
+  VerificationLevel,
+} from "@worldcoin/idkit";
+
 import { web3AuthService } from "@/services/web3AuthService";
 import { useStore } from "@/store";
 import RPC from "../services/ethersRPC";
 
 export const NavItems: React.FC = () => {
-  const { provider, setProvider } = useStore();
-  const { contractService, setContractService } = useStore();
-  const [loggedIn, setLoggedIn] = useState(false);
+  const { provider, setProvider, loggedIn, setLoggedIn } = useStore();
+  const { contractService } = useStore();
+
   const [showGetAirdrop, setShowGetAirdrop] = useState(true);
   const [showLoginCard, setShowLoginCard] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -41,21 +41,7 @@ export const NavItems: React.FC = () => {
     if (getShowGetAirdrop) {
       setShowGetAirdrop(false);
     }
-    const init = async () => {
-      try {
-        const provider = await web3AuthService.init();
-        if (provider) {
-          setContractService(new ContractService(provider));
-          setProvider(provider);
-          setLoggedIn(web3AuthService.connected);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    init();
-  }, []);
+  }, [provider, contractService]);
 
   const login = async () => {
     const web3authProvider = await web3AuthService.login();

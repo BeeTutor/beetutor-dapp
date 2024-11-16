@@ -1,60 +1,58 @@
+"use client";
+
 import { Course } from "@/app/mock-data";
 import { Grid, Box, Heading } from "@chakra-ui/react";
 import { ReviewSection } from "./components/ReviewSection";
 import "chart.js/auto";
 import { Line } from "react-chartjs-2";
+import { useStore } from "@/store";
+import { useEffect, useState } from "react";
+import { formatEther } from "ethers";
+
 interface Props {
   course: Course;
 }
 
 export const CourseDetails: React.FC<Props> = ({ course }) => {
-  const generateLineChartData = () => {
-    const selectedBatch = [
-      {
-        date: new Date(),
-        address: "0xfwefhwoefhwo21DERT3q4t34t232",
-        price: 30,
-      },
-      {
-        date: new Date(),
-        address: "0xfwefhwoefhwo21DERT3q4t34t232",
-        price: 100,
-      },
-      {
-        date: new Date(),
-        address: "0xfwefhwoefhwo21DERT3q4t34t232",
-        price: 50,
-      },
-      {
-        date: new Date(),
-        address: "0xfwefhwoefhwo21DERT3q4t34t232",
-        price: 30,
-      },
-      {
-        date: new Date(),
-        address: "0xfwefhwoefhwo21DERT3q4t34t232",
-        price: 100,
-      },
-    ];
+  const { provider, contractService, loggedIn } = useStore();
+  const [actionBids, setActionBids] = useState({
+    labels: [],
+    datasets: [],
+  });
 
-    const labels = selectedBatch.map((_, index) => `bid ${index + 1}`);
-    // X 軸顯示每次投標
-    const data = selectedBatch.map((e) => e.price);
-    // Y 軸顯示每次投標的價格
+  useEffect(() => {
+    async function getActionsBids() {
+      return await contractService.getActionsBids(1, 1);
+      // await contractService.getCourseCertificateAddress();
+    }
+    const generateLineChartData = async () => {
+      const selectedBatch = await getActionsBids();
 
-    return {
-      labels,
-      datasets: [
-        {
-          label: "bid price",
-          data,
-          fill: false,
-          borderColor: "rgb(75, 192, 192)",
-          tension: 0.1, // 曲線的平滑度
-        },
-      ],
+      const labels = selectedBatch.map((e, index) =>
+        new Date(e.time).toISOString()
+      );
+      // X 軸顯示每次投標
+      const data = selectedBatch.map((e) => formatEther(e.price));
+      // Y 軸顯示每次投標的價格
+
+      setActionBids({
+        labels,
+        datasets: [
+          {
+            label: "投標價格",
+            data,
+            fill: false,
+            borderColor: "rgb(75, 192, 192)",
+            tension: 0.1, // 曲線的平滑度
+          },
+        ],
+      });
     };
-  };
+
+    if (contractService) {
+      generateLineChartData();
+    }
+  }, [contractService, provider, loggedIn]);
 
   return (
     <Grid gap="1rem">
@@ -62,7 +60,7 @@ export const CourseDetails: React.FC<Props> = ({ course }) => {
         <Heading fontSize="xl" mb="1rem">
           Session Bids Info
         </Heading>
-        <Line data={generateLineChartData()} height={80} />
+        <Line data={actionBids} height={80} />
       </Box>
       <ReviewSection course={course} />
     </Grid>

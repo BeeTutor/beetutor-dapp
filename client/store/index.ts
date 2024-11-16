@@ -7,6 +7,9 @@ interface DappState {
 
   contractService: any;
   setContractService: (contractService: any) => void;
+
+  loggedIn: any;
+  setLoggedIn: (loggedIn: any) => void;
 }
 
 export const useStore = create<DappState>((set) => ({
@@ -15,4 +18,7 @@ export const useStore = create<DappState>((set) => ({
 
   contractService: null,
   setContractService: (contractService) => set({ contractService }),
+
+  loggedIn: null,
+  setLoggedIn: (loggedIn) => set({ loggedIn }),
 }));
