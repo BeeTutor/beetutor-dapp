@@ -8,7 +8,7 @@ import { Line } from "react-chartjs-2";
 import { useStore } from "@/store";
 import { useEffect, useState } from "react";
 import { formatEther } from "ethers";
-
+import { Bids } from "@/services/contractService";
 interface Props {
   course: Course;
 }
@@ -28,12 +28,12 @@ export const CourseDetails: React.FC<Props> = ({ course }) => {
     const generateLineChartData = async () => {
       const selectedBatch = await getActionsBids();
 
-      const labels = selectedBatch.map((e, index) =>
-        new Date(e.time).toISOString()
+      const labels = selectedBatch.map(
+        (e: Bids, index: number) =>
+          "Bid" + index + new Date(e.bidTime).toISOString()
       );
-      // X 軸顯示每次投標
-      const data = selectedBatch.map((e) => formatEther(e.price));
-      // Y 軸顯示每次投標的價格
+
+      const data = selectedBatch.map((e: Bids) => formatEther(e.price));
 
       setActionBids({
         labels,
@@ -44,7 +44,7 @@ export const CourseDetails: React.FC<Props> = ({ course }) => {
             fill: false,
             borderColor: "rgb(75, 192, 192)",
             tension: 0.1, // 曲線的平滑度
-          },
+          } as never,
         ],
       });
     };

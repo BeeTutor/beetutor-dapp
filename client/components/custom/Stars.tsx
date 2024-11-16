@@ -1,4 +1,4 @@
-import { Flex, Box } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { FaStar, FaStarHalf } from "react-icons/fa6";
 
 interface Props {

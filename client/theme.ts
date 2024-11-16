@@ -48,7 +48,7 @@ const config = defineConfig({
           },
         },
         defaultVariants: {
-          colorPalette: "primary",
+          colorPalette: "current",
         },
       }),
       input: defineRecipe({

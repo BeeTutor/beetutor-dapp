@@ -2,9 +2,7 @@ import Image from "next/image";
 import { Course } from "@/app/mock-data";
 import { Grid, Flex, Box, Heading } from "@chakra-ui/react";
 import { LuBookmark, LuGift } from "react-icons/lu";
-import { Rating } from "@/components/ui/rating";
 import { Button } from "@/components/ui/button";
-import { FaStar, FaStarHalf } from "react-icons/fa6";
 import { Stars } from "@/components/custom/Stars";
 
 interface Props {

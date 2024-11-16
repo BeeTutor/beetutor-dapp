@@ -1,6 +1,5 @@
 import { Course } from "@/app/mock-data";
 import { Button } from "@/components/ui/button";
-import { InputGroup } from "@/components/ui/input-group";
 import {
   SelectContent,
   SelectItem,
@@ -9,6 +8,7 @@ import {
   SelectTrigger,
   SelectValueText,
 } from "@/components/ui/select";
+import { InputGroup } from "@/components/ui/input-group";
 import {
   Box,
   createListCollection,
@@ -16,8 +16,8 @@ import {
   GridProps,
   Input,
 } from "@chakra-ui/react";
-import Link from "next/link";
 import { useState } from "react";
+import Link from "next/link";
 import { ReviewDialog } from "./components/ReviewDialog";
 
 interface Props extends GridProps {
@@ -25,6 +25,7 @@ interface Props extends GridProps {
 }
 
 export const CourseBidding: React.FC<Props> = ({ course, ...gridProps }) => {
+  console.log("course: ", course);
   const [value, setValue] = useState("");
 
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false);

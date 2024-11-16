@@ -13,7 +13,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Toaster } from "@/components/ui/toaster";
-import { Box, Flex, IconButton } from "@chakra-ui/react";
+import { Box, Flex, IconButton, createListCollection } from "@chakra-ui/react";
 import Image from "next/image";
 import Link, { LinkProps } from "next/link";
 import { PropsWithChildren, useEffect, useState } from "react";
@@ -25,6 +25,14 @@ import {
   VerificationLevel,
 } from "@worldcoin/idkit";
 
+import {
+  SelectContent,
+  SelectItem,
+  SelectLabel,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
+} from "@/components/ui/select";
 import { web3AuthService } from "@/services/web3AuthService";
 import { useStore } from "@/store";
 import RPC from "../services/ethersRPC";
@@ -36,12 +44,23 @@ export const NavItems: React.FC = () => {
   const [showGetAirdrop, setShowGetAirdrop] = useState(true);
   const [showLoginCard, setShowLoginCard] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [chain, setChain] = useState("");
+  const CHAINS = createListCollection({
+    items: [
+      { key: "ETH_SEPOLIA", name: "Sepolia" },
+      { key: "POLYGON_MUMBAI", name: "Polygon" },
+      { key: "HARDHAT_LOCAL", name: "Hardhat" },
+    ] as const,
+    itemToValue: (item) => String(item.key),
+  });
   useEffect(() => {
     const getShowGetAirdrop = localStorage.getItem("showGetAirdrop");
     if (getShowGetAirdrop) {
       setShowGetAirdrop(false);
     }
-  }, [provider, contractService]);
+    console.log("chain~~", chain);
+    switchChain(chain);
+  }, [provider, contractService, chain]);
 
   const login = async () => {
     const web3authProvider = await web3AuthService.login();
@@ -103,7 +122,7 @@ export const NavItems: React.FC = () => {
   };
   // IMP END - Blockchain Calls
 
-  function uiConsole(...args: any[]): void {
+  function uiConsole(...args: unknown[]): void {
     console.log("uiConsole", args);
     const el = document.querySelector("#console>p");
     if (el) {
@@ -112,12 +131,10 @@ export const NavItems: React.FC = () => {
     }
   }
 
-  async function getActionsBids() {
-    await contractService.getActionsBids(1, 1);
-    // await contractService.getCourseCertificateAddress();
+  async function switchChain(chainMapKey: string) {
+    await web3AuthService.switchChain(chainMapKey);
   }
 
-  // TODO: May be use
   const loggedInView = (
     <>
       <div className="flex-container">
@@ -144,12 +161,6 @@ export const NavItems: React.FC = () => {
         <div>
           <button onClick={sendTransaction} className="card">
             Send Transaction
-          </button>
-        </div>
-        <div>
-          <button onClick={getActionsBids} className="card">
-            {/* Bid with input */}
-            Get actions bids
           </button>
         </div>
       </div>
@@ -300,11 +311,30 @@ export const NavItems: React.FC = () => {
                   {loggedInView}
                 </DialogHeader>
                 <DialogBody>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
-                  </p>
+                  <SelectRoot
+                    variant="outline"
+                    collection={CHAINS}
+                    size="sm"
+                    multiple={false}
+                    value={[chain]}
+                    onValueChange={(e) => setChain(e.value[0])}
+                  >
+                    <SelectLabel>Chains</SelectLabel>
+                    <SelectTrigger>
+                      <SelectValueText placeholder="Select chain">
+                        {([item]) => {
+                          return `${item.name}`;
+                        }}
+                      </SelectValueText>
+                    </SelectTrigger>
+                    <SelectContent portalled={false}>
+                      {CHAINS.items.map((session) => (
+                        <SelectItem item={session} key={session.name}>
+                          <Box>{session.name}</Box>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </SelectRoot>
                 </DialogBody>
                 <DialogFooter>
                   <DialogActionTrigger asChild>

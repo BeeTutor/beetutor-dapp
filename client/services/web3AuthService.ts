@@ -1,8 +1,4 @@
-import {
-  CHAIN_NAMESPACES,
-  IAdapter,
-  WEB3AUTH_NETWORK
-} from "@web3auth/base";
+import { CHAIN_NAMESPACES, IAdapter, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3Auth, Web3AuthOptions } from "@web3auth/modal";
@@ -11,7 +7,7 @@ import { Web3Auth, Web3AuthOptions } from "@web3auth/modal";
 const clientId =
   "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
 
-const CHAIN_CONFIG = {
+export const CHAIN_CONFIG = {
   ETH_SEPOLIA: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0xaa36a7",
@@ -72,6 +68,23 @@ class Web3AuthService {
     });
     await this.web3auth.initModal();
     return this.web3auth.provider;
+  }
+
+  async switchChain(configKey: string) {
+    const privateKeyProvider = new EthereumPrivateKeyProvider({
+      config: {
+        chainConfig: CHAIN_CONFIG[configKey as keyof typeof CHAIN_CONFIG],
+      },
+    });
+
+    const web3AuthOptions: Web3AuthOptions = {
+      clientId,
+      web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+      privateKeyProvider,
+    };
+
+    this.web3auth = new Web3Auth(web3AuthOptions);
+    this.init();
   }
 
   async login() {

@@ -1,7 +1,7 @@
-import Image from "next/image";
-import { courseData, tutors } from "@/app/mock-data";
-import { Box, Card, Flex, Grid, Separator, Tabs } from "@chakra-ui/react";
+import { tutors } from "@/app/mock-data";
 import { CourseGrid } from "@/components/app/CourseGrid";
+import { Box, Card, Flex, Grid, Separator, Tabs } from "@chakra-ui/react";
+import Image from "next/image";
 
 interface Props {
   params: { id: string };
@@ -45,8 +45,8 @@ export default async function Page({ params: { id } }: Props) {
               { key: "attended", label: "Attended" },
               { key: "offered", label: "Offered" },
             ] as const
-          ).map((x, i) => (
-            <Box textAlign="center">
+          ).map((x, index) => (
+            <Box textAlign="center" key={index}>
               <Box>{x.label}</Box>
               <Box fontSize="2xl" fontWeight="bold">
                 {tutor[x.key]}
