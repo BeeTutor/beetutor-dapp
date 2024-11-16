@@ -81,10 +81,17 @@ export const ReviewSection: React.FC<Props> = ({ course }) => {
             <Box ref={headRef} w="2rem" mr="-2rem" h="40px" zIndex={1} />
             {reviewData.map((x, i) => {
               return (
-                <Box key={i} px="2rem" mr="-3.5rem" scrollSnapAlign="start">
+                <Box
+                  key={i}
+                  px="2rem"
+                  mr="-3.5rem"
+                  scrollSnapAlign="start"
+                  alignSelf="stretch"
+                >
                   <Box
                     w="17.5rem"
                     maxW="full"
+                    h="full"
                     bg="gray.50"
                     borderRadius={8}
                     p="4"
@@ -100,15 +107,14 @@ export const ReviewSection: React.FC<Props> = ({ course }) => {
                         <LuUser size="1.25rem" />
                       </Flex>
                       <Box>
-                        <Flex mb="1" gap="4">{x.name}
+                        <Flex mb="1" gap="4">
+                          {x.name}
                           <Box color="gray.500">{x.date}</Box>
                         </Flex>
                         <Stars count={x.rating} />
                       </Box>
                     </Flex>
-                    <Box px="3">
-                      {x.comment}
-                    </Box>
+                    <Box px="3">{x.comment}</Box>
                   </Box>
                 </Box>
               );
