@@ -29,7 +29,9 @@ export default function Tutors() {
       <Grid templateColumns="repeat(auto-fill, minmax(18rem, 1fr))" gap="6">
         {tutors
           .filter(
-            (x) => x.name.includes(filterValue) || x.tags.includes(filterValue)
+            (x) =>
+              x.name.includes(filterValue) ||
+              x.tags.some((e) => e.includes(filterValue))
           )
           .map((x, i) => (
             <Link key={i} href={`/tutors/${x.id}`}>
