@@ -12,7 +12,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Toaster } from "@/components/ui/toaster";
 import { Box, Flex, IconButton, createListCollection } from "@chakra-ui/react";
 import Image from "next/image";
 import Link, { LinkProps } from "next/link";
@@ -365,7 +364,6 @@ export const NavItems: React.FC = () => {
           )}
         </Flex>
       </Box>
-      <Toaster />
     </>
   );
 };
