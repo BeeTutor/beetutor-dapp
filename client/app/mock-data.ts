@@ -13,11 +13,12 @@ export type Tutor = {
 const baseTutors = [
   {
     id: 1,
-    name: "ArjunSharma",
+    name: "Winnie C.S",
     address: "0x3fB5C0dC4Bf928fF7EfD1fDbC7E7A0Ae2D3B1Ab2",
     about:
       "Vithal is an experienced leader in tech education 🎓, with over 30 years in the IT industry and a background in computer science. He’s passionate about mentoring startups and innovators 🚀, having supported 100+ entrepreneurs and helped establish successful incubation centers. In past roles, Vithal led partner innovation initiatives, guiding teams to create next-gen solutions for industries like banking and healthcare 💼💊. He has also worked in consulting and software development, where he was recognized for his innovation and excellence ✨. Outside of work, Vithal is happily married with two wonderful kids.",
-    avatar: "/assets/avatar/1.svg",
+    avatar:
+      "https://noun-api.com/beta/pfp?head=229&glasses=19&background=0&body=27&accessory=3",
     rating: 3,
     tags: ["TechMentor", "InnovationLeader", "StartupSupport"],
     attended: 2,
@@ -40,7 +41,7 @@ const baseTutors = [
         description: `Master blockchain principles and smart contract development using Rust on Solana. Designed for those with programming experience, this course unlocks new career opportunities in Smart Contract and dApp Development.`,
         rating: 4.5,
         price: 200,
-        duration:15,
+        duration: 15,
         participantCount: 1,
       },
       {
@@ -87,11 +88,12 @@ const baseTutors = [
   },
   {
     id: 2,
-    name: "EmmaSullivan",
+    name: "Johnny Y.J",
     address: "0x446fRQHEfwefwe324hg34herhglerg",
     about:
       "Emma Sullivan is a technical writer with more than 14 years experience, working for both hardware and software companies writing user guides, technical references, help text, and so on. She has been helping document the BC Government initiatives (VON, Greenlight, OrgBook BC and IIWBook) and became hooked on self-sovereign identity at IIW28.",
-    avatar: "/assets/avatar/2.svg",
+    avatar:
+      "https://noun-api.com/beta/pfp?head=2&glasses=19&background=0&body=24&accessory=3",
     rating: 4,
     tags: ["TechWriterExpert", "SelfSovereignIdentity"],
     attended: 3,
@@ -119,6 +121,160 @@ const baseTutors = [
       },
     ],
   },
+  {
+    id: 3,
+    name: "Mason J.K",
+    address: "0x446fRQHEfwefwe324hg34herhglerg",
+    about: "Hello, everyone! I’m Mason, a huge fan of the Chiikawa world. I'm here to share the wonderful stories of Chiikawa, introducing not only the characters but also exploring their backgrounds and deeper meanings. I’ll also draw connections between their stories and real life, analyzing the characters' MBTI types, and delving into themes like psychological and economic issues. Join me as we dive into this complex and beautiful world!",
+    avatar:
+      "https://noun-api.com/beta/pfp?head=2&glasses=19&background=0&body=24&accessory=3",
+    rating: 4.8,
+    tags: ["Chiikawa", "FantasyCharacterAnalysis", "ChiikawaAndLife", "SoulfulJourney"],
+    attended: 10,
+    offered: 6,
+    courses: [
+      {
+        id: 19,
+        name: "Exploring the World and Characters of Chiikawa",
+        image: "/assets/courses/Chiikawa1.jpeg",
+        description: `This course takes you into the fascinating world of Chiikawa, covering its richly detailed settings and core characters. We will dive deep into each character’s motivations and development, looking at the dynamics between main and supporting characters, and analyzing the choices they make in the face of challenges. This course will explore each character’s origins, unique traits, and important roles in the story. Ultimately, you will gain a deeper understanding of the Chiikawa universe and how these characters reflect different facets of human nature.`,
+        rating: 5,
+        price: 200,
+        duration: 2,
+        participantCount: 20,
+      },
+      {
+        id: 20,
+        name: "Symbolism and Meaning Behind Chiikawa: A Journey of Personal Growth",
+        image: "/assets/courses/Chiikawa2.jpeg",
+        description: `Chiikawa’s story isn’t just about adventure; it symbolizes a journey of personal growth. This course focuses on the emotional changes and growth of each character, exploring the deeper psychological meanings behind their experiences. From fear to courage, loneliness to companionship, Chiikawa’s characters bring forth numerous insights. We’ll analyze the psychological transformations they undergo when facing challenges and discuss how these transformations offer real-life inspiration. This course is perfect for those looking to find resonance within Chiikawa’s adventures.`,
+        rating: 4.8,
+        price: 200,
+        duration: 2,
+        participantCount: 20,
+      },
+      {
+        id: 21,
+        name: "Analyzing Chiikawa Characters’ MBTI Types: Understanding the Power of Personality",
+        image: "/assets/courses/Chiikawa3.jpg",
+        description: `Each character in Chiikawa has a unique personality. This course will delve into character analysis based on MBTI personality types, examining their actions, decisions, and interactions with others. We’ll align each character with specific MBTI traits, analyzing their strengths and weaknesses and discussing how personality shapes their growth and choices. This analysis will not only deepen your understanding of each character but also shed light on how different personalities create dynamic and engaging storylines.`,
+        rating: 4.8,
+        price: 200,
+        duration: 2,
+        participantCount: 20,
+      },
+      {
+        id: 22,
+        name: "Real-Life Connections in Chiikawa: Character Growth and Our Daily Lives",
+        image: "/assets/courses/Chiikawa4.jpeg",
+        description: `Chiikawa’s story doesn’t entirely disconnect from reality; many of the challenges its characters face mirror our own. In this course, we’ll compare the characters’ experiences with real-life struggles, exploring how their decisions provide insights into real-life situations. By analyzing how characters overcome their challenges, we’ll discuss ways to apply these experiences to our personal growth and daily challenges, offering fresh perspectives on the meaning of growth.`,
+        rating: 4.8,
+        price: 200,
+        duration: 2,
+        participantCount: 20,
+      },
+      {
+        id: 23,
+        name: "Economic Themes in Chiikawa: Power, Resources, and Choices",
+        image: "/assets/courses/Chiikawa5.jpg",
+        description: `Chiikawa’s world also reflects dynamics of resource distribution and power. This course examines the economic structure within the story, including resource allocation and social classes represented by various characters, and how these elements shape characters’ choices and fates. We’ll also discuss the relativity of power and consider whether Chiikawa’s social structure offers insights into real-world economic systems. This thought-provoking course encourages you to rethink the relationships between wealth, power, and individual destiny.`,
+        rating: 5,
+        price: 200,
+        duration: 2,
+        participantCount: 20,
+      },
+      {
+        id: 24,
+        name: "Soul and Philosophy: Inner Pursuits and Spiritual Exploration in Chiikawa",
+        image: "/assets/courses/Chiikawa6.jpeg",
+        description: `Chiikawa’s story holds many profound philosophies about the soul and spiritual exploration. In this course, we will explore the characters’ internal conflicts and spiritual growth, analyzing the philosophical meanings within the story. From the blurred lines between good and evil to the meaning of life, we’ll dive into the philosophical thoughts within Chiikawa. This course is ideal for those who seek deeper reflections on self-worth and personal growth through the story of Chiikawa, providing inspiration for the soul.`,
+        rating: 5,
+        price: 200,
+        duration: 2,
+        participantCount: 20,
+      },
+    ],
+  },
+  {
+    id: 4,
+    name: "Josie X.D",
+    address: "0x446fRQHEfwefwe324hg34herhglerg",
+    about: "Hi, I’m Josie, a passionate home cook from Thailand! Although I’ve never attended formal culinary school, I’ve spent years perfecting my skills in the kitchen, crafting authentic Thai dishes that bring smiles to family and friends. Cooking is not just my daily routine—it’s my way of sharing love and culture. Now, through BeeTutor, I’m excited to teach you how to create some of Thailand’s most beloved flavors in your own kitchen. Whether you’re a beginner or an experienced cook, let’s explore the art of Thai cuisine together!",
+    avatar:
+      "https://noun-api.com/beta/pfp?head=2&glasses=19&background=0&body=24&accessory=3",
+    rating: 4.8,
+    tags: ["JosiesThaiKitchen", "AuthenticThaiCooking"],
+    attended: 2,
+    offered: 4,
+    courses: [
+      {
+        id: 25,
+        name: "How to Make a Thai Milk Tea",
+        image: "/assets/courses/ThaiMilkTea.webp",
+        description: `Thai basil pork, or Pad Kra Pao, is a quick and flavorful stir-fried dish loved by many. In this class, you’ll learn how to make this iconic recipe that perfectly combines spicy, savory, and aromatic flavors, all in under 30 minutes! You’ll start by learning how to choose the right type of Thai basil and prepare a simple yet delicious sauce to complement the dish. I’ll also share cooking techniques to ensure the pork is tender and the sauce is packed with flavor. Whether served with jasmine rice or topped with a fried egg, this dish is a staple of Thai cuisine that you can easily recreate at home. By the end of the class, you’ll have mastered the secrets of Pad Kra Pao and be ready to impress your friends and family with this classic Thai comfort food.`,
+        rating: 5,
+        price: 200,
+        duration: 0.5,
+        participantCount: 20,
+      },
+      {
+        id: 26,
+        name: "How to Make Thai Green Curry",
+        image: "/assets/courses/ThaigreenCurry.webp",
+        description: `Thai green curry is a rich and creamy dish full of bold, aromatic flavors. In this class, you’ll learn to make an authentic green curry from scratch, starting with preparing your own curry paste using fresh ingredients like green chilies and lemongrass. We’ll cover how to balance spiciness, sweetness, and creaminess to create a flavorful curry base with coconut milk. You’ll also learn how to cook vegetables and proteins to pair perfectly with the sauce. By the end of the class, you’ll have a delicious bowl of green curry ready to serve, plus the confidence to make it anytime you crave this Thai classic!`,
+        rating: 4.8,
+        price: 200,
+        duration: 1.5,
+        participantCount: 20,
+      },
+      {
+        id: 27,
+        name: "How to Make Thai Basil Pork",
+        image: "/assets/courses/ThaiBasilPork.webp",
+        description: `Thai basil pork, or Pad Kra Pao, is a quick and flavorful stir-fried dish loved by many. In this class, you’ll learn how to make this iconic recipe that perfectly combines spicy, savory, and aromatic flavors, all in under 30 minutes! You’ll start by learning how to choose the right type of Thai basil and prepare a simple yet delicious sauce to complement the dish. I’ll also share cooking techniques to ensure the pork is tender and the sauce is packed with flavor. Whether served with jasmine rice or topped with a fried egg, this dish is a staple of Thai cuisine that you can easily recreate at home. By the end of the class, you’ll have mastered the secrets of Pad Kra Pao and be ready to impress your friends and family with this classic Thai comfort food.`,
+        rating: 4.8,
+        price: 200,
+        duration: 1.5,
+        participantCount: 15,
+      },
+      {
+        id: 28,
+        name: "How to Make Thai Papaya Salad",
+        image: "/assets/courses/ThaiPapayaSalad.webp",
+        description: `Som Tum, or Thai papaya salad, is a refreshing and tangy dish that’s a staple of Thai street food. In this class, you’ll learn how to prepare green papaya and create the perfect dressing using traditional ingredients like fish sauce, lime, and chilies. I’ll guide you through balancing the sweet, sour, salty, and spicy flavors that make this salad so addictive. Whether you’re serving it as a side dish or a light meal, Som Tum is the perfect way to add a burst of Thai flavor to your table. By the end of the class, you’ll have mastered this iconic salad and be able to customize it to suit your taste!`,
+        rating: 4.8,
+        price: 200,
+        duration: 1,
+        participantCount: 10,
+      },
+    ],
+  },
+  {
+    id: 5,
+    name: "Ben C.T",
+    address: "0x446fRQHEfwefwe324hg34herhglerg",
+    about: "",
+    avatar:
+      "https://noun-api.com/beta/pfp?head=2&glasses=19&background=0&body=24&accessory=3",
+    rating: 4.8,
+    tags: ["FitnessWithBen", "HealthyLiving", "PersonalTrainerGoals"],
+    attended: 1,
+    offered: 3,
+    courses: [],
+  },
+  {
+    id: 6,
+    name: "York J.N",
+    address: "0x446fRQHEfwefwe324hg34herhglerg",
+    about: "",
+    avatar:
+      "https://noun-api.com/beta/pfp?head=2&glasses=19&background=0&body=24&accessory=3",
+    rating: 4.8,
+    tags: ["WorkSmart", "StayAlertStaySafe"],
+    attended: 4,
+    offered: 9,
+    courses: [],
+  },
 ];
 
 export const tutors: Tutor[] = baseTutors.map((tutor) => ({
@@ -139,13 +295,23 @@ export type Course = {
 };
 export const courseData: Course[] = tutors.flatMap((tutor) => tutor.courses);
 
-export const reviewData = [
+export interface IReviewsData {
+  id: number;
+  name: string;
+  comment: string;
+  date: string;
+  from: string;
+  rating: number;
+}
+
+export const reviewData: IReviewsData[] = [
   {
     id: 1,
     name: "John Doe",
     comment: "In-depth and well-structured!",
     rating: 5,
     date: "2024-9-12",
+    from: "0x492fRQHEfwefwe324hg34herhglerg",
   },
   {
     id: 2,
@@ -153,6 +319,7 @@ export const reviewData = [
     comment: "Great for learning advanced topics!",
     rating: 4,
     date: "2024-9-15",
+    from: "0x492fRQHEfwefwe324hg34herhglerg",
   },
   {
     id: 3,
@@ -160,6 +327,7 @@ export const reviewData = [
     comment: "The examples made it easy to understand!",
     rating: 3.5,
     date: "2024-10-2",
+    from: "0x492fRQHEfwefwe324hg34herhglerg",
   },
   {
     id: 4,
@@ -167,6 +335,7 @@ export const reviewData = [
     comment: "Very practical course!",
     rating: 5,
     date: "2024-10-5",
+    from: "0x492fRQHEfwefwe324hg34herhglerg",
   },
   {
     id: 5,
@@ -174,6 +343,7 @@ export const reviewData = [
     comment: "Perfect for beginners.",
     rating: 5,
     date: "2024-11-1",
+    from: "0x492fRQHEfwefwe324hg34herhglerg",
   },
   {
     id: 6,
@@ -181,5 +351,39 @@ export const reviewData = [
     comment: "Very practical and easy to follow!",
     rating: 3,
     date: "2024-11-1",
+    from: "0x492fRQHEfwefwe324hg34herhglerg",
   },
-]
+];
+
+export const bidValueData = [
+  {
+    bidder: "0x492fRQHEfwefwe324hg34herhglerg",
+    bidTime: 1630906400000, // 2021-08-20T00:00:00.000Z
+    amount: "10000000000000000000", // 1000 eth
+  },
+  {
+    bidder: "0x492fRQHEfwefwe324hg34herhglerg",
+    bidTime: 1630906400000, // 2021-08-20T00:00:00.000Z
+    amount: "9000000000000000000", // 1000 eth
+  },
+  {
+    bidder: "0x492fRQHEfwefwe324hg34herhglerg",
+    bidTime: 1630906400000, // 2021-08-20T00:00:00.000Z
+    amount: "7000000000000000000", // 1000 eth
+  },
+  {
+    bidder: "0x492fRQHEfwefwe324hg34herhglerg",
+    bidTime: 1630906400000, // 2021-08-20T00:00:00.000Z
+    amount: "9000000000000000000", // 1000 eth
+  },
+  {
+    bidder: "0x492fRQHEfwefwe324hg34herhglerg",
+    bidTime: 1630906400000, // 2021-08-20T00:00:00.000Z
+    amount: "6000000000000000000", // 1000 eth
+  },
+  {
+    bidder: "0x492fRQHEfwefwe324hg34herhglerg",
+    bidTime: 1630906400000, // 2021-08-20T00:00:00.000Z
+    amount: "9000000000000000000", // 1000 eth
+  },
+];
