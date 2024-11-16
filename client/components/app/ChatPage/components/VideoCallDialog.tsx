@@ -11,11 +11,13 @@ import {
 } from "@/components/ui/dialog";
 import {
   Box,
+  Center,
   DialogRootProps,
   Flex,
   Grid,
   GridItem,
   IconButton,
+  Spinner,
 } from "@chakra-ui/react";
 import { VideoCallData, VideoCallStatus } from "@pushprotocol/restapi";
 import { VideoV2 } from "@pushprotocol/restapi/src/lib/video/VideoV2";
@@ -108,10 +110,17 @@ const VideoCallDialog: React.FC<VideoCallDialogProps> = ({
 
             {data.incoming.map((call, index) => (
               <GridItem key={index}>
-                <VideoPlayer
-                  stream={call.stream}
-                  isMuted={call.status !== VideoCallStatus.CONNECTED}
-                />
+                {call.status == VideoCallStatus.CONNECTED ? (
+                  <VideoPlayer
+                    stream={call.stream}
+                    isMuted={call.status !== VideoCallStatus.CONNECTED}
+                  />
+                ) : (
+                  <Center gap="3" display="flex" p="3">
+                    <Spinner size="inherit" color="inherit" />
+                    <p>Waiting......</p>
+                  </Center>
+                )}
                 <Box mt="4" textAlign="center" fontSize="sm">
                   {call.address}
                 </Box>
