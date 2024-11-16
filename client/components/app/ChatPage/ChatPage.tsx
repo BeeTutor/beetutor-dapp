@@ -46,7 +46,7 @@ import {
   FaVideo,
 } from "react-icons/fa6";
 import { LuSearch } from "react-icons/lu";
-import RPC from "../../../services/ethersRPC";
+import * as RPC from "../../../services/ethersRPC";
 import VideoCallDialog from "./components/VideoCallDialog";
 
 export enum ChatTabEnum {

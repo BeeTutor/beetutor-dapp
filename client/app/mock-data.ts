@@ -199,7 +199,7 @@ const baseTutors = [
   {
     id: 4,
     name: "Josie X.D",
-    address: "0x446fRQHEfwefwe324hg34herhglerg",
+    address: "0x344604EdE059444713e5a26d55a051fC6A2058F6",
     about: "Hi, I’m Josie, a passionate home cook from Thailand! Although I’ve never attended formal culinary school, I’ve spent years perfecting my skills in the kitchen, crafting authentic Thai dishes that bring smiles to family and friends. Cooking is not just my daily routine—it’s my way of sharing love and culture. Now, through BeeTutor, I’m excited to teach you how to create some of Thailand’s most beloved flavors in your own kitchen. Whether you’re a beginner or an experienced cook, let’s explore the art of Thai cuisine together!",
     avatar:
       "https://noun-api.com/beta/pfp?head=2&glasses=19&background=0&body=24&accessory=3",
@@ -253,6 +253,78 @@ const baseTutors = [
   },
   {
     id: 5,
+    name: "Spark Huang",
+    address: "0x446fRQHEfwefwe324hg34herhglerg",
+    about:
+      "Spark is a professional fitness coach specializing in weight loss and healthy lifestyles. With years of experience, he is passionate about helping students develop sustainable weight management plans while improving both physical and mental well-being. Spark believes that everyone can achieve their health goals through proper exercise and nutrition.",
+    avatar:
+      "https://noun-api.com/beta/pfp?head=2&glasses=19&background=0&body=24&accessory=3",
+    rating: 4.5, // Adjusted to reflect a more diverse testing dataset
+    tags: ["WeightLoss", "HealthyLiving", "WeightManagement"],
+    attended: 1,
+    offered: 3,
+    courses: [],
+  },
+  {
+    id: 6,
+    name: "You-Sheng",
+    address: "0x446fRQHEfweffubkiijw4herhglerg",
+    about:
+      "You-Sheng is a frontend developer with a passion for creating seamless user experiences. With expertise in modern web technologies like React and TypeScript, he enjoys building responsive and dynamic web applications. He is dedicated to continuous learning and is eager to share his knowledge with aspiring developers.",
+    avatar:
+      "https://noun-api.com/beta/pfp?head=2&glasses=19&background=0&body=24&accessory=3",
+    rating: 4.8,
+    tags: ["Frontend", "React", "WebDevelopment"],
+    attended: 1,
+    offered: 3,
+    courses: [{
+      id: 29,
+      name: "Introduction to React",
+      image: "/assets/courses/react1.webp",
+      description: `This course covers the basics of React.js, including components, state, props, and lifecycle methods. Learn how to build dynamic user interfaces for modern web applications.`,
+      rating: 4.7,
+      price: 150,
+      duration: 12,
+      participantCount: 15,
+    },
+    {
+      id: 30,
+      name: "Building Advanced React Applications",
+      image: "/assets/courses/react2.webp",
+      description: `Take your React skills to the next level! This course focuses on advanced topics like hooks, context API, performance optimization, and state management with Redux.`,
+      rating: 4.9,
+      price: 250,
+      duration: 18,
+      participantCount: 12,
+    },],
+  },
+  {
+    id: 7,
+    name: "Mannie",
+    address: "0x3F4A9b2Df5c928fE7AfD2e7B2B7C9a0Ae3D3B2Cd",
+    about:
+      "Mannie is a graduate student actively developing project management (PM) skills. With a keen interest in agile methodologies and product development, Mannie is focused on mastering the principles of teamwork, leadership, and strategic planning. Passionate about applying theoretical knowledge to real-world projects, Mannie enjoys collaborating with diverse teams and sharing insights on efficient project workflows.",
+    avatar:
+      "https://noun-api.com/beta/pfp?head=25&glasses=3&background=7&body=15&accessory=5",
+    rating: 4.6,
+    tags: ["ProjectManagement", "Agile", "GraduateStudent"],
+    attended: 0,
+    offered: 1,
+    courses: [
+      {
+        id: 31,
+        name: "Introduction to Agile Project Management",
+        image: "/assets/courses/agile1.webp",
+        description: `This course covers the fundamentals of agile project management, including Scrum, Kanban, and sprint planning. Learn how to manage projects efficiently in a fast-paced environment.`,
+        rating: 4.8,
+        price: 180,
+        duration: 10,
+        participantCount: 25,
+      },
+    ],
+  },
+  {
+    id: 8,
     name: "Ben C.T",
     address: "0x446fRQHEfwefwe324hg34herhglerg",
     about: "",
@@ -265,7 +337,7 @@ const baseTutors = [
     courses: [],
   },
   {
-    id: 6,
+    id: 9,
     name: "York J.N",
     address: "0x446fRQHEfwefwe324hg34herhglerg",
     about: "",

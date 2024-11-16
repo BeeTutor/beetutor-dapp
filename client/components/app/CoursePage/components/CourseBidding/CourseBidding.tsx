@@ -119,7 +119,7 @@ export const CourseBidding: React.FC<Props> = ({ ...gridProps }) => {
             />
           </InputGroup>
           <Button
-            disabled={nowSessionStatus !== "open"}
+            // disabled={nowSessionStatus !== "open"}
             onClick={async () => {
               const amountInWei = ethers.parseUnits(bidValue, "ether");
               console.log("Place Bid:", amountInWei);
