@@ -1,5 +1,5 @@
 import { IProvider } from "@web3auth/base";
-import { Contract, ethers } from "ethers";
+import { BrowserProvider, Contract, ethers } from "ethers";
 import Swal from "sweetalert2";
 import { toaster } from "../components/ui/toaster";
 import actionContractABI from "../contracts/CourseCertificate.json";
@@ -13,7 +13,7 @@ export interface Bids {
 export class NftContractService {
   contractAddress: string = "";
   contract: Contract | null = null;
-  provider: IProvider;
+  provider:  BrowserProvider;
   ethersProvider: IProvider | null = null;
   signer: ethers.JsonRpcSigner | null = null;
   isInitialized = false;
@@ -24,7 +24,7 @@ export class NftContractService {
     default_chain: string;
   } = { nft_contract_address: {}, default_chain: "LINEA_SEPOLIA" };
 
-  constructor(provider: IProvider, nowChain: string) {
+  constructor(provider: BrowserProvider, nowChain: string) {
     this.contract = null;
     this.provider = provider;
     this.initializeContract(nowChain);
@@ -39,8 +39,8 @@ export class NftContractService {
         this.chainsConfig.nft_contract_address[
           nowChain || this.chainsConfig.default_chain
         ] || "";
-      const ethersProvider = new ethers.BrowserProvider(this.provider);
-      this.signer = await ethersProvider.getSigner();
+      // const ethersProvider = new ethers.BrowserProvider(this.provider);
+      this.signer = await this.provider.getSigner();
 
       console.log("signer connect success", this.signer);
       this.contract = new ethers.Contract(
