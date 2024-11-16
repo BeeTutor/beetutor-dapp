@@ -1,51 +1,112 @@
-// services/contractService.js
-import { ethers } from "ethers";
+import { IProvider } from "@web3auth/base";
+import { Contract, ethers } from "ethers";
+import { toaster } from "../components/ui/toaster";
+import actionContractABI from "../contracts/CourseAuction.json";
 
-class ContractService {
-  constructor(provider, contractAddress, abi) {
+export class ContractService {
+  contractAddress: string = "";
+  contract: Contract | null = null;
+  provider: IProvider;
+  ethersProvider: IProvider | null = null;
+  signer: ethers.JsonRpcSigner | null = null;
+
+  constructor(provider: IProvider) {
+    this.contractAddress = process.env.NEXT_PUBLIC_BID_ADDRESS || "";
+    this.contract = null;
     this.provider = provider;
-    this.contractAddress = contractAddress;
-    this.contract = new ethers.Contract(
-      contractAddress,
-      abi,
-      provider.getSigner()
-    );
+    this.initializeContract(actionContractABI["abi"]);
   }
 
-  // 登入方法
-  async login() {
-    try {
-      const signer = this.provider.getSigner();
-      const account = await signer.getAddress();
-      return account;
-    } catch (error) {
-      console.error("Login error:", error);
-      throw error;
+  private async initializeContract(abi: any) {
+    if (this.provider) {
+      const ethersProvider = new ethers.BrowserProvider(this.provider);
+      this.signer = await ethersProvider.getSigner();
+      this.contract = new ethers.Contract(
+        this.contractAddress,
+        abi,
+        this.signer
+      );
     }
   }
 
-  // 與智能合約的交互方法
-  async doSomething() {
+  async placeBid(courseId: number, batchId: number, amount: number) {
     try {
-      const tx = await this.contract.doSomething(); // 假設合約中有 `doSomething` 方法
+      if (!this.contract) {
+        throw new Error("Contract not initialized");
+      }
+      const amountInWei = ethers.parseEther(amount.toString());
+      const tx = await this.contract.placeBid(courseId, batchId, {
+        value: amountInWei,
+      });
+      console.debug("placeBid:", tx);
       await tx.wait();
+      toaster.success({
+        title: "Successfully Bided",
+      });
       return tx;
     } catch (error) {
-      console.error("doSomething transaction failed:", error);
+      console.error("placeBid transaction ", error);
+      if (error?.message?.includes("Contract not initialized")) {
+        toaster.error({
+          title: "Contract not initialized",
+          description: error.data?.message || error.message || "Unknown Error",
+        });
+      }
+      if (error?.message?.includes("Auction ended")) {
+        toaster.error({
+          title: "Auction ended",
+          description: error.data?.message || error.message || "Unknown Error",
+        });
+      }
       throw error;
     }
   }
 
-  // 另一個示例方法：獲取合約中的某個狀態變量
-  async getSomeValue() {
+  async getActionsBids(courseId: number, batchId: number) {
     try {
-      const value = await this.contract.someValue(); // 假設合約中有 `someValue` 方法
+      if (!this.contract) {
+        throw new Error("Contract not initialized");
+      }
+
+      const bids = (await this.contract.getBids(courseId, batchId)).map((b) => {
+        return {
+          address: b[0],
+          amount: Number(b[1]),
+        };
+      });
+      console.log("getActionsBids value:", bids);
+      return bids;
+    } catch (error) {
+      console.error("getActionsBids failed:", error);
+      throw error;
+    }
+  }
+
+  async getActionsBidsCount(courseId: number, batchId: number) {
+    try {
+      if (!this.contract) {
+        throw new Error("Contract not initialized");
+      }
+      const value = await this.contract.getBidsCount(courseId, batchId);
+      console.log("getActionsBidsCount value:", value);
+      return Number(value);
+    } catch (error) {
+      console.error("getActionsBidsCount failed:", error);
+      throw error;
+    }
+  }
+
+  async getCourseCertificateAddress() {
+    try {
+      if (!this.contract) {
+        throw new Error("Contract not initialized");
+      }
+      const value = await this.contract.courseCertificate();
+      console.log("getCourseCertificateAddress value:", value);
       return value;
     } catch (error) {
-      console.error("getSomeValue failed:", error);
+      console.error("getCourseCertificateAddress failed:", error);
       throw error;
     }
   }
 }
-
-export const contractService = new ContractService();

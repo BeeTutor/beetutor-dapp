@@ -11,29 +11,38 @@ import { Web3Auth, Web3AuthOptions } from "@web3auth/modal";
 const clientId =
   "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
 
-  const CHAIN_CONFIG = {
-    ETH_SEPOLIA: {
-      chainNamespace: CHAIN_NAMESPACES.EIP155,
-      chainId: "0xaa36a7",
-      rpcTarget: "https://rpc.ankr.com/eth_sepolia",
-      displayName: "Ethereum Sepolia Testnet",
-      blockExplorerUrl: "https://sepolia.etherscan.io",
-      ticker: "ETH",
-      tickerName: "Ethereum",
-      logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
-    },
-    POLYGON_MUMBAI: {
-      chainNamespace: CHAIN_NAMESPACES.EIP155,
-      chainId: "0x13881",
-      rpcTarget: "https://rpc-mumbai.maticvigil.com",
-      displayName: "Polygon Mumbai Testnet",
-      blockExplorerUrl: "https://mumbai.polygonscan.com",
-      ticker: "MATIC",
-      tickerName: "Polygon",
-      logo: "https://cryptologos.cc/logos/polygon-matic-logo.png",
-    },
-    // 可以繼續添加其他鏈的配置
-  };
+const CHAIN_CONFIG = {
+  ETH_SEPOLIA: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0xaa36a7",
+    rpcTarget: "https://rpc.ankr.com/eth_sepolia",
+    displayName: "Ethereum Sepolia Testnet",
+    blockExplorerUrl: "https://sepolia.etherscan.io",
+    ticker: "ETH",
+    tickerName: "Ethereum",
+    logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+  },
+  POLYGON_MUMBAI: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x13881",
+    rpcTarget: "https://rpc-mumbai.maticvigil.com",
+    displayName: "Polygon Mumbai Testnet",
+    blockExplorerUrl: "https://mumbai.polygonscan.com",
+    ticker: "MATIC",
+    tickerName: "Polygon",
+    logo: "https://cryptologos.cc/logos/polygon-matic-logo.png",
+  },
+  HARDHAT_LOCAL: {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x7A69", // 31337
+    rpcTarget: "http://127.0.0.1:8545",
+    displayName: "Hardhat Local",
+    blockExplorerUrl: "",
+    ticker: "ETH",
+    tickerName: "Ethereum",
+    logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+  },
+};
 
 class Web3AuthService {
   private web3auth: Web3Auth;
@@ -41,7 +50,7 @@ class Web3AuthService {
   constructor() {
     // IMP START - SDK Initialization
     const privateKeyProvider = new EthereumPrivateKeyProvider({
-      config: { chainConfig: CHAIN_CONFIG.ETH_SEPOLIA },
+      config: { chainConfig: CHAIN_CONFIG.HARDHAT_LOCAL },
     });
 
     const web3AuthOptions: Web3AuthOptions = {

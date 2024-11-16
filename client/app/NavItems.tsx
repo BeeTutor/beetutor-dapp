@@ -12,6 +12,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Toaster } from "@/components/ui/toaster";
 import { Box, Flex, IconButton } from "@chakra-ui/react";
 import {
   IDKitWidget,
@@ -23,17 +24,18 @@ import Link, { LinkProps } from "next/link";
 import { PropsWithChildren, useEffect, useState } from "react";
 import { LuMenu, LuX } from "react-icons/lu";
 
+import { ContractService } from "@/services/contractService";
 import { web3AuthService } from "@/services/web3AuthService";
 import { useStore } from "@/store";
 import RPC from "../services/ethersRPC";
 
 export const NavItems: React.FC = () => {
   const { provider, setProvider } = useStore();
+  const { contractService, setContractService } = useStore();
   const [loggedIn, setLoggedIn] = useState(false);
   const [showGetAirdrop, setShowGetAirdrop] = useState(true);
   const [showLoginCard, setShowLoginCard] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
   useEffect(() => {
     const getShowGetAirdrop = localStorage.getItem("showGetAirdrop");
     if (getShowGetAirdrop) {
@@ -42,8 +44,11 @@ export const NavItems: React.FC = () => {
     const init = async () => {
       try {
         const provider = await web3AuthService.init();
-        setProvider(provider);
-        setLoggedIn(web3AuthService.connected);
+        if (provider) {
+          setContractService(new ContractService(provider));
+          setProvider(provider);
+          setLoggedIn(web3AuthService.connected);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -121,6 +126,11 @@ export const NavItems: React.FC = () => {
     }
   }
 
+  async function getActionsBids() {
+    await contractService.getActionsBids(1, 1);
+    // await contractService.getCourseCertificateAddress();
+  }
+
   // TODO: May be use
   const loggedInView = (
     <>
@@ -151,8 +161,9 @@ export const NavItems: React.FC = () => {
           </button>
         </div>
         <div>
-          <button onClick={sendTransaction} className="card">
+          <button onClick={getActionsBids} className="card">
             {/* Bid with input */}
+            Get actions bids
           </button>
         </div>
       </div>
@@ -323,6 +334,7 @@ export const NavItems: React.FC = () => {
           )}
         </Flex>
       </Box>
+      <Toaster />
     </>
   );
 };
