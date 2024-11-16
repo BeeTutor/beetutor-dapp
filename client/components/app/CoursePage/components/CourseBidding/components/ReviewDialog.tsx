@@ -1,23 +1,23 @@
 import { Button } from "@/components/ui/button";
 import {
-  DialogRoot,
   DialogBody,
   DialogCloseTrigger,
   DialogContent,
   DialogFooter,
   DialogHeader,
+  DialogRoot,
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Rating } from "@/components/ui/rating";
-import { DialogRootProps, Textarea } from "@chakra-ui/react";
-import { useState } from "react";
 import { toaster, Toaster } from "@/components/ui/toaster";
 import { useStore } from "@/store";
+import { DialogRootProps, Textarea } from "@chakra-ui/react";
+import { useState } from "react";
 
 export const ReviewDialog: React.FC<Omit<DialogRootProps, "children">> = (
   props
 ) => {
-  const { userInfo, courseReviews, setCourseReviews } = useStore();
+  const { userAddress, courseReviews, setCourseReviews } = useStore();
   const [isSaving, setIsSaving] = useState(false);
   const [textValue, setTextValue] = useState("");
   const [rateValue, setRateValue] = useState(0);
@@ -66,11 +66,11 @@ export const ReviewDialog: React.FC<Omit<DialogRootProps, "children">> = (
                   comment: textValue,
                   rating: rateValue,
                   date: new Date().toDateString(),
-                  from: userInfo,
+                  from: userAddress,
                   to: "0xMyCourse",
                 };
                 setCourseReviews([newReview, ...courseReviews]);
-                if (typeof userInfo === "string") {
+                if (typeof userAddress === "string") {
                   const res = await fetch(
                     `${process.env.NEXT_PUBLIC_API_URL}/api/comment`,
                     {

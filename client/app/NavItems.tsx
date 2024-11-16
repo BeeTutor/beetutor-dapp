@@ -12,21 +12,18 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import Image from "next/image";
-import { Box, IconButton, Flex, createListCollection } from "@chakra-ui/react";
-import Link, { LinkProps } from "next/link";
-import { PropsWithChildren, useState, useEffect } from "react";
-import { LuMenu, LuX } from "react-icons/lu";
+import { Toaster } from "@/components/ui/toaster";
+import { Box, Flex, IconButton, createListCollection } from "@chakra-ui/react";
 import {
   IDKitWidget,
-  VerificationLevel,
   ISuccessResult,
+  VerificationLevel,
 } from "@worldcoin/idkit";
-import { Toaster } from "@/components/ui/toaster";
+import Image from "next/image";
+import Link, { LinkProps } from "next/link";
+import { PropsWithChildren, useEffect, useState } from "react";
+import { LuMenu, LuX } from "react-icons/lu";
 
-import RPC from "../services/ethersRPC";
-import { web3AuthService } from "@/services/web3AuthService";
-import { useStore } from "@/store";
 import {
   SelectContent,
   SelectItem,
@@ -35,7 +32,10 @@ import {
   SelectTrigger,
   SelectValueText,
 } from "@/components/ui/select";
+import { web3AuthService } from "@/services/web3AuthService";
+import { useStore } from "@/store";
 import { usePathname } from "next/navigation";
+import RPC from "../services/ethersRPC";
 
 export const NavItems: React.FC = () => {
   const pathname = usePathname();
@@ -47,9 +47,10 @@ export const NavItems: React.FC = () => {
     setLoggedIn,
     nowChain,
     setNowChain,
-    setUserInfo,
+    userAvatar,
+    setUserAddress,
   } = useStore();
-  const { contractService } = useStore();
+  const { contractService, userAddress } = useStore();
 
   const [showGetAirdrop, setShowGetAirdrop] = useState(true);
   const [showLoginCard, setShowLoginCard] = useState(false);
@@ -111,7 +112,7 @@ export const NavItems: React.FC = () => {
       return;
     }
     const address = await RPC.getAccounts(provider);
-    setUserInfo(address);
+    setUserAddress(userAddress);
     uiConsole(address);
     return address;
   };
@@ -333,7 +334,7 @@ export const NavItems: React.FC = () => {
                   <Image
                     fill
                     objectFit="cover"
-                    src={"https://noun-api.com/beta/pfp"}
+                    src={userAvatar}
                     alt={"avatar"}
                   />
                 </Box>
