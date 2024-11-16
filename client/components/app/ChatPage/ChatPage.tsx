@@ -95,8 +95,8 @@ export const ChatPage = ({
 
   // Search and reply states
   const [search, setSearch] = useState({
-    personal: "",
-    group: "",
+    personal: defaultTab === ChatTabEnum.CHAT && chatId ? chatId : "",
+    group: defaultTab === ChatTabEnum.GROUP && chatId ? chatId : "",
   });
 
   const [stream, setStream] = useState<PushStream>();
