@@ -72,8 +72,8 @@ export const ChatPage = ({
 
   // // Video call states
   const [videoSettings, setVideoSettings] = useState({
-    video: false,
-    audio: false,
+    video: true,
+    audio: true,
   });
 
   // // Chat management states
