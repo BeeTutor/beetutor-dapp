@@ -24,45 +24,10 @@ import {
   VerificationLevel,
 } from "@worldcoin/idkit";
 
-import {
-  CHAIN_NAMESPACES,
-  IAdapter,
-  IProvider,
-  WEB3AUTH_NETWORK,
-} from "@web3auth/base";
-import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
-import { Web3Auth, Web3AuthOptions } from "@web3auth/modal";
+import { IProvider } from "@web3auth/base";
 
-import RPC from "./ethersRPC";
-
-// get from https://dashboard.web3auth.io
-const clientId =
-  "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ";
-const chainConfig = {
-  chainNamespace: CHAIN_NAMESPACES.EIP155,
-  chainId: "0xaa36a7",
-  rpcTarget: "https://rpc.ankr.com/eth_sepolia",
-  // Avoid using public rpcTarget in production.
-  // Use services like Infura, Quicknode etc
-  displayName: "Ethereum Sepolia Testnet",
-  blockExplorerUrl: "https://sepolia.etherscan.io",
-  ticker: "ETH",
-  tickerName: "Ethereum",
-  logo: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
-};
-// IMP START - SDK Initialization
-const privateKeyProvider = new EthereumPrivateKeyProvider({
-  config: { chainConfig },
-});
-
-const web3AuthOptions: Web3AuthOptions = {
-  clientId,
-  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
-  privateKeyProvider,
-};
-const web3auth = new Web3Auth(web3AuthOptions);
-// IMP END - SDK Initialization
+import { web3AuthService } from "@/services/web3AuthService";
+import RPC from "../services/ethersRPC";
 
 export const NavItems: React.FC = () => {
   const [provider, setProvider] = useState<IProvider | null>(null);
@@ -78,22 +43,9 @@ export const NavItems: React.FC = () => {
     }
     const init = async () => {
       try {
-        // IMP START - Configuring External Wallets
-        const adapters = await getDefaultExternalAdapters({
-          options: web3AuthOptions,
-        });
-        adapters.forEach((adapter: IAdapter<unknown>) => {
-          web3auth.configureAdapter(adapter);
-        });
-        // IMP END - Configuring External Wallets
-        // IMP START - SDK Initializtion
-        await web3auth.initModal();
-        // IMP END - SDK Initialization
-        setProvider(web3auth.provider);
-
-        if (web3auth.connected) {
-          setLoggedIn(true);
-        }
+        const provider = await web3AuthService.init();
+        setProvider(provider);
+        setLoggedIn(web3AuthService.connected);
       } catch (error) {
         console.error(error);
       }
@@ -103,26 +55,18 @@ export const NavItems: React.FC = () => {
   }, []);
 
   const login = async () => {
-    // IMP START - Login
-    const web3authProvider = await web3auth.connect();
-    // IMP END - Login
+    const web3authProvider = await web3AuthService.login();
     setProvider(web3authProvider);
-    if (web3auth.connected) {
-      setLoggedIn(true);
-    }
+    setLoggedIn(web3AuthService.connected);
   };
 
   const getUserInfo = async () => {
-    // IMP START - Get User Information
-    const user = await web3auth.getUserInfo();
-    // IMP END - Get User Information
+    const user = await web3AuthService.getUserInfo();
     uiConsole(user);
   };
 
   const logout = async () => {
-    // IMP START - Logout
-    await web3auth.logout();
-    // IMP END - Logout
+    await web3AuthService.logout();
     setProvider(null);
     setLoggedIn(false);
     uiConsole("logged out");
@@ -138,6 +82,7 @@ export const NavItems: React.FC = () => {
     }
     const address = await RPC.getAccounts(provider);
     uiConsole(address);
+    return address;
   };
 
   const getBalance = async () => {
@@ -170,6 +115,7 @@ export const NavItems: React.FC = () => {
   // IMP END - Blockchain Calls
 
   function uiConsole(...args: any[]): void {
+    console.log("uiConsole", args);
     const el = document.querySelector("#console>p");
     if (el) {
       el.innerHTML = JSON.stringify(args || {}, null, 2);
@@ -177,6 +123,7 @@ export const NavItems: React.FC = () => {
     }
   }
 
+  // TODO: May be use
   const loggedInView = (
     <>
       <div className="flex-container">
@@ -205,11 +152,6 @@ export const NavItems: React.FC = () => {
             Send Transaction
           </button>
         </div>
-        <div>
-          <button onClick={logout} className="card">
-            Log Out
-          </button>
-        </div>
       </div>
     </>
   );
@@ -227,7 +169,7 @@ export const NavItems: React.FC = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(proof),
+        body: JSON.stringify({ proof, to: await getAccounts() }),
       }
     );
     if (!res.ok) {
@@ -355,6 +297,7 @@ export const NavItems: React.FC = () => {
               <DialogContent bg="gray.50">
                 <DialogHeader>
                   <DialogTitle>Dialog Title</DialogTitle>
+                  {loggedInView}
                 </DialogHeader>
                 <DialogBody>
                   <p>
