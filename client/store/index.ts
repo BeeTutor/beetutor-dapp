@@ -8,7 +8,7 @@ interface DappState {
   contractService: any;
   setContractService: (contractService: any) => void;
 
-  nowChain: any;
+  nowChain: "LINEA_SEPOLIA",
   setNowChain: (nowChain: any) => void;
 
   loggedIn: any;

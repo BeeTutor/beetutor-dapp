@@ -11,7 +11,8 @@ export const CHAIN_CONFIG = {
   LINEA_SEPOLIA: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0xe705",
-    rpcTarget: "https://rpc.sepolia.linea.build",
+    // rpcTarget: "https://rpc.sepolia.linea.build",
+    rpcTarget: `https://linea-sepolia.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_API_KEY}`,
     displayName: "Linea Sepolia Testnet",
     blockExplorerUrl: "https://sepolia.lineascan.build",
     ticker: "ETH",
@@ -125,11 +126,12 @@ class Web3AuthService {
       lastChain,
       CHAIN_CONFIG[lastChain as keyof typeof CHAIN_CONFIG]
     );
+    console.log("🍀🍀🍀", CHAIN_CONFIG[lastChain as keyof typeof CHAIN_CONFIG]);
     const privateKeyProvider = new EthereumPrivateKeyProvider({
       config: {
         chainConfig:
           CHAIN_CONFIG[lastChain as keyof typeof CHAIN_CONFIG] ||
-          CHAIN_CONFIG.HARDHAT_LOCAL,
+          CHAIN_CONFIG.LINEA_SEPOLIA,
       },
     });
 

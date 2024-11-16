@@ -36,9 +36,8 @@ export const CourseBidding: React.FC<Props> = ({ course, ...gridProps }) => {
     batchId,
     setBatchId,
   } = useStore();
-  console.log(course);
-  const [bidValue, setBidValue] = useState("");
 
+  const [bidValue, setBidValue] = useState("");
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false);
 
   const sessionStatus = SESSION_STATUS[batchId];
@@ -50,14 +49,15 @@ export const CourseBidding: React.FC<Props> = ({ course, ...gridProps }) => {
         collection={SESSIONS}
         size="sm"
         multiple={false}
-        value={[batchId]}
         onValueChange={(e) => setBatchId(e.value[0])}
+        value={[batchId]}
+        defaultValue={[batchId]}
       >
         <SelectLabel>Session</SelectLabel>
         <SelectTrigger>
-          <SelectValueText placeholder="Select session">
+          <SelectValueText placeholder="Session 0">
             {([item]: (typeof SESSIONS)["items"]) => {
-              return `Session ${item.id}`;
+              return `Session ${item?.id}`;
             }}
           </SelectValueText>
         </SelectTrigger>
