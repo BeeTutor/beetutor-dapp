@@ -14,7 +14,7 @@ export type Tutor = {
 const baseTutors = [
   {
     id: 1,
-    name: "ArjunSharma",
+    name: "Josie X.D",
     address: "0x3fB5C0dC4Bf928fF7EfD1fDbC7E7A0Ae2D3B1Ab2",
     about:
       "Vithal is an experienced leader in tech education 🎓, with over 30 years in the IT industry and a background in computer science. He’s passionate about mentoring startups and innovators 🚀, having supported 100+ entrepreneurs and helped establish successful incubation centers. In past roles, Vithal led partner innovation initiatives, guiding teams to create next-gen solutions for industries like banking and healthcare 💼💊. He has also worked in consulting and software development, where he was recognized for his innovation and excellence ✨. Outside of work, Vithal is happily married with two wonderful kids.",
@@ -89,7 +89,7 @@ const baseTutors = [
   },
   {
     id: 2,
-    name: "EmmaSullivan",
+    name: "Johnny Y.J",
     address: "0x446fRQHEfwefwe324hg34herhglerg",
     about:
       "Emma Sullivan is a technical writer with more than 14 years experience, working for both hardware and software companies writing user guides, technical references, help text, and so on. She has been helping document the BC Government initiatives (VON, Greenlight, OrgBook BC and IIWBook) and became hooked on self-sovereign identity at IIW28.",

@@ -63,7 +63,7 @@ export const CourseDetails: React.FC<Props> = ({ course }) => {
             data: bids.map((e: Bids) => formatEther(e.amount)),
             fill: false,
             borderColor: "rgb(75, 192, 192)",
-            tension: 0.1, // 曲線的平滑度
+            tension: 0.1,
           } as never,
         ],
       });

@@ -16,7 +16,7 @@ export default function Home() {
       >
         <Box>
           <Heading fontWeight="bold" fontSize="5xl" lineHeight="4rem">
-            Unique wise buffet
+            Share to earn
           </Heading>
           <Box fontSize="lg" mt="2.5rem">
             Imagine being able to bid for a moment of someone's time, just like

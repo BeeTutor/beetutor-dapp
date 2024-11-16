@@ -23,7 +23,12 @@ export default async function Page({ params: { id } }: Props) {
             maxW="15rem"
             mx="auto"
           >
-            <Image fill objectFit="cover" src={tutor.avatar} alt={tutor.name} />
+            <Image
+              fill
+              objectFit="cover"
+              src={`https://noun-api.com/beta/pfp?name=${tutor.name}`}
+              alt={tutor.name}
+            />
           </Box>
           <Card.Title mt="2rem" fontSize="2xl" textAlign="center">
             {tutor.name}

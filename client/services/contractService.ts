@@ -93,6 +93,31 @@ export class ContractService {
         }
       );
 
+      this.contract.on(
+        "AuctionFinalized",
+        (courseId: number, batchId: number) => {
+          console.log("courseId:", courseId);
+          console.log("batchId:", batchId);
+
+          Swal.fire({
+            title: `You won the bid!`,
+            confirmButtonText: "OK",
+            padding: "3em",
+            color: "#716add",
+            text: `Now you can join the exclusive group chat.`,
+            imageUrl: "https://media.giphy.com/media/SsTcO55LJDBsI/giphy.gif",
+            imageWidth: 350,
+            imageAlt: "Custom image",
+            backdrop: `
+                rgba(0,0,123,0.4)
+                url("/nyan-cat.gif")
+                left top
+                no-repeat
+              `,
+          });
+        }
+      );
+
       console.log("Contract connect success", this.contract);
       this.isInitialized = true;
       toaster.success({

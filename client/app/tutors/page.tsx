@@ -46,7 +46,7 @@ export default function Tutors() {
                       <Image
                         fill
                         objectFit="cover"
-                        src={x.avatar}
+                        src={`https://noun-api.com/beta/pfp?name=${x.name}`}
                         alt={x.name}
                       />
                     </Box>
