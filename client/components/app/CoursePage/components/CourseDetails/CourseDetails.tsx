@@ -45,12 +45,15 @@ export const CourseDetails: React.FC<Props> = ({ course }) => {
     async function getActionsBids() {
       return await contractService.getActionsBids(courseId, batchId);
     }
+
     const generateLineChartData = async () => {
       let bids = await getActionsBids();
 
       if (!bids) {
         bids = courseBids;
       }
+      bids = bids.sort((a: Bids, b: Bids) => a.bidTime - b.bidTime);
+
       console.log("Action Bids:", bids);
 
       setActionBids({
