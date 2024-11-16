@@ -39,9 +39,9 @@ export const CourseGrid: React.FC<Props> = ({ courses }) => {
               </Box>
               <Card.Body p="1rem">
                 <Flex pr="4rem" flexWrap="wrap" gap={1}>
-                  {["Blockchain", "Crypto", "TechMentor"].map((x, i) => (
+                  {x.tags && x.tags.map((tag, i) => (
                     <Badge key={i} colorPalette="green" px="3" py="1">
-                      #{x}
+                      #{tag}
                     </Badge>
                   ))}
                 </Flex>
