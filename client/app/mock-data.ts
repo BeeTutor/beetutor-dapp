@@ -18,7 +18,8 @@ const baseTutors = [
     address: "0x3fB5C0dC4Bf928fF7EfD1fDbC7E7A0Ae2D3B1Ab2",
     about:
       "Vithal is an experienced leader in tech education 🎓, with over 30 years in the IT industry and a background in computer science. He’s passionate about mentoring startups and innovators 🚀, having supported 100+ entrepreneurs and helped establish successful incubation centers. In past roles, Vithal led partner innovation initiatives, guiding teams to create next-gen solutions for industries like banking and healthcare 💼💊. He has also worked in consulting and software development, where he was recognized for his innovation and excellence ✨. Outside of work, Vithal is happily married with two wonderful kids.",
-    avatar: "/assets/avatar/1.svg",
+    avatar:
+      "https://noun-api.com/beta/pfp?head=229&glasses=19&background=0&body=27&accessory=3",
     rating: 3,
     tags: ["TechMentor", "InnovationLeader", "StartupSupport"],
     attended: 2,
@@ -41,7 +42,7 @@ const baseTutors = [
         description: `Master blockchain principles and smart contract development using Rust on Solana. Designed for those with programming experience, this course unlocks new career opportunities in Smart Contract and dApp Development.`,
         rating: 4.5,
         price: 200,
-        duration:15,
+        duration: 15,
         participantCount: 1,
       },
       {
@@ -92,7 +93,8 @@ const baseTutors = [
     address: "0x446fRQHEfwefwe324hg34herhglerg",
     about:
       "Emma Sullivan is a technical writer with more than 14 years experience, working for both hardware and software companies writing user guides, technical references, help text, and so on. She has been helping document the BC Government initiatives (VON, Greenlight, OrgBook BC and IIWBook) and became hooked on self-sovereign identity at IIW28.",
-    avatar: "/assets/avatar/2.svg",
+    avatar:
+      "https://noun-api.com/beta/pfp?head=2&glasses=19&background=0&body=24&accessory=3",
     rating: 4,
     tags: ["TechWriterExpert", "SelfSovereignIdentity"],
     attended: 3,
@@ -141,7 +143,7 @@ export type Course = {
 
 export const courseData: Course[] = tutors.flatMap((tutor) => tutor.courses);
 
-export interface IReviewsData{
+export interface IReviewsData {
   id: number;
   name: string;
   comment: string;
@@ -199,7 +201,7 @@ export const reviewData: IReviewsData[] = [
     date: "2024-11-1",
     from: "0x492fRQHEfwefwe324hg34herhglerg",
   },
-]
+];
 
 export const bidValueData = [
   {
@@ -232,4 +234,4 @@ export const bidValueData = [
     bidTime: 1630906400000, // 2021-08-20T00:00:00.000Z
     amount: "9000000000000000000", // 1000 eth
   },
-]
+];

@@ -14,14 +14,17 @@ interface DappState {
   loggedIn: any;
   setLoggedIn: (loggedIn: any) => void;
 
-  userInfo: any;
-  setUserInfo: (userInfo: any) => void;
+  userAddress: any;
+  setUserAddress: (userAddress: any) => void;
 
   courseReviews: any;
   setCourseReviews: (courseReviews: any) => void;
-  
+
   courseBids: any;
   setCourseBids: (courseBids: any) => void;
+
+  userAvatar: any;
+  setUserAvatar: (userAvatar: any) => void;
 }
 
 export const useStore = create<DappState>((set) => ({
@@ -37,12 +40,15 @@ export const useStore = create<DappState>((set) => ({
   loggedIn: null,
   setLoggedIn: (loggedIn) => set({ loggedIn }),
 
-  userInfo: null,
-  setUserInfo: (userInfo) => set({ userInfo }),
+  userAddress: null,
+  setUserAddress: (userAddress) => set({ userAddress }),
 
   courseReviews: null,
   setCourseReviews: (courseReviews) => set({ courseReviews }),
 
   courseBids: null,
   setCourseBids: (courseBids) => set({ courseBids }),
+
+  userAvatar: "https://noun-api.com/beta/pfp",
+  setUserAvatar: (userAvatar) => set({ userAvatar }),
 }));
