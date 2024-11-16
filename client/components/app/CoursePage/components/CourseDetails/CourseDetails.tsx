@@ -1,14 +1,16 @@
 "use client";
 
 import { Course } from "@/app/mock-data";
-import { Grid, Box, Heading } from "@chakra-ui/react";
-import { ReviewSection } from "./components/ReviewSection";
-import "chart.js/auto";
-import { Line } from "react-chartjs-2";
-import { useStore } from "@/store";
-import { useEffect, useState } from "react";
-import { formatEther } from "ethers";
 import { Bids } from "@/services/contractService";
+import { useStore } from "@/store";
+import { Box, Grid, Heading } from "@chakra-ui/react";
+import "chart.js/auto";
+import Chart from "chart.js/auto";
+import { formatEther } from "ethers";
+import { useEffect, useState } from "react";
+import { Line } from "react-chartjs-2";
+import { ReviewSection } from "./components/ReviewSection";
+
 interface Props {
   course: Course;
 }
@@ -19,6 +21,24 @@ export const CourseDetails: React.FC<Props> = ({ course }) => {
     labels: [],
     datasets: [],
   });
+
+  const [chart, setChart] = useState<Chart | null>();
+  const [chartContainer, setChartContainer] = useState<HTMLDivElement | null>(
+    null
+  );
+
+  useEffect(() => {
+    if (!chart || !chartContainer) return;
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      const { width } = entries[0].contentRect;
+      chart.resize(width, width / chartAspectRatio);
+    });
+
+    resizeObserver.observe(chartContainer);
+
+    return resizeObserver.disconnect;
+  }, [chart, chartContainer]);
 
   useEffect(() => {
     async function getActionsBids() {
@@ -56,13 +76,27 @@ export const CourseDetails: React.FC<Props> = ({ course }) => {
 
   return (
     <Grid gap="1rem">
-      <Box bg="blue.50" borderRadius="0.5rem" p="2rem">
+      <Box ref={setChartContainer} bg="blue.50" borderRadius="0.5rem" p="2rem">
         <Heading fontSize="xl" mb="1rem">
           Session Bids Info
         </Heading>
-        <Line data={actionBids} height={80} />
+        <Box
+          position="relative"
+          w="full"
+          aspectRatio={`${chartAspectRatio} / 1`}
+        >
+          <Box position="absolute" inset="0">
+            <Line
+              ref={setChart}
+              data={actionBids}
+              options={{ responsive: false, aspectRatio: chartAspectRatio }}
+            />
+          </Box>
+        </Box>
       </Box>
       <ReviewSection course={course} />
     </Grid>
   );
 };
+
+const chartAspectRatio = 3;
