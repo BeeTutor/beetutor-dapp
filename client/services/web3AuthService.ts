@@ -11,8 +11,8 @@ export const CHAIN_CONFIG = {
   LINEA_SEPOLIA: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0xe705",
-    // rpcTarget: "https://rpc.sepolia.linea.build",
-    rpcTarget: `https://linea-sepolia.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_API_KEY}`,
+    rpcTarget: "https://rpc.sepolia.linea.build",
+    // rpcTarget: `https://linea-sepolia.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_API_KEY}`,
     displayName: "Linea Sepolia Testnet",
     blockExplorerUrl: "https://sepolia.lineascan.build",
     ticker: "ETH",
@@ -146,12 +146,13 @@ class Web3AuthService {
   }
 
   async init() {
+    this.web3auth.logout();
     const adapters = await getDefaultExternalAdapters({
       options: this.web3auth.options,
     });
     for (const adapter of adapters) {
       try {
-        this.web3auth.configureAdapter(adapter);
+          this.web3auth.configureAdapter(adapter);
       } catch (e) {
         console.error("Failed to configure adapter", adapter.name, e);
       }
