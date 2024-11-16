@@ -52,7 +52,7 @@ export function Provider(props: ThemeProviderProps) {
           const provider = await web3AuthService.init();
           const { ethereum } = window as never;
           const providerBrows = new ethers.BrowserProvider(ethereum);
-
+          setProvider(providerBrows);
           if (provider) {
             const newContractService = await new ContractService(
               providerBrows || provider,

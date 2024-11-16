@@ -131,7 +131,7 @@ class Web3AuthService {
       config: {
         chainConfig:
           CHAIN_CONFIG[lastChain as keyof typeof CHAIN_CONFIG] ||
-          CHAIN_CONFIG.LINEA_SEPOLIA,
+          CHAIN_CONFIG.BASE_SEPOLIA,
       },
     });
 
