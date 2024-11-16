@@ -105,7 +105,7 @@ export class ContractService {
             padding: "3em",
             color: "#716add",
             text: `Now you can join the exclusive group chat.`,
-            imageUrl: "https://media.giphy.com/media/SsTcO55LJDBsI/giphy.gif",
+            imageUrl: "https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExaHR5aW50NzRwbWphNWNvNThqZWFhY2c0am42d28xa3Z2YTl3cG1tMCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/lnyPptAfGwHeTdoQDk/giphy-downsized-large.gif",
             imageWidth: 350,
             imageAlt: "Custom image",
             backdrop: `
