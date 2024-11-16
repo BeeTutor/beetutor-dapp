@@ -35,16 +35,19 @@ import {
 } from "@/components/ui/select";
 import { web3AuthService } from "@/services/web3AuthService";
 import { useStore } from "@/store";
+import { usePathname } from "next/navigation";
 import RPC from "../services/ethersRPC";
 
 export const NavItems: React.FC = () => {
+  const pathname = usePathname();
+
   const { provider, setProvider, loggedIn, setLoggedIn } = useStore();
   const { contractService } = useStore();
 
   const [showGetAirdrop, setShowGetAirdrop] = useState(true);
   const [showLoginCard, setShowLoginCard] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [chain, setChain] = useState("");
+  const [chain, setChain] = useState(null);
   const CHAINS = createListCollection({
     items: [
       { key: "ETH_SEPOLIA", name: "Sepolia" },
@@ -58,8 +61,10 @@ export const NavItems: React.FC = () => {
     if (getShowGetAirdrop) {
       setShowGetAirdrop(false);
     }
-    console.log("chain~~", chain);
-    switchChain(chain);
+
+    if (chain) {
+      switchChain(chain);
+    }
   }, [provider, contractService, chain]);
 
   const login = async () => {
@@ -254,7 +259,17 @@ export const NavItems: React.FC = () => {
           paddingRight={loggedIn ? "5rem" : "1rem"}
         >
           {ITEMS.map((x, i) => (
-            <Box key={i} borderBottom="2px solid" borderColor="primary.800">
+            <Box
+              key={i}
+              asChild
+              borderBottom="2px solid"
+              borderColor={
+                pathname.startsWith(x.href.toString())
+                  ? "primary.500"
+                  : "primary.800"
+              }
+              _hover={{ borderColor: "primary.500" }}
+            >
               <Link {...x} />
             </Box>
           ))}
@@ -307,8 +322,8 @@ export const NavItems: React.FC = () => {
               </DialogTrigger>
               <DialogContent bg="gray.50">
                 <DialogHeader>
-                  <DialogTitle>Dialog Title</DialogTitle>
-                  {loggedInView}
+                  <DialogTitle>Switch Chain</DialogTitle>
+                  {/* {loggedInView} */}
                 </DialogHeader>
                 <DialogBody>
                   <SelectRoot
