@@ -125,11 +125,12 @@ class Web3AuthService {
       lastChain,
       CHAIN_CONFIG[lastChain as keyof typeof CHAIN_CONFIG]
     );
+    console.log("🍀🍀🍀", CHAIN_CONFIG[lastChain as keyof typeof CHAIN_CONFIG]);
     const privateKeyProvider = new EthereumPrivateKeyProvider({
       config: {
         chainConfig:
           CHAIN_CONFIG[lastChain as keyof typeof CHAIN_CONFIG] ||
-          CHAIN_CONFIG.HARDHAT_LOCAL,
+          CHAIN_CONFIG.LINEA_SEPOLIA,
       },
     });
 

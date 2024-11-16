@@ -22,7 +22,7 @@ export class ContractService {
       [chainId: string]: string;
     };
     default_chain: string;
-  } = { contract_address: {}, default_chain: "HARDHAT_LOCAL" };
+  } = { contract_address: {}, default_chain: "LINEA_SEPOLIA" };
 
   constructor(provider: IProvider, nowChain: string) {
     this.contract = null;
@@ -191,7 +191,7 @@ export class ContractService {
       return bids.map((b: [string, number, number]) => {
         return {
           bidder: b[0],
-          bidTime: b[1],
+          bidTime: Number(b[1]),
           amount: b[2],
         };
       });

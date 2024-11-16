@@ -2,7 +2,7 @@ import { IProvider } from "@web3auth/base";
 import { Contract, ethers } from "ethers";
 import Swal from "sweetalert2";
 import { toaster } from "../components/ui/toaster";
-import actionContractABI from "../contracts/CourseAuction.json";
+import actionContractABI from "../contracts/CourseCertificate.json";
 
 export interface Bids {
   bidder: string;
@@ -22,7 +22,7 @@ export class NftContractService {
       [chainId: string]: string;
     };
     default_chain: string;
-  } = { nft_contract_address: {}, default_chain: "HARDHAT_LOCAL" };
+  } = { nft_contract_address: {}, default_chain: "LINEA_SEPOLIA" };
 
   constructor(provider: IProvider, nowChain: string) {
     this.contract = null;
