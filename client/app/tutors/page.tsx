@@ -1,14 +1,14 @@
-import { Badge, Box, Card, Flex, Grid } from "@chakra-ui/react";
 import Image from "next/image";
+import { Badge, Box, Card, Flex, Grid } from "@chakra-ui/react";
+import { tutors } from "../mock-data";
 import Link from "next/link";
-import { userData } from "../mock-data";
 
 export default function Tutors() {
   return (
-    <Grid templateColumns="repeat(auto-fit, minmax(18rem, 1fr))" gap="6">
-      {userData.map((x, i) => (
+    <Grid templateColumns="repeat(auto-fill, minmax(18rem, 1fr))" gap="6">
+      {tutors.map((x, i) => (
         <Link key={i} href={`/tutors/${x.id}`}>
-          <Card.Root bg="gray.50">
+          <Card.Root bg="gray.50" h="full">
             <Card.Body pt="2rem" pb="2rem" gap="4">
               <Flex gap="1.5rem" alignItems="center">
                 <Box
