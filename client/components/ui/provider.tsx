@@ -9,7 +9,7 @@ import { system } from "@/theme";
 import { ChakraProvider } from "@chakra-ui/react";
 import { ThemeProviderProps } from "next-themes";
 import { useEffect } from "react";
-import RPC from "../../services/ethersRPC";
+import * as RPC from "../../services/ethersRPC";
 import { ColorModeProvider } from "./color-mode";
 
 export function Provider(props: ThemeProviderProps) {
@@ -50,6 +50,9 @@ export function Provider(props: ThemeProviderProps) {
       try {
         if (!web3AuthService.connected) {
           const provider = await web3AuthService.init();
+          // const { ethereum } = window as never;
+          // const provider = new ethers.BrowserProvider(ethereum);
+
           if (provider) {
             const newContractService = await new ContractService(
               provider,

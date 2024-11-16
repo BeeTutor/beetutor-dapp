@@ -94,8 +94,10 @@ export const CourseBidding: React.FC<Props> = ({ ...gridProps }) => {
         "Bidding has ended"
       ) : sessionStatus[batchId] === "won" ? (
         <>
-          <Button asChild>
-            <Link href="/chat">Start chatting</Link>
+          <Button disabled={gridProps.course.chatId === undefined} asChild>
+            <Link href={`/chat/groups/${gridProps.course.chatId}`}>
+              Start chatting
+            </Link>
           </Button>
           <Button variant="outline" onClick={() => setIsReviewDialogOpen(true)}>
             Review the course
@@ -110,7 +112,7 @@ export const CourseBidding: React.FC<Props> = ({ ...gridProps }) => {
           Place your bid.
           <InputGroup startElement="$">
             <Input
-              disabled={nowSessionStatus !== "open"}
+              // disabled={nowSessionStatus !== "open"}
               type="number"
               value={bidValue}
               onChange={(e) => setBidValue(e.target.value)}
