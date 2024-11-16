@@ -53,7 +53,7 @@ export default function Tutors() {
                     <Card.Title fontSize="2xl">{x.name}</Card.Title>
                   </Flex>
                   <Box>
-                    <Box>Offered: 4 lessons</Box>
+                    <Box>Offered: {x.offered} lessons</Box>
                   </Box>
                   <Flex flexWrap="wrap" gap="2">
                     {x.tags.map((x, i) => (
