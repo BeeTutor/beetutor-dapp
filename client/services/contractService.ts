@@ -5,7 +5,11 @@ class ContractService {
   constructor(provider, contractAddress, abi) {
     this.provider = provider;
     this.contractAddress = contractAddress;
-    this.contract = new ethers.Contract(contractAddress, abi, provider.getSigner());
+    this.contract = new ethers.Contract(
+      contractAddress,
+      abi,
+      provider.getSigner()
+    );
   }
 
   // 登入方法
@@ -44,4 +48,4 @@ class ContractService {
   }
 }
 
-export default ContractService;
+export const contractService = new ContractService();
