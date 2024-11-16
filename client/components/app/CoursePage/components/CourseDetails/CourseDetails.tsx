@@ -16,7 +16,8 @@ interface Props {
 }
 
 export const CourseDetails: React.FC<Props> = ({ course }) => {
-  const { provider, contractService, loggedIn, courseBids } = useStore();
+  const { provider, contractService, loggedIn, courseBids, courseId, batchId } =
+    useStore();
   const [actionBids, setActionBids] = useState({
     labels: [],
     datasets: [],
@@ -42,14 +43,20 @@ export const CourseDetails: React.FC<Props> = ({ course }) => {
 
   useEffect(() => {
     async function getActionsBids() {
-      return await contractService.getActionsBids(0, 1);
+      return await contractService.getActionsBids(courseId, batchId);
     }
     const generateLineChartData = async () => {
-      const bids = (await getActionsBids()) || courseBids;
+      let bids = await getActionsBids();
+
+      if (!bids) {
+        bids = courseBids;
+      }
       console.log("Action Bids:", bids);
 
       setActionBids({
-        labels: bids.map((e: Bids) => new Date(e.bidTime).toDateString()),
+        labels: bids.map((e: Bids) =>
+          new Date(Number(e.bidTime)).toDateString()
+        ),
         datasets: [
           {
             label: "Bid Price",
@@ -65,7 +72,7 @@ export const CourseDetails: React.FC<Props> = ({ course }) => {
     if (contractService) {
       generateLineChartData();
     }
-  }, [contractService, provider, loggedIn, courseBids]);
+  }, [contractService, provider, loggedIn, courseBids, batchId]);
 
   return (
     <Grid gap="1rem">

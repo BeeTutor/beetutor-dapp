@@ -20,22 +20,34 @@ interface DappState {
   courseReviews: any;
   setCourseReviews: (courseReviews: any) => void;
 
+  nftContractService: any;
+  setNftContractService: (nftContractService: any) => void;
+  
   courseBids: any;
   setCourseBids: (courseBids: any) => void;
 
   userAvatar: any;
   setUserAvatar: (userAvatar: any) => void;
+
+  courseId: any;
+  setCourseId: (courseId: any) => void;
+
+  batchId: any;
+  setBatchId: (batchId: any) => void;
 }
 
 export const useStore = create<DappState>((set) => ({
   provider: null,
   setProvider: (provider) => set({ provider }),
 
-  nowChain: "ETH_SEPOLIA",
+  nowChain: "HARDHAT_LOCAL",
   setNowChain: (nowChain) => set({ nowChain }),
 
   contractService: null,
   setContractService: (contractService) => set({ contractService }),
+  
+  nftContractService: null,
+  setNftContractService: (nftContractService) => set({ nftContractService }),
 
   loggedIn: null,
   setLoggedIn: (loggedIn) => set({ loggedIn }),
@@ -49,6 +61,12 @@ export const useStore = create<DappState>((set) => ({
   courseBids: null,
   setCourseBids: (courseBids) => set({ courseBids }),
 
-  userAvatar: "https://noun-api.com/beta/pfp",
+  userAvatar: "",
   setUserAvatar: (userAvatar) => set({ userAvatar }),
+
+  courseId: 0,
+  setCourseId: (courseId) => set({ courseId }),
+
+  batchId: 0,
+  setBatchId: (batchId) => set({ batchId }),
 }));

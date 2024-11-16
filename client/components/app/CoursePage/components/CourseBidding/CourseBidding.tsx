@@ -1,5 +1,6 @@
 import { Course } from "@/app/mock-data";
 import { Button } from "@/components/ui/button";
+import { InputGroup } from "@/components/ui/input-group";
 import {
   SelectContent,
   SelectItem,
@@ -8,7 +9,8 @@ import {
   SelectTrigger,
   SelectValueText,
 } from "@/components/ui/select";
-import { InputGroup } from "@/components/ui/input-group";
+import { toaster } from "@/components/ui/toaster";
+import { useStore } from "@/store";
 import {
   Box,
   createListCollection,
@@ -16,26 +18,30 @@ import {
   GridProps,
   Input,
 } from "@chakra-ui/react";
-import { useState } from "react";
-import Link from "next/link";
-import { ReviewDialog } from "./components/ReviewDialog";
-import { useStore } from "@/store";
 import { ethers } from "ethers";
-import { toaster } from "@/components/ui/toaster";
+import Link from "next/link";
+import { useState } from "react";
+import { ReviewDialog } from "./components/ReviewDialog";
 
 interface Props extends GridProps {
   course: Course;
 }
 
 export const CourseBidding: React.FC<Props> = ({ course, ...gridProps }) => {
-  const { contractService, setCourseBids, courseBids } = useStore();
-  console.log("course: ", course);
+  const {
+    contractService,
+    setCourseBids,
+    courseBids,
+    courseId,
+    batchId,
+    setBatchId,
+  } = useStore();
+  console.log(course);
   const [bidValue, setBidValue] = useState("");
 
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false);
 
-  const [session, setSession] = useState("");
-  const sessionStatus = SESSION_STATUS[session];
+  const sessionStatus = SESSION_STATUS[batchId];
 
   return (
     <Grid bg="yellow.100" p="2rem" gap="1rem" {...gridProps}>
@@ -44,8 +50,8 @@ export const CourseBidding: React.FC<Props> = ({ course, ...gridProps }) => {
         collection={SESSIONS}
         size="sm"
         multiple={false}
-        value={[session]}
-        onValueChange={(e) => setSession(e.value[0])}
+        value={[batchId]}
+        onValueChange={(e) => setBatchId(e.value[0])}
       >
         <SelectLabel>Session</SelectLabel>
         <SelectTrigger>
@@ -85,8 +91,7 @@ export const CourseBidding: React.FC<Props> = ({ course, ...gridProps }) => {
         </>
       ) : (
         <>
-          Lorem ipsum is placeholder text commonly used in the graphic, print,
-          and publishing industries for previewing layouts and visual mockups.
+          Place your bid.
           <InputGroup startElement="$">
             <Input
               disabled={sessionStatus !== "open"}
@@ -100,9 +105,13 @@ export const CourseBidding: React.FC<Props> = ({ course, ...gridProps }) => {
             onClick={async () => {
               const amountInWei = ethers.parseUnits(bidValue, "wei");
               console.log("Place Bid:", amountInWei);
-              if (contractService?.isInitialized) {
+              if (contractService) {
                 try {
-                  await contractService.placeBid(0, 1, amountInWei);
+                  await contractService.placeBid(
+                    courseId,
+                    batchId,
+                    amountInWei
+                  );
                 } catch (error) {
                   if (error instanceof Error) {
                     console.error("Failed to place bid:", error);
@@ -134,8 +143,8 @@ export const CourseBidding: React.FC<Props> = ({ course, ...gridProps }) => {
 const SESSIONS = createListCollection({
   items: [
     { id: 1, time: "2024/11/4 10:00 pm" },
-    { id: 3, time: "2024/11/14 1:00 pm" },
-    { id: 6, time: "2024/11/20 7:00 am" },
+    { id: 2, time: "2024/11/14 1:00 pm" },
+    { id: 3, time: "2024/11/20 7:00 am" },
   ] as const,
   itemToValue: (item) => String(item.id),
 });
@@ -144,8 +153,8 @@ type BiddingStatus = "ended" | "open" | "won";
 
 const SESSION_STATUS: Record<string, BiddingStatus | undefined> = {
   1: "ended",
-  3: "open",
-  6: "won",
+  2: "open",
+  3: "won",
 } satisfies {
   [key in (typeof SESSIONS)["items"][number]["id"]]: BiddingStatus;
 };
