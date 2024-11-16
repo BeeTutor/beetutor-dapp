@@ -1,4 +1,10 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+    images: {
+        domains: ['noun-api.com'],
+        dangerouslyAllowSVG: true,
+      },
+
+};
 
 export default nextConfig;
