@@ -7,6 +7,7 @@ import { Box, Grid, Heading } from "@chakra-ui/react";
 import "chart.js/auto";
 import Chart from "chart.js/auto";
 import { formatEther } from "ethers";
+import moment from "moment";
 import { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import { ReviewSection } from "./components/ReviewSection";
@@ -45,17 +46,27 @@ export const CourseDetails: React.FC<Props> = ({ course }) => {
     async function getActionsBids() {
       return await contractService.getActionsBids(courseId, batchId);
     }
+
     const generateLineChartData = async () => {
       let bids = await getActionsBids();
 
       if (!bids) {
         bids = courseBids;
       }
+      bids = bids.sort((a: Bids, b: Bids) => a.bidTime - b.bidTime);
+
       console.log("Action Bids:", bids);
 
       setActionBids({
         labels: bids.map((e: Bids) =>
-          new Date(Number(e.bidTime)).toDateString()
+          String(
+            moment(
+              new Date(Number(e.bidTime) * 1000),
+              "DD MM YYYY hh:mm:ss"
+            ).format()
+          )
+            .replace(/([+-]\d{2}:\d{2})$/, "")
+            .replace("T", " ")
         ),
         datasets: [
           {
