@@ -16,7 +16,7 @@ interface Props {
 }
 
 export const CourseDetails: React.FC<Props> = ({ course }) => {
-  const { provider, contractService, loggedIn } = useStore();
+  const { provider, contractService, loggedIn, courseBids } = useStore();
   const [actionBids, setActionBids] = useState({
     labels: [],
     datasets: [],
@@ -42,25 +42,18 @@ export const CourseDetails: React.FC<Props> = ({ course }) => {
 
   useEffect(() => {
     async function getActionsBids() {
-      return await contractService.getActionsBids(1, 1);
-      // await contractService.getCourseCertificateAddress();
+      return await contractService.getActionsBids(0, 1);
     }
     const generateLineChartData = async () => {
-      const selectedBatch = await getActionsBids();
-
-      const labels = selectedBatch.map(
-        (e: Bids, index: number) =>
-          "Bid" + index + new Date(e.bidTime).toISOString()
-      );
-
-      const data = selectedBatch.map((e: Bids) => formatEther(e.price));
+      const bids = (await getActionsBids()) || courseBids;
+      console.log("Action Bids:", bids);
 
       setActionBids({
-        labels,
+        labels: bids.map((e: Bids) => new Date(e.bidTime).toDateString()),
         datasets: [
           {
-            label: "投標價格",
-            data,
+            label: "Bid Price",
+            data: bids.map((e: Bids) => formatEther(e.amount)),
             fill: false,
             borderColor: "rgb(75, 192, 192)",
             tension: 0.1, // 曲線的平滑度
@@ -72,7 +65,7 @@ export const CourseDetails: React.FC<Props> = ({ course }) => {
     if (contractService) {
       generateLineChartData();
     }
-  }, [contractService, provider, loggedIn]);
+  }, [contractService, provider, loggedIn, courseBids]);
 
   return (
     <Grid gap="1rem">
