@@ -49,9 +49,7 @@ export const CourseDetails: React.FC<Props> = ({ course }) => {
       console.log("Action Bids:", bids);
 
       setActionBids({
-        labels: bids.map((e: Bids, index: number) =>
-          new Date(e.bidTime).toDateString()
-        ),
+        labels: bids.map((e: Bids) => new Date(e.bidTime).toDateString()),
         datasets: [
           {
             label: "Bid Price",
