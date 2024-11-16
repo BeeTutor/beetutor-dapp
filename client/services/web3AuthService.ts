@@ -146,7 +146,9 @@ class Web3AuthService {
   }
 
   async init() {
-    this.web3auth.logout();
+    if(this.web3auth.connected) {
+      this.web3auth.logout();
+    }
     const adapters = await getDefaultExternalAdapters({
       options: this.web3auth.options,
     });

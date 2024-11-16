@@ -117,29 +117,31 @@ export const ChatPage = ({
   }, [provider]);
 
   const initializeUser = useCallback(async () => {
-    const signer = await RPC.getSigner(provider);
-    console.log("✨::::signer", signer);
-    const user = await PushAPI.initialize(signer, {
-      env: CONSTANTS.ENV.STAGING,
-    });
-    setUser(user);
+    if (provider) {
+      const signer = await RPC.getSigner(provider);
+      console.log("✨::::signer", signer);
+      const user = await PushAPI.initialize(signer, {
+        env: CONSTANTS.ENV.STAGING,
+      });
+      setUser(user);
 
-    const stream = await user.initStream([
-      CONSTANTS.STREAM.CONNECT,
-      CONSTANTS.STREAM.DISCONNECT,
-      CONSTANTS.STREAM.CHAT,
-      CONSTANTS.STREAM.CHAT_OPS,
-      CONSTANTS.STREAM.NOTIF,
-      CONSTANTS.STREAM.VIDEO,
-    ]);
-    await stream.connect();
-    setStream(stream);
+      const stream = await user.initStream([
+        CONSTANTS.STREAM.CONNECT,
+        CONSTANTS.STREAM.DISCONNECT,
+        CONSTANTS.STREAM.CHAT,
+        CONSTANTS.STREAM.CHAT_OPS,
+        CONSTANTS.STREAM.NOTIF,
+        CONSTANTS.STREAM.VIDEO,
+      ]);
+      await stream.connect();
+      setStream(stream);
 
-    const videoUser = await user.video.initialize(setVideoCallData, {
-      stream,
-      config: { video: videoSettings.video, audio: videoSettings.audio },
-    });
-    setVideoUser(videoUser);
+      const videoUser = await user.video.initialize(setVideoCallData, {
+        stream,
+        config: { video: videoSettings.video, audio: videoSettings.audio },
+      });
+      setVideoUser(videoUser);
+    }
   }, [videoSettings, provider]);
 
   const mapChatPayload = (chat: IFeeds): IChatPreviewPayload => {
