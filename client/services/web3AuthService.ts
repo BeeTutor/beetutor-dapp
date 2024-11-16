@@ -1,9 +1,6 @@
-import {
-  CHAIN_NAMESPACES,
-  WEB3AUTH_NETWORK,
-} from "@web3auth/base";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { CHAIN_NAMESPACES, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { getDefaultExternalAdapters } from "@web3auth/default-evm-adapter";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3Auth, Web3AuthOptions } from "@web3auth/modal";
 
 // get from https://dashboard.web3auth.io
@@ -136,11 +133,11 @@ class Web3AuthService {
     const adapters = await getDefaultExternalAdapters({
       options: this.web3auth.options,
     });
-    for(const adapter of adapters ){
-      try{
+    for (const adapter of adapters) {
+      try {
         this.web3auth.configureAdapter(adapter);
-      }catch(e){
-        console.error('Failed to configure adapter', adapter.name, e);
+      } catch (e) {
+        console.error("Failed to configure adapter", adapter.name, e);
       }
     }
     await this.web3auth.initModal();
@@ -148,11 +145,14 @@ class Web3AuthService {
   }
 
   async switchChain(configKey: string) {
-    console.log('Switch chain:', CHAIN_CONFIG[configKey as keyof typeof CHAIN_CONFIG]);
+    console.log(
+      "Switch chain:",
+      CHAIN_CONFIG[configKey as keyof typeof CHAIN_CONFIG]
+    );
     const privateKeyProvider = new EthereumPrivateKeyProvider({
-      config: { 
-        chainConfig: CHAIN_CONFIG[configKey as keyof typeof CHAIN_CONFIG] 
-      } ,
+      config: {
+        chainConfig: CHAIN_CONFIG[configKey as keyof typeof CHAIN_CONFIG],
+      },
     });
 
     const web3AuthOptions: Web3AuthOptions = {
@@ -162,7 +162,7 @@ class Web3AuthService {
     };
 
     this.web3auth = new Web3Auth(web3AuthOptions);
-    this.init()
+    this.init();
   }
 
   async login() {
