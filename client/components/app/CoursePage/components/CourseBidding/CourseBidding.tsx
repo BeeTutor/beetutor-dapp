@@ -103,7 +103,7 @@ export const CourseBidding: React.FC<Props> = ({ course, ...gridProps }) => {
           <Button
             disabled={sessionStatus !== "open"}
             onClick={async () => {
-              const amountInWei = ethers.parseUnits(bidValue, "wei");
+              const amountInWei = ethers.parseUnits(bidValue, "ether");
               console.log("Place Bid:", amountInWei);
               if (contractService) {
                 try {
@@ -142,9 +142,9 @@ export const CourseBidding: React.FC<Props> = ({ course, ...gridProps }) => {
 
 const SESSIONS = createListCollection({
   items: [
-    { id: 1, time: "2024/11/4 10:00 pm" },
-    { id: 2, time: "2024/11/14 1:00 pm" },
-    { id: 3, time: "2024/11/20 7:00 am" },
+    { id: 0, time: "2024/11/4 10:00 pm" },
+    { id: 1, time: "2024/11/14 1:00 pm" },
+    { id: 2, time: "2024/11/20 7:00 am" },
   ] as const,
   itemToValue: (item) => String(item.id),
 });
@@ -152,9 +152,9 @@ const SESSIONS = createListCollection({
 type BiddingStatus = "ended" | "open" | "won";
 
 const SESSION_STATUS: Record<string, BiddingStatus | undefined> = {
-  1: "ended",
-  2: "open",
-  3: "won",
+  0: "ended",
+  1: "open",
+  2: "won",
 } satisfies {
   [key in (typeof SESSIONS)["items"][number]["id"]]: BiddingStatus;
 };
