@@ -23,11 +23,17 @@ export class ContractService {
     };
     default_chain: string;
   } = { contract_address: {}, default_chain: "LINEA_SEPOLIA" };
+  setSessionStatus: (sessionStatus: any) => void = function () {};
 
-  constructor(provider: IProvider, nowChain: string) {
+  constructor(
+    provider: IProvider,
+    nowChain: string,
+    setSessionStatus: (sessionStatus: any) => void = function () {}
+  ) {
     this.contract = null;
     this.provider = provider;
     this.initializeContract(nowChain);
+    this.setSessionStatus = setSessionStatus;
   }
 
   async initializeContract(nowChain: string) {
@@ -98,14 +104,19 @@ export class ContractService {
         (courseId: number, batchId: number) => {
           console.log("courseId:", courseId);
           console.log("batchId:", batchId);
-
+          this.setSessionStatus({
+            0: "ended",
+            1: "won",
+            2: "open",
+          });
           Swal.fire({
             title: `You won the bid!`,
             confirmButtonText: "OK",
             padding: "3em",
             color: "#716add",
             text: `Now you can join the exclusive group chat.`,
-            imageUrl: "https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExaHR5aW50NzRwbWphNWNvNThqZWFhY2c0am42d28xa3Z2YTl3cG1tMCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/lnyPptAfGwHeTdoQDk/giphy-downsized-large.gif",
+            imageUrl:
+              "https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExaHR5aW50NzRwbWphNWNvNThqZWFhY2c0am42d28xa3Z2YTl3cG1tMCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/lnyPptAfGwHeTdoQDk/giphy-downsized-large.gif",
             imageWidth: 350,
             imageAlt: "Custom image",
             backdrop: `

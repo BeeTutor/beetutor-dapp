@@ -17,8 +17,15 @@ interface Props {
 }
 
 export const CourseDetails: React.FC<Props> = ({ course }) => {
-  const { provider, contractService, loggedIn, courseBids, courseId, batchId } =
-    useStore();
+  const {
+    provider,
+    contractService,
+    loggedIn,
+    courseBids,
+    courseId,
+    batchId,
+    sessionStatus,
+  } = useStore();
   const [actionBids, setActionBids] = useState({
     labels: [],
     datasets: [],
@@ -40,7 +47,7 @@ export const CourseDetails: React.FC<Props> = ({ course }) => {
     resizeObserver.observe(chartContainer);
 
     return () => resizeObserver.disconnect();
-  }, [chart, chartContainer]);
+  }, [chart, chartContainer, sessionStatus]);
 
   useEffect(() => {
     async function getActionsBids() {

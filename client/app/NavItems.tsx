@@ -12,7 +12,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Toaster } from "@/components/ui/toaster";
 import { Box, Flex, IconButton, createListCollection } from "@chakra-ui/react";
 import {
   IDKitWidget,
@@ -332,6 +331,7 @@ export const NavItems: React.FC = () => {
                   borderRadius="50%"
                   overflow="hidden"
                   position="absolute"
+                  cursor="pointer"
                   borderBottom="2px solid"
                   top="1.8rem"
                   right="1.8rem"
@@ -339,12 +339,7 @@ export const NavItems: React.FC = () => {
                     setShowLoginCard(!showLoginCard);
                   }}
                 >
-                  <Image
-                    fill
-                    objectFit="cover"
-                    src={userAvatar}
-                    alt={"avatar"}
-                  />
+                  <Image fill objectFit="cover" src={userAvatar} alt="avatar" />
                 </Box>
               </DialogTrigger>
               <DialogContent bg="gray.50">
@@ -392,7 +387,6 @@ export const NavItems: React.FC = () => {
           )}
         </Flex>
       </Box>
-      <Toaster />
     </>
   );
 };

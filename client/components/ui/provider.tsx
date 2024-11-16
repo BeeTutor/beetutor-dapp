@@ -29,6 +29,7 @@ export function Provider(props: ThemeProviderProps) {
     setCourseId,
     setBatchId,
     nftContractService,
+    setSessionStatus,
   } = useStore();
 
   useEffect(() => {
@@ -52,7 +53,8 @@ export function Provider(props: ThemeProviderProps) {
           if (provider) {
             const newContractService = await new ContractService(
               provider,
-              nowChain
+              nowChain,
+              setSessionStatus
             );
             const newNftContractService = await new NftContractService(
               provider,
@@ -73,6 +75,7 @@ export function Provider(props: ThemeProviderProps) {
         } else {
           setUserAvatar(`https://noun-api.com/beta/pfp?name=${userAddress}`);
         }
+        // 清除监听器的函数
         return () => {
           contractService.contract?.removeAllListeners("BidPlaced");
           nftContractService.contract?.removeAllListeners("NFTUpgraded");
