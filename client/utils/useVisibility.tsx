@@ -7,9 +7,12 @@ export const useVisibility = () => {
   useEffect(() => {
     if (!element) return;
 
-    const intersectionObserver = new IntersectionObserver((entries) => {
-      setIsVisible(entries[0].intersectionRatio > 0);
-    });
+    const intersectionObserver = new IntersectionObserver(
+      (entries) => {
+        setIsVisible(entries[0].intersectionRatio > 0);
+      },
+      { threshold: [0, 0.5, 1] }
+    );
     intersectionObserver.observe(element);
 
     return () => intersectionObserver.disconnect();

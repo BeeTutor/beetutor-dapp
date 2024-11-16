@@ -2,7 +2,7 @@ import { Course } from "@/app/mock-data";
 import { Stars } from "@/components/custom/Stars";
 import { Button } from "@/components/ui/button";
 import { useVisibility } from "@/utils/useVisibility";
-import { Box, Heading, Flex, FlexProps, ButtonProps } from "@chakra-ui/react";
+import { Box, ButtonProps, Flex, FlexProps, Heading } from "@chakra-ui/react";
 import { useState } from "react";
 import { LuChevronLeft, LuChevronRight, LuUser } from "react-icons/lu";
 
@@ -78,16 +78,11 @@ export const ReviewSection: React.FC<Props> = ({ course }) => {
             scrollSnapType="x"
             alignItems="center"
           >
-            <Box ref={headRef} w="1px" mr="-1px" h="40px" />
+            <Box ref={headRef} w="2rem" mr="-2rem" h="40px" zIndex={1} />
             {new Array(8).fill(0).map((x, i, array) => {
               const isLast = i === array.length - 1;
               return (
-                <Box
-                  key={i}
-                  px="2rem"
-                  mr="-3.5rem"
-                  scrollSnapAlign={isLast ? "end" : "start"}
-                >
+                <Box key={i} px="2rem" mr="-3.5rem" scrollSnapAlign="start">
                   <Box
                     w="17.5rem"
                     maxW="full"
@@ -124,7 +119,7 @@ export const ReviewSection: React.FC<Props> = ({ course }) => {
                 </Box>
               );
             })}
-            <Box ref={tailRef} w="1px" ml="-1px" h="40px" />
+            <Box ref={tailRef} w="2rem" ml="1.5rem" h="40px" zIndex={1} />
           </Flex>
         </Box>
       </Box>
