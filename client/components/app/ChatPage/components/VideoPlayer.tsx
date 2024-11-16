@@ -21,7 +21,8 @@ export function VideoPlayer({ stream, isMuted }: VideoPlayerProps) {
       ref={videoRef}
       muted={isMuted}
       autoPlay
-      className="w-36 aspect-square border-2 border-black"
+      width="100%"
+      className="aspect-square border-2 border-black"
     />
   );
 }
