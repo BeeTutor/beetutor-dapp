@@ -64,7 +64,9 @@ export const CourseDetails: React.FC<Props> = ({ course }) => {
               new Date(Number(e.bidTime) * 1000),
               "DD MM YYYY hh:mm:ss"
             ).format()
-          ).replace(/([+-]\d{2}:\d{2})$/, "")
+          )
+            .replace(/([+-]\d{2}:\d{2})$/, "")
+            .replace("T", " ")
         ),
         datasets: [
           {
