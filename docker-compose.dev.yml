@@ -1,0 +1,24 @@
+version: "3.7"
+services:
+  beetutor-server:
+    image: beetutor-server:prod
+    build:
+      context: ./server
+      dockerfile: DockerfileIpfsDev
+    environment:
+      - TZ=UTC
+      - NODE_ENV=production
+    ports:
+      - 3001:3001
+    volumes:
+      - ./server:/app/
+  beetutor-client:
+    image: beetutor-client:prod
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    environment:
+      - TZ=UTC
+      - NODE_ENV=production
+    ports:
+      - 3000:3000
