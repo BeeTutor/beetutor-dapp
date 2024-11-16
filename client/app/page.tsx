@@ -1,8 +1,9 @@
 /* eslint-disable react/no-unescaped-entities */
-import Image from "next/image";
 import banner from "@/assets/banner.png";
-import { Box, Container, Grid, Heading } from "@chakra-ui/react";
 import { Button } from "@/components/ui/button";
+import { Box, Container, Grid, Heading } from "@chakra-ui/react";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -28,8 +29,8 @@ export default function Home() {
             can truly make a difference in your journey. And you can be the
             Buffett too!🌻
           </Box>
-          <Button mt="6" size="xl">
-            Explore
+          <Button mt="6" size="xl" asChild>
+            <Link href="/courses">Explore</Link>
           </Button>
         </Box>
 
