@@ -47,6 +47,7 @@ export const NavItems: React.FC = () => {
     setLoggedIn,
     nowChain,
     setNowChain,
+    setUserInfo,
   } = useStore();
   const { contractService } = useStore();
 
@@ -82,15 +83,16 @@ export const NavItems: React.FC = () => {
     }
   }, [nowChain]);
 
+  const getUserInfo = async () => {
+    const user = await web3AuthService.getUserInfo();
+    uiConsole(user);
+  };
+
   const login = async () => {
     const web3authProvider = await web3AuthService.login();
     setProvider(web3authProvider);
     setLoggedIn(web3AuthService.connected);
-  };
-
-  const getUserInfo = async () => {
-    const user = await web3AuthService.getUserInfo();
-    uiConsole(user);
+    getAccounts();
   };
 
   const logout = async () => {
@@ -109,6 +111,7 @@ export const NavItems: React.FC = () => {
       return;
     }
     const address = await RPC.getAccounts(provider);
+    setUserInfo(address);
     uiConsole(address);
     return address;
   };
@@ -392,4 +395,3 @@ const ITEMS: PropsWithChildren<LinkProps>[] = [
   { href: "/tutors", children: "Tutors" },
   { href: "/chat", children: "Chat" },
 ];
-git 

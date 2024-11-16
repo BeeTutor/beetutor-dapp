@@ -13,6 +13,12 @@ interface DappState {
 
   loggedIn: any;
   setLoggedIn: (loggedIn: any) => void;
+
+  userInfo: any;
+  setUserInfo: (userInfo: any) => void;
+
+  courseReviews: any;
+  setCourseReviews: (courseReviews: any) => void;
 }
 
 export const useStore = create<DappState>((set) => ({
@@ -27,4 +33,10 @@ export const useStore = create<DappState>((set) => ({
 
   loggedIn: null,
   setLoggedIn: (loggedIn) => set({ loggedIn }),
+
+  userInfo: null,
+  setUserInfo: (userInfo) => set({ userInfo }),
+
+  courseReviews: null,
+  setCourseReviews: (courseReviews) => set({ courseReviews }),
 }));
