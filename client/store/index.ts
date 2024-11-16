@@ -8,7 +8,7 @@ interface DappState {
   contractService: any;
   setContractService: (contractService: any) => void;
 
-  nowChain: "LINEA_SEPOLIA",
+  nowChain: any;
   setNowChain: (nowChain: any) => void;
 
   loggedIn: any;
@@ -40,7 +40,7 @@ export const useStore = create<DappState>((set) => ({
   provider: null,
   setProvider: (provider) => set({ provider }),
 
-  nowChain: "HARDHAT_LOCAL",
+  nowChain: "LINEA_SEPOLIA",
   setNowChain: (nowChain) => set({ nowChain }),
 
   contractService: null,
