@@ -71,10 +71,8 @@ export const ChatPage = ({
   const [videoUser, setVideoUser] = useState<VideoV2>();
 
   // // Video call states
-  const [videoSettings, setVideoSettings] = useState({
-    video: true,
-    audio: true,
-  });
+  const [video, setVideo] = useState<boolean>(false);
+  const [audio, setAudio] = useState<boolean>(false);
 
   // // Chat management states
   const [videoCallData, setVideoCallData] = useState<VideoCallData>(
@@ -122,7 +120,7 @@ export const ChatPage = ({
       const signer = await provider.getSigner();
       console.log("✨::::signer", signer);
       const user = await PushAPI.initialize(signer, {
-        env: CONSTANTS.ENV.STAGING,
+        env: CONSTANTS.ENV.PROD,
       });
       setUser(user);
 
@@ -139,11 +137,11 @@ export const ChatPage = ({
 
       const videoUser = await user.video.initialize(setVideoCallData, {
         stream,
-        config: { video: videoSettings.video, audio: videoSettings.audio },
+        config: { video, audio },
       });
       setVideoUser(videoUser);
     }
-  }, [videoSettings, provider]);
+  }, [video, audio, provider]);
 
   const mapChatPayload = (chat: IFeeds): IChatPreviewPayload => {
     const isGroup = Boolean(chat.groupInformation);
@@ -194,44 +192,44 @@ export const ChatPage = ({
     }
   }, [user]);
 
-  const handleIncomingVideoRequest = useCallback(
-    async (eventData: TYPES.VIDEO.EVENT) => {
-      if (
-        eventData.event === VideoEventType.REQUEST &&
-        eventData.peerInfo.address
-      ) {
-        const toastId = toaster.success({
-          title: `${address} is calling...`,
-          description: (
-            <Box gap="3">
-              <IconButton
-                rounded="full"
-                onClick={async () => {
-                  if (videoUser)
-                    await videoUser.approve(eventData.peerInfo.address);
-                  setIsDialogOpen(true);
-                  toaster.dismiss(toastId);
-                }}
-              >
-                <BsFillTelephoneFill />
-              </IconButton>
-              <IconButton
-                rounded="full"
-                onClick={async () => {
-                  if (videoUser) await videoUser.deny();
-                  toaster.dismiss(toastId);
-                }}
-              >
-                <BsFillTelephoneXFill />
-              </IconButton>
-            </Box>
-          ),
-          duration: 99999,
-        });
-      }
-    },
-    [address, videoUser]
-  );
+  // const handleIncomingVideoRequest = useCallback(
+  //   async (eventData: TYPES.VIDEO.EVENT) => {
+  //     if (
+  //       eventData.event === VideoEventType.REQUEST &&
+  //       eventData.peerInfo.address
+  //     ) {
+  //       const toastId = toaster.success({
+  //         title: `${address} is calling...`,
+  //         description: (
+  //           <Box gap="3">
+  //             <IconButton
+  //               rounded="full"
+  //               onClick={async () => {
+  //                 if (videoUser)
+  //                   await videoUser.approve(eventData.peerInfo.address);
+  //                 setIsDialogOpen(true);
+  //                 toaster.dismiss(toastId);
+  //               }}
+  //             >
+  //               <BsFillTelephoneFill />
+  //             </IconButton>
+  //             <IconButton
+  //               rounded="full"
+  //               onClick={async () => {
+  //                 if (videoUser) await videoUser.deny();
+  //                 toaster.dismiss(toastId);
+  //               }}
+  //             >
+  //               <BsFillTelephoneXFill />
+  //             </IconButton>
+  //           </Box>
+  //         ),
+  //         duration: 99999,
+  //       });
+  //     }
+  //   },
+  //   [address, videoUser]
+  // );
 
   const callOn = async (userInstance: PushAPI, chatId: string) => {
     if (stream && videoUser) {
@@ -244,8 +242,8 @@ export const ChatPage = ({
       console.log("Filtered Addresses:", filteredAddresses);
 
       videoUser.config({
-        video: videoSettings.video,
-        audio: videoSettings.audio,
+        video,
+        audio,
       });
 
       await videoUser.request(filteredAddresses);
@@ -265,16 +263,58 @@ export const ChatPage = ({
 
     if (user) fetchAllChats();
 
-    if (stream && user) {
-      stream.on(CONSTANTS.STREAM.VIDEO, handleIncomingVideoRequest);
-    }
+    // if (stream && user) {
+    //   stream.on(CONSTANTS.STREAM.VIDEO, handleIncomingVideoRequest);
+    // }
   }, [
     initializeChatApp,
     user,
-    stream,
+    // stream,
     fetchAllChats,
-    handleIncomingVideoRequest,
+    // handleIncomingVideoRequest,
   ]);
+
+  useEffect(() => {
+    if (stream && user) {
+      const videoHandler = async (eventData: TYPES.VIDEO.EVENT) => {
+        if (eventData.event === VideoEventType.REQUEST && eventData.peerInfo.address) {
+          const toastId = toaster.success({
+            title: `${address} is calling...`,
+            description: (
+              <Box gap="3">
+                <IconButton
+                  rounded="full"
+                  onClick={async () => {
+                    if (videoUser)
+                      await videoUser.approve(eventData.peerInfo.address);
+                    setIsDialogOpen(true);
+                    toaster.dismiss(toastId);
+                  }}
+                >
+                  <BsFillTelephoneFill />
+                </IconButton>
+                <IconButton
+                  rounded="full"
+                  onClick={async () => {
+                    if (videoUser) await videoUser.deny();
+                    toaster.dismiss(toastId);
+                  }}
+                >
+                  <BsFillTelephoneXFill />
+                </IconButton>
+              </Box>
+            ),
+            duration: 99999,
+          });
+        }
+      };
+      stream.on(CONSTANTS.STREAM.VIDEO, videoHandler);
+  
+      // return () => {
+      //   stream.off(CONSTANTS.STREAM.VIDEO, videoHandler); // Cleanup listener
+      // };
+    }
+  }, [stream, user]);
 
   const customTheme: IChatTheme = {
     ...lightChatTheme,
@@ -333,7 +373,7 @@ export const ChatPage = ({
     >
       {user ? (
         <ChatUIProvider
-          env={CONSTANTS.ENV.STAGING}
+          env={CONSTANTS.ENV.PROD}
           user={user}
           debug={true}
           theme={customTheme}
@@ -771,8 +811,10 @@ export const ChatPage = ({
               onOpenChange={(e) => setIsDialogOpen(e.open)}
               videoUser={videoUser}
               data={videoCallData}
-              videoSettings={videoSettings}
-              setVideoSettings={setVideoSettings}
+              video={video}
+              setVideo={setVideo}
+              audio={audio}
+              setAudio={setAudio}
             />
           )}
         </ChatUIProvider>
