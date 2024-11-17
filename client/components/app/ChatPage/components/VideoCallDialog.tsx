@@ -28,30 +28,37 @@ import { IoVideocam, IoVideocamOff } from "react-icons/io5";
 import { PiPhoneDisconnectFill } from "react-icons/pi";
 import { VideoPlayer } from "../components/VideoPlayer";
 
-interface VideoSettings {
-  video: boolean;
-  audio: boolean;
-}
-
 interface VideoCallDialogProps extends Omit<DialogRootProps, "children"> {
   videoUser: VideoV2;
   data: VideoCallData;
-  videoSettings: VideoSettings;
-  setVideoSettings: Dispatch<SetStateAction<VideoSettings>>;
+  video: boolean;
+  setVideo: Dispatch<SetStateAction<boolean>>;
+  audio: boolean;
+  setAudio: Dispatch<SetStateAction<boolean>>;
 }
 
 const VideoCallDialog: React.FC<VideoCallDialogProps> = ({
   videoUser,
   data,
-  videoSettings,
-  setVideoSettings,
+  video,
+  setVideo,
+  audio,
+  setAudio,
   ...props
 }) => {
-  const toggleSetting = async (key: keyof VideoSettings) => {
+  const toggleVideo = async () => {
     if (videoUser) {
-      const updatedValue = !videoSettings[key];
-      await videoUser.config({ [key]: updatedValue });
-      setVideoSettings((prev) => ({ ...prev, [key]: updatedValue }));
+      const updatedVideo = !video;
+      await videoUser.config({ video: updatedVideo });
+      setVideo(updatedVideo);
+    }
+  };
+
+  const toggleAudio = async () => {
+    if (videoUser) {
+      const updatedAudio = !audio;
+      await videoUser.config({ audio: updatedAudio });
+      setAudio(updatedAudio);
     }
   };
 
@@ -101,7 +108,7 @@ const VideoCallDialog: React.FC<VideoCallDialogProps> = ({
             <GridItem>
               <VideoPlayer
                 stream={data.local.stream}
-                isMuted={!videoSettings.video}
+                isMuted={!video}
               />
               <Box mt="4" textAlign="center" fontSize="sm">
                 {data.local.address}
@@ -130,24 +137,28 @@ const VideoCallDialog: React.FC<VideoCallDialogProps> = ({
         </DialogBody>
 
         <DialogFooter justifyContent="center" gap="4">
-          <IconButton
-            onClick={() => toggleSetting("video")}
+        <IconButton
+            onClick={toggleVideo}
+            rounded="full"
             aria-label="Toggle Video"
           >
-            {videoSettings.video ? <IoVideocam /> : <IoVideocamOff />}
+            {video ? <IoVideocam /> : <IoVideocamOff />}
           </IconButton>
+
           <IconButton
-            onClick={() => toggleSetting("audio")}
+            onClick={toggleAudio}
+            rounded="full"
             aria-label="Toggle Audio"
           >
-            {videoSettings.audio ? <AiFillAudio /> : <AiOutlineAudioMuted />}
+            {audio ? <AiFillAudio /> : <AiOutlineAudioMuted />}
           </IconButton>
+
           <DialogActionTrigger asChild>
             <IconButton
               onClick={disconnectCall}
+              rounded="full"
               aria-label="Disconnect"
-              bg="red.500"
-              color="white"
+              bg="red"
             >
               <PiPhoneDisconnectFill />
             </IconButton>
