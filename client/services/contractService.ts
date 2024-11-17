@@ -97,13 +97,6 @@ export class ContractService {
             });
           }
 
-          setTimeout(() => {
-            this.setSessionStatus({
-              0: "ended",
-              1: "won",
-              2: "open",
-            });
-          }, 7000); // 7秒後發出
         }
       );
 
@@ -174,6 +167,14 @@ export class ContractService {
           no-repeat
         `,
       });
+
+      
+        this.setSessionStatus({
+          0: "won",
+          1: "won",
+          2: "open",
+        });
+      
       return tx;
     } catch (error: unknown) {
       console.error("placeBid transaction ", error);
